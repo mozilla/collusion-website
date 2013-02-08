@@ -14,15 +14,13 @@ app.get('/', function(req, res){
     //'<script type="text/javascript">alert("helllloooooo")</script>'
   );
   
-
-  
 });
 
 
 
 app.post('/upload', function(req, res) {
     console.log("Title = " +req.body.title);
-    res.send(req.body.title);
+    res.send("gagga"+req.body.title);
 });
 
 /*
