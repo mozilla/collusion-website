@@ -31,7 +31,5 @@ app.get('/upload', function(req, res){
 });
 */
 
-
-
-
-app.listen(3000);
+// checking for the process environment variable PORT, not just hardcoding it to 3000
+app.listen(process.env.PORT || 3000);
