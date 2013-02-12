@@ -36,17 +36,17 @@ function dbTryout(){
     if (err) console.log(err);
   });
   
-  var query = client.query("select * from fruits");
-  //can stream row results back 1 at a time
-  query.on('row', function(row) {
-    console.log(row);
-    console.log("Fruit name: %s", row.name);
-  });
-
-  query.on('end', function() { 
-    client.end();
-    console.log("=== query eneded ===");
-  });
+//  var query = client.query("select * from fruits");
+//  //can stream row results back 1 at a time
+//  query.on('row', function(row) {
+//    console.log(row);
+//    console.log("Fruit name: %s", row.name);
+//  });
+//
+//  query.on('end', function() { 
+//    client.end();
+//    console.log("=== query eneded ===");
+//  });
 }
 
 
