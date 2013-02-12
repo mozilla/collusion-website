@@ -7,7 +7,8 @@ app.use(express.bodyParser());
 app.get('/', function(req, res){
   res.send(
     '<form action="/upload" enctype="multipart/form-data" method="post">'+
-    '<input type="text" name="title"><br>'+
+    'Name: <input type="text" name="name"><br>'+
+    'Color: <input type="text" name="color"><br>'+
     //'<input type="file" name="upload" multiple="multiple"><br>'+
     '<input type="submit" value="Upload">'+
     '</form>'
@@ -19,8 +20,9 @@ app.get('/', function(req, res){
 
 
 app.post('/upload', function(req, res) {
-    console.log("Title = " +req.body.title);
-    res.send(req.body.title);
+    console.log("Name = " +req.body.name);
+    console.log("Color = " +req.body.color);
+    res.send(req.body.name + ", " +req.body.color);
     //dbTryout();
 });
 
