@@ -19,7 +19,7 @@ app.get('/', function(req, res){
 
 
 
-app.post('/upload', function(req, res) {
+app.post('/upload', function(req, res) {he
     console.log("Name = " +req.body.name);
     console.log("Color = " +req.body.color);
     res.send(req.body.name + ", " +req.body.color);
@@ -30,8 +30,9 @@ app.post('/upload', function(req, res) {
 
 /* ========== database connection tryout ========== */
 function dbTryout(){
-  console.log("=== process.env.DATABASE_URL = " + process.env.DATABASE_URL);
-  var client = new pg.Client(process.env.DATABASE_URL);
+  var db_url = "postgres://xzqsbitstmadsp:SSoHPt-PPfEDjB38JlRF_ivy_j@ec2-54-243-190-152.compute-1.amazonaws.com:5432/d2tbr14pbemdg6" || process.env.DATABASE_URL;
+  console.log("=== process.env.DATABASE_URL = " + db_url);
+  var client = new pg.Client(db_url);
   client.connect(function(err) {
     if (err) console.log(err);
   });
