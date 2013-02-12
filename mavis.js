@@ -19,7 +19,7 @@ app.get('/', function(req, res){
 
 
 
-app.post('/upload', function(req, res) {he
+app.post('/upload', function(req, res){
     console.log("Name = " +req.body.name);
     console.log("Color = " +req.body.color);
     res.send(req.body.name + ", " +req.body.color);
