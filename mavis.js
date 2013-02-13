@@ -36,9 +36,6 @@ app.get('/', function(req, res){
     client.query(insertIntoTable(connectionArray[i]));
   }
   
-  res.send(foo);
-  
-/*
   
   var selectAll = client.query("select * from connections");
   var printOnScreen = "===== select * from connections ===== <br/><br/>";
@@ -58,7 +55,6 @@ app.get('/', function(req, res){
     console.log("=== selectAll query eneded ===");
   });
   
-*/
   
   //client.end();
   //dbTryout(res);
@@ -84,9 +80,9 @@ function insertIntoTable(obj){
   return queryInsert;
 }
 
-
+/* Converts a UNIX time to PostgreSQL timetamp */
 function convertToTimestamp(unixTime){
-  return "to_timestamp("+ unixTime + ")";
+  return "to_timestamp("+ parseInt(unixTime) / 1000 + ")";
 }
 
 
