@@ -34,19 +34,23 @@ app.get('/', function(req, res){
     client.query(insertIntoTable(connectionArray[i]));
     //console.log('"'+insertIntoTable(connectionArray[i])+'"');
   }
-  res.send(foo);
+  //res.send(foo);
   
   var selectAll = client.query("select * from connections");
-  console.log("=== selectAll query started ===");
-  //can stream row results back 1 at a time
+  var printOnScreen = "===== select * from connections ===== <br/><br/>";
+
   selectAll.on('row', function(row) {
-    console.log(row);
-    //res.send(row);
-    //console.log("Fruit name: %s", row.name);
+    var rowProperties = new Array();
+    for (var prop in row){
+      //console.log("Object.keys(row)=" + Object.keys(row));
+      rowProperties.push(row[prop]);
+    }
+    printOnScreen = printOnScreen + rowProperties.join(", ") + "<br/>";
   });
 
   selectAll.on('end', function() {
     client.end();
+    res.send(printOnScreen);
     console.log("=== selectAll query eneded ===");
   });
   
