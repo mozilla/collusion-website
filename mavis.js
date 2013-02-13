@@ -5,16 +5,8 @@ var pg = require("pg");
 app.use(express.bodyParser());
 
 app.get('/', function(req, res){
-  res.send(
-    '<form action="/upload" enctype="multipart/form-data" method="post">'+
-    'Name: <input type="text" name="name"><br>'+
-    'Color: <input type="text" name="color"><br>'+
-    //'<input type="file" name="upload" multiple="multiple"><br>'+
-    '<input type="submit" value="Upload">'+
-    '</form>'
-    //'<script type="text/javascript">alert("helllloooooo")</script>'
-  );
-  dbTryout();
+
+  dbTryout(res);
 });
 
 
@@ -29,7 +21,7 @@ app.post('/upload', function(req, res) {
 
 
 /* ========== database connection tryout ========== */
-function dbTryout(){
+function dbTryout(res){
   console.log("=== process.env.DATABASE_URL = " + process.env.DATABASE_URL);
   var client = new pg.Client(process.env.DATABASE_URL);
   client.connect(function(err) {
@@ -37,13 +29,14 @@ function dbTryout(){
   });
   
   //client.query("DROP TABLE Connections");
-  var query = client.query("CREATE TABLE Connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp float, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )");
-  client.query("INSERT into connections(source, target, TIMESTAMP, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ('services.addons.mozilla.org','addons.cdn.mozilla.net',1360172797107,'image/png',false,false,true,5,0)");
+ // var query = client.query("CREATE TABLE Connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp float, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )");
+  //client.query("INSERT into connections(source, target, TIMESTAMP, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ('services.addons.mozilla.org','addons.cdn.mozilla.net',1360172797107,'image/png',false,false,true,5,0)");
   
   var query = client.query("select * from connections");
   //can stream row results back 1 at a time
   query.on('row', function(row) {
     console.log(row);
+    res.send(row);
     //console.log("Fruit name: %s", row.name);
   });
 
