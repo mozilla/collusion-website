@@ -36,6 +36,21 @@ app.get('/', function(req, res){
   }
   res.send(foo);
   
+  var selectAll = client.query("select * from connections");
+  console.log("=== selectAll query started ===");
+  //can stream row results back 1 at a time
+  selectAll.on('row', function(row) {
+    console.log(row);
+    //res.send(row);
+    //console.log("Fruit name: %s", row.name);
+  });
+
+  selectAll.on('end', function() {
+    client.end();
+    console.log("=== selectAll query eneded ===");
+  });
+  
+  
   //client.end();
   //dbTryout(res);
 });
@@ -45,7 +60,7 @@ function insertIntoTable(obj, tbl){
   var prefix = "INSERT into connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ";
   var valuesArr = new Array();
   for (var i=0; i<obj.length; i++){
-    if (i==0 || i==1 || i==3){ // hardcoded
+    if (i==0 || i==1 || i==3){ // hardcoded.  BAD!
       valuesArr.push("'" + obj[i] + "'");
     }else{
       valuesArr.push(obj[i]);
