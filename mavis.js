@@ -5,8 +5,27 @@ var pg = require("pg");
 app.use(express.bodyParser());
 
 app.get('/', function(req, res){
-
-  dbTryout(res);
+//  res.send(
+//    '<form action="/upload" enctype="multipart/form-data" method="post">'+
+//    'Name: <input type="text" name="name"><br>'+
+//    'Color: <input type="text" name="color"><br>'+
+//    //'<input type="file" name="upload" multiple="multiple"><br>'+
+//    '<input type="submit" value="Upload">'+
+//    '</form>'
+//    //'<script type="text/javascript">alert("helllloooooo")</script>'
+//  );
+  
+  var jsonString = '[["services.addons.mozilla.org","addons.cdn.mozilla.net",1360172797107,"image/png",false,false,true,5,0],["services.addons.mozilla.org","addons.cdn.mozilla.net",1360172797112,"image/png",false,false,true,5,0],["services.addons.mozilla.org","addons.cdn.mozilla.net",1360172797115,"image/png",false,false,true,5,0],["services.addons.mozilla.org","addons.cdn.mozilla.net",1360172797119,"image/png",false,false,true,5,0],["developer.mozilla.org","developer.cdn.mozilla.net",1360172875744,"text/css",false,true,true,3,0],["developer.mozilla.org","developer.cdn.mozilla.net",1360172875838,"text/css",false,true,true,3,0],["developer.mozilla.org"]]';
+  
+  var jsonString2 = JSON.parse(jsonString);
+  var temp1 = 0;
+  var foo = "";
+  //var foo = "jsonString.length = " +jsonString.length + " === " + temp1 + "===== <br/>";
+  for (var i=0; i<jsonString2.length; i++){
+    foo = foo + jsonString2[i] + "<br/>";
+  }
+  res.send(foo);
+  //dbTryout(res);
 });
 
 
