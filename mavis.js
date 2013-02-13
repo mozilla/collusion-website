@@ -1,4 +1,5 @@
 var express = require("express");
+var jsonVar = require("./jsonVar.js");
 var app = express();
 var pg = require("pg");
 
@@ -15,19 +16,47 @@ app.get('/', function(req, res){
 //    //'<script type="text/javascript">alert("helllloooooo")</script>'
 //  );
   
-  var jsonString = '[["services.addons.mozilla.org","addons.cdn.mozilla.net",1360172797107,"image/png",false,false,true,5,0],["services.addons.mozilla.org","addons.cdn.mozilla.net",1360172797112,"image/png",false,false,true,5,0],["services.addons.mozilla.org","addons.cdn.mozilla.net",1360172797115,"image/png",false,false,true,5,0],["services.addons.mozilla.org","addons.cdn.mozilla.net",1360172797119,"image/png",false,false,true,5,0],["developer.mozilla.org","developer.cdn.mozilla.net",1360172875744,"text/css",false,true,true,3,0],["developer.mozilla.org","developer.cdn.mozilla.net",1360172875838,"text/css",false,true,true,3,0],["developer.mozilla.org"]]';
-  
-  var jsonString2 = JSON.parse(jsonString);
+  var jsonString = jsonVar.jsonString;
+  var connectionArray = JSON.parse(jsonString);
   var temp1 = 0;
   var foo = "";
-  //var foo = "jsonString.length = " +jsonString.length + " === " + temp1 + "===== <br/>";
-  for (var i=0; i<jsonString2.length; i++){
-    foo = foo + jsonString2[i] + "<br/>";
+  var client = new pg.Client(process.env.DATABASE_URL);
+  
+  client.connect(function(err) {
+    if (err) console.log(err);
+  });
+  
+  client.query("drop table connections");
+  client.query("CREATE TABLE Connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp float, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )");
+  
+  for (var i=0; i<connectionArray.length; i++){
+    foo = foo + connectionArray[i] + "<br/>";
+    client.query(insertIntoTable(connectionArray[i]));
+    //console.log('"'+insertIntoTable(connectionArray[i])+'"');
   }
   res.send(foo);
+  
+  //client.end();
   //dbTryout(res);
 });
 
+
+function insertIntoTable(obj, tbl){
+  var prefix = "INSERT into connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ";
+  var valuesArr = new Array();
+  for (var i=0; i<obj.length; i++){
+    if (i==0 || i==1 || i==3){ // hardcoded
+      valuesArr.push("'" + obj[i] + "'");
+    }else{
+      valuesArr.push(obj[i]);
+    }
+  }
+  
+  //console.log(values);
+  var queryInsert = prefix + "(" + valuesArr.join(",") + ")";
+  //console.log(queryInsert);
+  return queryInsert;
+}
 
 
 app.post('/upload', function(req, res) {
@@ -49,7 +78,7 @@ function dbTryout(res){
   
   //client.query("DROP TABLE Connections");
  // var query = client.query("CREATE TABLE Connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp float, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )");
-  //client.query("INSERT into connections(source, target, TIMESTAMP, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ('services.addons.mozilla.org','addons.cdn.mozilla.net',1360172797107,'image/png',false,false,true,5,0)");
+  //client.query("INSERT into connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ('services.addons.mozilla.org','addons.cdn.mozilla.net',1360172797107,'image/png',false,false,true,5,0)");
   
   var query = client.query("select * from connections");
   //can stream row results back 1 at a time
