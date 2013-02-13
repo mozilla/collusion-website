@@ -3,6 +3,8 @@ var jsonVar = require("./jsonVar.js");
 var app = express();
 var pg = require("pg");
 
+var client = new pg.Client(process.env.DATABASE_URL);
+
 app.use(express.bodyParser());
 
 app.get('/', function(req, res){
@@ -20,21 +22,23 @@ app.get('/', function(req, res){
   var connectionArray = JSON.parse(jsonString);
   var temp1 = 0;
   var foo = "";
-  var client = new pg.Client(process.env.DATABASE_URL);
   
   client.connect(function(err) {
     if (err) console.log(err);
   });
   
   client.query("drop table connections");
-  client.query("CREATE TABLE Connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp float, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )");
+  client.query("CREATE TABLE Connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp timestamp, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )");
   
   for (var i=0; i<connectionArray.length; i++){
     foo = foo + connectionArray[i] + "<br/>";
+    insertIntoTable(connectionArray[i]);
     client.query(insertIntoTable(connectionArray[i]));
-    //console.log('"'+insertIntoTable(connectionArray[i])+'"');
   }
-  //res.send(foo);
+  
+  res.send(foo);
+  
+/*
   
   var selectAll = client.query("select * from connections");
   var printOnScreen = "===== select * from connections ===== <br/><br/>";
@@ -54,27 +58,35 @@ app.get('/', function(req, res){
     console.log("=== selectAll query eneded ===");
   });
   
+*/
   
   //client.end();
   //dbTryout(res);
 });
 
 
-function insertIntoTable(obj, tbl){
+function insertIntoTable(obj){
   var prefix = "INSERT into connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ";
   var valuesArr = new Array();
   for (var i=0; i<obj.length; i++){
     if (i==0 || i==1 || i==3){ // hardcoded.  BAD!
       valuesArr.push("'" + obj[i] + "'");
-    }else{
+    }else if (i==2){
+      valuesArr.push(convertToTimestamp(obj[i]));
+    }
+    else{
       valuesArr.push(obj[i]);
     }
   }
   
-  //console.log(values);
   var queryInsert = prefix + "(" + valuesArr.join(",") + ")";
-  //console.log(queryInsert);
+  //console.log(Object.keys(obj));
   return queryInsert;
+}
+
+
+function convertToTimestamp(unixTime){
+  return "to_timestamp("+ unixTime + ")";
 }
 
 
