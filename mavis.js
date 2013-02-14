@@ -13,9 +13,8 @@ app.configure(function() {
 /* index page ============================================================ */
 app.get('/', function(req, res){
   var client = new pg.Client(process.env.DATABASE_URL);
-  var jsonString = jsonVar.jsonString;
-  var connectionArray = JSON.parse(jsonString);
-  var temp1 = 0;
+  var jsonConnectionString = jsonVar.jsonConnectionString;
+  var connectionArray = JSON.parse(jsonConnectionString);
   var foo = "";
   
   client.connect(function(err) {
@@ -31,10 +30,38 @@ app.get('/', function(req, res){
     client.query(insertIntoTable(connectionArray[i]));
   }
     
-  var selectAll = client.query("select * from connections");
-  var printOnScreen = "========== select * from connections ========== <br/><br/>";
+  client.end();
+  
+  var selectForm = 
+        '<form action="/selectRows" enctype="multipart/form-data" method="get"> Select * From '+
+        '<input type="text" name="tableName" value="connections"> Where&nbsp'+
+        '&nbsp<input type="text" name="fieldName" value="id">&nbsp = '+
+        '&nbsp<input type="text" name="fieldValue" value="1">&nbsp'+
+        //'<input type="submit" value="Submit">'+
+        '<button id="submit">Submittt</button>' +
+        '</form>' +
+        '======================================== </br></br>';
+  
+  showQueryResult("select * from connections", res, selectForm);
+  
 
-  selectAll.on('row', function(row) {
+});
+
+/* Print query result ================================================== */
+function showQueryResult(query, res, extraMessage){
+  var client = new pg.Client(process.env.DATABASE_URL);
+  var printOnScreen = extraMessage + query + "<br/><br/>";
+  
+  client.connect(function(err) {
+    if (err) console.log(err);
+  });
+  
+  var myQuery = client.query(query);
+  myQuery.on('error', function(error) {
+    if (error) console.log("ERRORRR = " + error);
+  });
+
+  myQuery.on('row', function(row) {
     var rowProperties = new Array();
     for (var prop in row){
       rowProperties.push(row[prop]);
@@ -42,23 +69,12 @@ app.get('/', function(req, res){
     printOnScreen = printOnScreen + rowProperties.join(", ") + "<br/>";
   });
 
-  selectAll.on('end', function() {
-    client.end();
-    printOnScreen +=
-        '</br> ======================================== ' +
-        '</br></br><form action="/selectRows" enctype="multipart/form-data" method="post"> Select * From '+
-        '<input type="text" name="tableName" value="connections"> Where&nbsp'+
-        '&nbsp<input type="text" name="fieldName" value="id">&nbsp = '+
-        '&nbsp<input type="text" name="fieldValue" value="1">&nbsp'+
-        //'<input type="submit" value="Submit">'+
-        '<button id="submit">Submittt</button>' + 
-        '</form>';
+  myQuery.on('end', function() {
     res.send(printOnScreen);
-    console.log("=== selectAll query eneded ===");
+    client.end();
+    
   });
-  
-
-});
+}
 
 
 /* Generates INSERT INTO query ========================================= */
@@ -95,39 +111,12 @@ function convertToTimestamp(unixTime){
 
 
 /* selectRows ============================================================ */
-app.post('/selectRows', function(req, res) {
-  var client = new pg.Client(process.env.DATABASE_URL);
-  console.log("tableName = " +req.body.tableName);
-  console.log("fieldName = " +req.body.fieldName);
-  console.log("fieldValue = " +req.body.fieldValue);
-  
-  client.connect(function(err) {
-    if (err) console.log(err);
-  });
-  
-  console.log(selectFromTable(req.body));
-  var selectAll = client.query(selectFromTable(req.body));
-  var printOnScreen = selectFromTable(req.body) + "<br/><br/>";
-  //res.send(printOnScreen);
-  
-  selectAll.on('error', function(error) {
-    if (err) console.log("ERRORRR = " + err);
-  });
-  
-  selectAll.on('row', function(row) {
-    var rowProperties = new Array();
-    for (var prop in row){
-      rowProperties.push(row[prop]);
-    }
-    printOnScreen = printOnScreen + rowProperties.join(", ") + "<br/>";
-  });
+app.get('/selectRows', function(req, res) {
+  for ( var hello in req.query ){
+    console.log(hello + " : " + req.query[hello]);
+  }
 
-  selectAll.on('end', function() {
-    res.send(printOnScreen);
-    client.end();
-    
-  });
-
+  showQueryResult(selectFromTable(req.query), res);
 });
 
 
