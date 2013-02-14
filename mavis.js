@@ -3,21 +3,16 @@ var jsonVar = require("./jsonVar.js");
 var app = express();
 var pg = require("pg");
 
-var client = new pg.Client(process.env.DATABASE_URL);
+//app.use(express.static(__dirname + '/public'));
 
-app.use(express.bodyParser());
+app.configure(function() {
+    //app.use(express.static(__dirname + '/public'));
+    app.use(express.bodyParser());    
+});
 
+/* index page ============================================================ */
 app.get('/', function(req, res){
-//  res.send(
-//    '<form action="/upload" enctype="multipart/form-data" method="post">'+
-//    'Name: <input type="text" name="name"><br>'+
-//    'Color: <input type="text" name="color"><br>'+
-//    //'<input type="file" name="upload" multiple="multiple"><br>'+
-//    '<input type="submit" value="Upload">'+
-//    '</form>'
-//    //'<script type="text/javascript">alert("helllloooooo")</script>'
-//  );
-  
+  var client = new pg.Client(process.env.DATABASE_URL);
   var jsonString = jsonVar.jsonString;
   var connectionArray = JSON.parse(jsonString);
   var temp1 = 0;
@@ -35,15 +30,13 @@ app.get('/', function(req, res){
     insertIntoTable(connectionArray[i]);
     client.query(insertIntoTable(connectionArray[i]));
   }
-  
-  
+    
   var selectAll = client.query("select * from connections");
-  var printOnScreen = "===== select * from connections ===== <br/><br/>";
+  var printOnScreen = "========== select * from connections ========== <br/><br/>";
 
   selectAll.on('row', function(row) {
     var rowProperties = new Array();
     for (var prop in row){
-      //console.log("Object.keys(row)=" + Object.keys(row));
       rowProperties.push(row[prop]);
     }
     printOnScreen = printOnScreen + rowProperties.join(", ") + "<br/>";
@@ -51,16 +44,24 @@ app.get('/', function(req, res){
 
   selectAll.on('end', function() {
     client.end();
+    printOnScreen +=
+        '</br> ======================================== ' +
+        '</br></br><form action="/selectRows" enctype="multipart/form-data" method="post"> Select * From '+
+        '<input type="text" name="tableName" value="connections"> Where&nbsp'+
+        '&nbsp<input type="text" name="fieldName" value="id">&nbsp = '+
+        '&nbsp<input type="text" name="fieldValue" value="1">&nbsp'+
+        //'<input type="submit" value="Submit">'+
+        '<button id="submit">Submittt</button>' + 
+        '</form>';
     res.send(printOnScreen);
     console.log("=== selectAll query eneded ===");
   });
   
-  
-  //client.end();
-  //dbTryout(res);
+
 });
 
 
+/* Generates INSERT INTO query ========================================= */
 function insertIntoTable(obj){
   var prefix = "INSERT into connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ";
   var valuesArr = new Array();
@@ -76,53 +77,62 @@ function insertIntoTable(obj){
   }
   
   var queryInsert = prefix + "(" + valuesArr.join(",") + ")";
-  //console.log(Object.keys(obj));
+  
   return queryInsert;
 }
 
-/* Converts a UNIX time to PostgreSQL timetamp */
+
+/* selectFromTable ======================================================= */
+function selectFromTable(filter){
+  return "SELECT * FROM " + filter.tableName + " WHERE " + filter.fieldName + " = " + filter.fieldValue;
+}
+
+
+/* Converts a UNIX time to PostgreSQL timetamp =========================== */
 function convertToTimestamp(unixTime){
   return "to_timestamp("+ parseInt(unixTime) / 1000 + ")";
 }
 
 
-app.post('/upload', function(req, res) {
-    console.log("Name = " +req.body.name);
-    console.log("Color = " +req.body.color);
-    res.send(req.body.name + ", " +req.body.color);
-    //dbTryout();
-});
-
-
-
-/* ========== database connection tryout ========== */
-function dbTryout(res){
-  console.log("=== process.env.DATABASE_URL = " + process.env.DATABASE_URL);
+/* selectRows ============================================================ */
+app.post('/selectRows', function(req, res) {
   var client = new pg.Client(process.env.DATABASE_URL);
+  console.log("tableName = " +req.body.tableName);
+  console.log("fieldName = " +req.body.fieldName);
+  console.log("fieldValue = " +req.body.fieldValue);
+  
   client.connect(function(err) {
     if (err) console.log(err);
   });
   
-  //client.query("DROP TABLE Connections");
- // var query = client.query("CREATE TABLE Connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp float, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )");
-  //client.query("INSERT into connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ('services.addons.mozilla.org','addons.cdn.mozilla.net',1360172797107,'image/png',false,false,true,5,0)");
+  console.log(selectFromTable(req.body));
+  var selectAll = client.query(selectFromTable(req.body));
+  var printOnScreen = selectFromTable(req.body) + "<br/><br/>";
+  //res.send(printOnScreen);
   
-  var query = client.query("select * from connections");
-  //can stream row results back 1 at a time
-  query.on('row', function(row) {
-    console.log(row);
-    res.send(row);
-    //console.log("Fruit name: %s", row.name);
+  selectAll.on('error', function(error) {
+    if (err) console.log("ERRORRR = " + err);
+  });
+  
+  selectAll.on('row', function(row) {
+    var rowProperties = new Array();
+    for (var prop in row){
+      rowProperties.push(row[prop]);
+    }
+    printOnScreen = printOnScreen + rowProperties.join(", ") + "<br/>";
   });
 
-  query.on('end', function() {
+  selectAll.on('end', function() {
+    res.send(printOnScreen);
     client.end();
-    console.log("=== query eneded ===");
+    
   });
-}
+
+});
+
+
 
 
 
 // checking for the process environment variable PORT, not just hardcoding it to 3000
 app.listen(process.env.PORT || 3000);
-//console.log("process.env.PORT = " + process.env.PORT);
