@@ -6,17 +6,16 @@ var cons = require("consolidate"); // template engine consolidation library
 var jsonVar = require("./jsonVar.js");
 
 app.configure(function(){
-  app.set('view engine', 'handlebars');
+  app.set("view engine", "handlebars");
   app.set("view options", { layout: false });
-  app.set('views', __dirname + '/');
-  app.engine('html', cons.handlebars);
-  app.use(express.static(__dirname + '/public'));
+  app.set("views", __dirname + "/");
+  app.engine("html", cons.handlebars);
+  app.use(express.static(__dirname + "/public"));
 });
 
 
-
-app.get('/', function(req, res){
-  
+/* Index Page ========================================================= */
+app.get("/", function(req, res){
   showQueryResult("SELECT DISTINCT target FROM connections", "trackers", function(trackers){
     showQueryResult("SELECT DISTINCT source FROM connections", "websites", function(website){
       //console.log(rows);
@@ -24,36 +23,39 @@ app.get('/', function(req, res){
         trackers: trackers,
         website: website
       }
-      res.render('index.html', data);
+      res.render("index.html", data);
     
     });
   });
-
-  
-
   
 });
 
 
-/* ==================== Tracker Details ==================== */
+/* Tracker Details ==================================================== */
 //app.param('tracker', /^\d+$/);
-app.get('/trackers/:tracker', function(req, res){
+app.get("/trackers/:tracker", function(req, res){
   showQueryResult("SELECT * FROM connections where target = '" + req.params.tracker + "'", "details", function(details){
     //console.log(rows);
     var data = {
       tracker: req.params.tracker,
       details: details
     };
-    res.render('trackerInfo.html', data);
-  
+    res.render("trackerInfo.htm", data);  
   });
   
 });
 
 
-/* ==================== Website Details ==================== */
-app.get('/websites/:website', function(req, res){
-  res.send("=== website === " + req.params.website);
+/* Website Details ==================================================== */
+app.get("/websites/:website", function(req, res){
+  showQueryResult("SELECT * FROM connections where source = '" + req.params.website + "'", "details", function(details){
+    //console.log(rows);
+    var data = {
+      website: req.params.website,
+      details: details
+    };
+    res.render("websiteInfo.html", data);  
+  });
 });
 
 
@@ -67,17 +69,17 @@ function showQueryResult(query, type, callback){
   });
   
   var myQuery = client.query(query);
-  myQuery.on('error', function(error) {
+  myQuery.on("error", function(error) {
     if (error) console.log("=== ERRORRR === " + error);
   });
 
-  myQuery.on('row', function(row) {
+  myQuery.on("row", function(row) {
     var rowProperties = new Array();
     for (var prop in row){
       rowProperties.push(row[prop]);
     }
     //wrapper = wrapper + "<li><a href=''>" + rowProperties.join(", ") + "</a></li>";
-    if ( type == "trackers" ||  type == "websites " ){
+    if ( type == "trackers" ||  type == "websites" ){
       var url = "/" + type + "/" + rowProperties[0];
       wrapper = wrapper + "<li><a href='" + url +  "'>" + rowProperties.join(", ") + "</a></li>";
     }else{
@@ -85,7 +87,7 @@ function showQueryResult(query, type, callback){
     }
   });
 
-  myQuery.on('end', function() {
+  myQuery.on("end", function() {
     wrapper += "</ul>";
     callback(wrapper);
     client.end();
