@@ -1,0 +1,44 @@
+html {
+  font-family: "Open Sans";
+}
+
+
+.header {
+  height: 100px;
+  margin-bottom: 20px;
+}
+
+.main{
+  overflow: auto;
+  width: 724px;
+  margin: 0 auto;
+}
+
+.section_box {
+  float: left;
+  border: 1px solid black;
+  width: 300px;
+  height: 300px;
+  margin: 0 50px 50px 0;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.section_box h4{
+  font-size: 20px;
+  margin: 5px;
+}
+
+ul{
+  list-style-type: square;
+}
+
+li a{
+  text-decoration: none;
+  color: #555555;
+  font-size: 12px;
+}
+
+li a:hover{
+  color: orange;
+}
