@@ -3,6 +3,10 @@ html {
   background: url('/images/grain.png') repeat, #F5F1E8;
 }
 
+body {
+  margin: 0;
+}
+
 .main{
   overflow: auto;
   width: 724px;
