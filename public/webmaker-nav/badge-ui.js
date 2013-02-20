@@ -3,9 +3,9 @@
 define([
   "jquery",
   "./mode-buster",
-  "text!./templates/badge-ui-widget.html",
-  "text!./templates/badge-ui-list-item.html",
-  "text!./templates/badge-ui-alert.html"
+  "./text!./templates/badge-ui-widget.html",
+  "./text!./templates/badge-ui-list-item.html",
+  "./text!./templates/badge-ui-alert.html"
 ], function($, ModeBuster, WIDGET_HTML, LI_HTML, ALERT_HTML) {
   function getEarnedBadges(badger) {
     return badger.getBadges().filter(function(badge) {

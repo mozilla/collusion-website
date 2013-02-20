@@ -3,8 +3,8 @@
 define( [ 
   "jquery",
   "./mode-buster",
-  "text!./templates/webmaker-nav.html",
-  "text!./templates/login-error.html"
+  "./text!./templates/webmaker-nav.html",
+  "./text!./templates/login-error.html"
 ], function( $, ModeBuster, BASE_LAYOUT, LOGIN_ERROR_LAYOUT ) {
 
       // Added to elements in primary nav when they are active

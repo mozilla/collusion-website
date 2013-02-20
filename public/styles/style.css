@@ -1,6 +1,6 @@
 html {
   font-family: "Open Sans";
-  background: rgb(245,241,232) url('/images/mozorg-gradient.png') repeat-x top center;
+  background: url('/images/grain.png') repeat, #F5F1E8;
 }
 
 .main{
@@ -27,12 +27,19 @@ html {
 
 ul{
   list-style-type: square;
+  line-height: 15px;
 }
 
 li a{
   text-decoration: none;
   color: #555555;
   font-size: 12px;
+}
+
+li img{
+  padding-right: 5px;
+  width: 15px;
+  height: 15px;
 }
 
 li a:hover{
