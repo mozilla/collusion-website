@@ -4,7 +4,6 @@ var pg = require("pg");
 var handlebars = require("handlebars");
 var cons = require("consolidate"); // template engine consolidation library
 //var webmakerNav = require("/webmaker-nav");
-var jsonVar = require("./jsonVar.js");
 
 
 app.configure(function(){
@@ -19,8 +18,44 @@ app.configure(function(){
 
 /* Index Page ========================================================= */
 app.get("/", function(req, res){
-  showQueryResult("SELECT DISTINCT target FROM connections", "trackers", function(trackers){
-    showQueryResult("SELECT DISTINCT source FROM connections", "websites", function(website){
+  
+  function makeAvatar(query, type, callback){
+    var avatarBoxes = "";
+    var client = new pg.Client(process.env.DATABASE_URL);
+    client.connect(function(err) {
+      if (err) console.log(err);
+    });
+    
+    var myQuery = client.query(query);
+    myQuery.on("error", function(error) {
+      if (error) console.log("=== ERRORRR === " + error);
+    });
+
+    myQuery.on("row", function(row) {
+      var rowProperties = new Array();
+      for (var prop in row){
+        rowProperties.push(row[prop]);
+      }
+      var url = "/" + type + "/" + rowProperties[0];
+      //var anchor = "<a href='" + url +  "'>" + rowProperties.join(", ");
+      // TODO: favicon not found error handling
+      var favicon = "<img src='http://" + rowProperties.join(", ") +  "/favicon.ico'></br>";
+      //avatarBoxes = avatarBoxes + "<div class='avatar_box'>" + favicon + anchor + "</a></div>";
+      avatarBoxes = avatarBoxes + "<a href='" + url + "'><div class='avatar_box'>" + favicon + rowProperties.join(", ") +"</div></a>";
+
+    });
+
+    myQuery.on("end", function() {
+      callback(avatarBoxes);
+      client.end();
+      
+    });
+  }
+
+
+//********************
+  makeAvatar("SELECT DISTINCT target FROM connections", "trackers", function(trackers){
+    makeAvatar("SELECT DISTINCT source FROM connections", "websites", function(website){
       //console.log(rows);
       var data = {
         trackers: trackers,
