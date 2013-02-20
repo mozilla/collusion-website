@@ -1,11 +1,6 @@
 html {
   font-family: "Open Sans";
-}
-
-
-.header {
-  height: 100px;
-  margin-bottom: 20px;
+  background: rgb(245,241,232) url('/images/mozorg-gradient.png') repeat-x top center;
 }
 
 .main{
@@ -22,6 +17,7 @@ html {
   margin: 0 50px 50px 0;
   overflow: hidden;
   padding: 5px;
+  background: white;
 }
 
 .section_box h4{

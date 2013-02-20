@@ -3,7 +3,9 @@ var app = express();
 var pg = require("pg");
 var handlebars = require("handlebars");
 var cons = require("consolidate"); // template engine consolidation library
+//var webmakerNav = require("/webmaker-nav");
 var jsonVar = require("./jsonVar.js");
+
 
 app.configure(function(){
   app.set("view engine", "handlebars");
@@ -12,6 +14,7 @@ app.configure(function(){
   app.engine("html", cons.handlebars);
   app.use(express.static(__dirname + "/public"));
 });
+
 
 
 /* Index Page ========================================================= */
@@ -40,7 +43,7 @@ app.get("/trackers/:tracker", function(req, res){
       tracker: req.params.tracker,
       details: details
     };
-    res.render("trackerInfo.htm", data);  
+    res.render("trackerInfo.html", data);  
   });
   
 });

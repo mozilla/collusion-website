@@ -1,0 +1,121 @@
+
+// GRADIENTS
+// Usage:
+//  .gradient( "vertical", red, blue );         -> Creates a gradient from top = red to bottom = blue.
+//  .gradient( "horizonal", red, blue );        -> Creates a gradient from left = red to right = blue.
+//  .gradient( "vertical", red, blue, true );   -> Creates a gradient with a solid-color fallback. This is
+//                                                 necessary for IE9 when the container has a border-radius of 2+
+
+._gradient( @color1, @color2, @startLoc, @endLoc, @from, @to, @ieFallback: false, @ieGradientType: 0 ) when ( @ieFallback ) {
+  // Internal mixin for generating gradients when there are rounded corners
+  background: @color1;
+  background: -webkit-gradient( linear, @startLoc, @endLoc, color-stop( @from, @color1 ), color-stop( @to, @color2 ) );
+  background: -webkit-linear-gradient( @startLoc, @color1 @from, @color2 @to );
+  background: -moz-linear-gradient( @startLoc, @color1 @from, @color2 @to );
+  background: -ms-linear-gradient( @startLoc, @color1 @from, @color2 @to );
+  background: -o-linear-gradient( @startLoc, @color1 @from, @color2 @to );
+  background: linear-gradient( @startLoc, @color1 );
+}
+
+._gradient( @color1, @color2, @startLoc, @endLoc, @from, @to, @ieFallback: false, @ieGradientType: 0 ) when not ( @ieFallback ) {
+  // Internal mixin for generating gradients when there are no rounded corners
+  filter: e( %( "progid:DXImageTransform.Microsoft.Gradient(startColorstr='%d', endColorstr='%d', GradientType=%d)", @color1, @color2, @ieGradientType ) );
+  background: -webkit-gradient( linear, @startLoc, @endLoc, color-stop( @from, @color1 ), color-stop( @to, @color2 ) );
+  background: -webkit-linear-gradient( @startLoc, @color1 @from, @color2 @to );
+  background: -moz-linear-gradient( @startLoc, @color1 @from, @color2 @to );
+  background: -ms-linear-gradient( @startLoc, @color1 @from, @color2 @to );
+  background: -o-linear-gradient( @startLoc, @color1 @from, @color2 @to );
+  background: linear-gradient( @startLoc, @color1 );
+}
+
+.gradient( "vertical", @color1, @color2, @fallback: false ) {
+  ._gradient( @color1, @color2, top, bottom, 0%, 100%, @fallback, 0 );
+}
+
+.gradient( "horizontal", @color1, @color2, @fallback: false ) {
+  ._gradient( @color1, @color2, left, right, 0%, 100%, @fallback, 1 );
+}
+
+.gradient( "center top", @color1, @color2, @fallback: false ) {
+  ._gradient( @color1, @color2, left, right, 0%, 100%, @fallback, 1 );
+}
+
+
+.selectable(@param) {
+  -webkit-touch-callout: @param;
+  -webkit-user-select: @param;
+  -moz-user-select: @param;
+  -ms-user-select: @param;
+  user-select: @param;
+}
+
+.transition(@transition) {
+  -webkit-transition: @transition;
+  -moz-transition: @transition;
+  -o-transition: @transition;
+  -ms-transition: @transition;
+  transition: @transition;
+}
+.transform( @transformation ) {
+  -webkit-transform: @transformation;
+  -moz-transform: @transformation;
+  -o-transform: @transformation;
+  -ms-transform: @transformation;
+  transform: @transformation;
+}
+
+.box-sizing( @property ) {
+  // https://developer.mozilla.org/En/CSS/Box-sizing
+  -webkit-box-sizing: @property; // Chrome 10-
+  -moz-box-sizing: @property;
+  -ms-box-sizing: @property; // IE 8+
+  box-sizing: @property; // Opera, Safari 5.1+, Chrome 10+
+}
+
+.clearfix() {
+  &:after {
+    /* Clearfix */
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.triangle( "right", @size, @color, @borderSize, @borderColor ) {
+  &:after, &:before {
+    left: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+  &:after {
+    border-left-color: @color;
+    border-width: @size;
+    top: 50%;
+    margin-top: -@size;
+  }
+  &:before {
+    border-left-color: @borderColor;
+    border-width: @size + @borderSize + 1;
+    top: 50%;
+    margin-top: -( @size + @borderSize + 1 );
+  }
+}
+
+.animation(@animation) {
+  -webkit-animation: @animation;
+  -moz-animation: @animation;
+  -o-animation: @animation;
+  -ms-animation: @animation;
+  animation: @animation;
+}
+.timing-function(@timing) {
+  -webkit-animation-timing-function: @timing;
+  -moz-animation-timing-function: @timing;
+  -o-animation-timing-function: @timing;
+  -ms-animation-timing-function: @timing;
+  animation-timing-function: @timing;
+}
