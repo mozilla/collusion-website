@@ -40,10 +40,12 @@ body {
   line-height: 12px;
   cursor: pointer;
   background: #EEEEEE;
+  color: #444444;
 }
 
 .avatar_box:hover{
   background: #CAE1F4;
+  color: black;
 }
 
 .avatar_box img{
@@ -52,14 +54,6 @@ body {
   height: 15px;
 }
 
-.avatar_box a{
-  text-decoration: none;
-  color: #555555;
-}
-
-.avatar_box a:hover{
-  color: orange;
-}
 
 /*
 ul{
