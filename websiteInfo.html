@@ -1,77 +1,77 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/style.css" type="text/css" />
-    <link rel="stylesheet" href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" />
-    <link rel="stylesheet" href="/webmaker-nav/css/webmaker-nav.css" type="text/css" />        
-    <title>Collusion Temp</title>
-  </head>
-  
-  <body>
-    <header>
-      <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
-      <!-- Begin webmaker nav -->
-      <div id="webmakerNavContainer">
-        <div data-webmaker-nav-role="webmaker-info">
-          This content will appear on the right side of the content of the
-          Webmaker tab.
-        </div>
-        <div data-webmaker-nav-role="join-tooltip">
-          <div class="wm-unit">
-            <h3>Log in to my awesome app to do awesome stuff!</h3>
-            <div class="wm-unit-side">
-              <img src="">
-            </div>
-            <div class="wm-unit-body">
-              <p>Don't have an account yet? All you need is an email to get started. Webmaker uses <strong>Persona</strong>, which puts you in control of your identity through a single email address of your choice.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- / webmaker nav -->
-    </header>
+    <head>
+        <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/style.css" type="text/css" />
+        <link rel="stylesheet" href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" />
+        <link rel="stylesheet" href="/webmaker-nav/css/webmaker-nav.css" type="text/css" />
+        <title>Collusion Temp</title>
+    </head>
     
-    <!--
-    <div style="padding: 0 0 0 550px; font-size: 12px"><input id="simulate-login-error" type="checkbox">Simulate login error</input></div>
-    -->
-
-    <!-- ******************** main ******************** -->
-    <div class="main">
-      <div>
-        <h2>Website Visited</h2>
-        <h4>When you visit {{{website}}}, it informs the following websites about you.</h4>
-        {{{details}}}
-      <div>
-    </div>
-    
-    <script src="/js/require.js"></script>
-    <script src="/js/jquery-1.9.1.min.js"></script>
-    <script>
-       require.config({
-        packages: [{
-          name: "webmaker-nav",
-          location: "/webmaker-nav"
-        }]
-      });
-      require([ "webmaker-nav" ], function( Webmaker ) {
-        var webmakerNav = new Webmaker({
-          container: document.querySelector( "#webmakerNavContainer" ),
-          loginBtnCallback: function() {
-//            if ( document.querySelector( "#simulate-login-error" ).checked )
-//              webmakerNav.showLoginError();
-//            else
-//              webmakerNav.views.login({username: "testuser@mozilla.org"});
-          },
-          logoutBtnCallback: function() {
-            webmakerNav.views.logout();
-          },
-          feedbackCallback: function() {
-            console.log( "do feedback stuff" );
-          }
-        });
-      });
-    </script>
-    <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
-  </body>
+    <body>
+        <header>
+            <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
+            <!-- Begin webmaker nav -->
+            <div id="webmakerNavContainer">
+                <div data-webmaker-nav-role="webmaker-info">
+                    This content will appear on the right side of the content of the
+                    Webmaker tab.
+                </div>
+                <div data-webmaker-nav-role="join-tooltip">
+                    <div class="wm-unit">
+                        <h3>Log in to my awesome app to do awesome stuff!</h3>
+                        <div class="wm-unit-side">
+                            <img src="">
+                                </div>
+                        <div class="wm-unit-body">
+                            <p>Don't have an account yet? All you need is an email to get started. Webmaker uses <strong>Persona</strong>, which puts you in control of your identity through a single email address of your choice.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / webmaker nav -->
+        </header>
+        
+        <!--
+         <div style="padding: 0 0 0 550px; font-size: 12px"><input id="simulate-login-error" type="checkbox">Simulate login error</input></div>
+         -->
+        
+        <!-- ******************** main ******************** -->
+        <div class="main">
+            <div>
+                <h2>Website Visited</h2>
+                <h4>When you visit {{{website}}}, it informs the following websites about you.</h4>
+                {{{details}}}
+                <div>
+                </div>
+                
+                <script src="/js/require.js"></script>
+                <script src="/js/jquery-1.9.1.min.js"></script>
+                <script>
+                    require.config({
+                                   packages: [{
+                                              name: "webmaker-nav",
+                                              location: "/webmaker-nav"
+                                              }]
+                                   });
+                    require([ "webmaker-nav" ], function( Webmaker ) {
+                            var webmakerNav = new Webmaker({
+                                                           container: document.querySelector( "#webmakerNavContainer" ),
+                                                           loginBtnCallback: function() {
+                                                           //            if ( document.querySelector( "#simulate-login-error" ).checked )
+                                                           //              webmakerNav.showLoginError();
+                                                           //            else
+                                                           //              webmakerNav.views.login({username: "testuser@mozilla.org"});
+                                                           },
+                                                           logoutBtnCallback: function() {
+                                                           webmakerNav.views.logout();
+                                                           },
+                                                           feedbackCallback: function() {
+                                                           console.log( "do feedback stuff" );
+                                                           }
+                                                           });
+                            });
+                    </script>
+                <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
+                </body>
 </html>

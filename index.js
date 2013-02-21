@@ -15,60 +15,58 @@ app.configure(function(){
 });
 
 
+handlebars.registerHelper('avatarBox', function(items, options) {
+  var boxes = "";
+  for(var i=0, l=items.length; i<l; i++) {
+    boxes = boxes + options.fn(items[i]);
+  }
+  return boxes;
+});
+
 
 /* Index Page ========================================================= */
 app.get("/", function(req, res){
   
-  function makeAvatar(query, type, callback){
-    var avatarBoxes = "";
+  /* Retrieve data from database and save it as an array of objects */
+  function getAvatarInfo(query, type, callback){
+    // create a database connection
     var client = new pg.Client(process.env.DATABASE_URL);
-    
     client.connect(function(err) {
       if (err) console.log(err);
     });
-    
+    // execute query and save retrieved data as an array of objects
     var myQuery = client.query(query);
+    var avatarBoxes = new Array();
     myQuery.on("error", function(error) {
       if (error) console.log("=== ERRORRR === " + error);
     });
-
-    myQuery.on("row", function(row) {
+    myQuery.on("row", function(row, i) {
       var rowProperties = new Array();
       for (var prop in row){
         rowProperties.push(row[prop]);
       }
       var url = "/" + type + "/" + rowProperties[0];
-      //var anchor = "<a href='" + url +  "'>" + rowProperties.join(", ");
-      // TODO: favicon not found error handling
-      var favicon = "<img src='http://" + rowProperties.join(", ") +  "/favicon.ico' onerror=this.style.display='none'>";
-      //avatarBoxes = avatarBoxes + "<div class='avatar_box'>" + favicon + anchor + "</a></div>";
-      avatarBoxes =
-          avatarBoxes
-          + "<a href='" + url + "'><div class='avatar_box'>"
-          + favicon + "<b>" + rowProperties.join(", ") + "</b>"
-          + "</br> Websites Connected: "
-          + "</div></a>";
-
+      avatarBoxes.push(
+        {
+          url: url,
+          info_url: rowProperties.join(", "),
+          favicon_url: "http://" + rowProperties.join(", ") +  "/favicon.ico",
+          info_line1: ""//rowProperties[1]
+        });
     });
-
     myQuery.on("end", function() {
       callback(avatarBoxes);
       client.end();
-      
     });
   }
-
-
-//********************
-  makeAvatar("SELECT DISTINCT target FROM connections", "trackers", function(trackers){
-    makeAvatar("SELECT DISTINCT source FROM connections", "websites", function(website){
-      //console.log(rows);
+  // pass data to views
+  getAvatarInfo("SELECT DISTINCT target FROM connections", "trackers", function(trackers){
+    getAvatarInfo("SELECT DISTINCT source FROM connections", "websites", function(websites){
       var data = {
         trackers: trackers,
-        website: website
+        websites: websites,
       }
-      res.render("index.html", data);
-    
+      res.render("index.html", data);    
     });
   });
   
@@ -101,6 +99,27 @@ app.get("/websites/:website", function(req, res){
     res.render("websiteInfo.html", data);  
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Print query result ================================================== */
