@@ -28,30 +28,34 @@ handlebars.registerHelper('avatarBox', function(items, options) {
 app.get("/", function(req, res){
   
   /* Retrieve data from database and save it as an array of objects */
-  function getAvatarInfo(query, type, callback){
+  function getAvatarInfo(type, callback){
     // create a database connection
     var client = new pg.Client(process.env.DATABASE_URL);
     client.connect(function(err) {
       if (err) console.log(err);
     });
     // execute query and save retrieved data as an array of objects
-    var myQuery = client.query(query);
+    var myQuery = "";
     var avatarBoxes = new Array();
+    if ( type == "trackers" ){
+      myQuery = client.query("SELECT target, COUNT(target) FROM connections GROUP BY target");
+    }
+    if ( type == "websites" ){
+      myQuery = client.query("SELECT source, COUNT(source) FROM connections GROUP BY source");
+    }
     myQuery.on("error", function(error) {
       if (error) console.log("=== ERRORRR === " + error);
     });
     myQuery.on("row", function(row, i) {
-      var rowProperties = new Array();
-      for (var prop in row){
-        rowProperties.push(row[prop]);
-      }
-      var url = "/" + type + "/" + rowProperties[0];
+      var info_url = row[ Object.keys(row)[0] ];
+      var info_line1 = row[ Object.keys(row)[1] ];
+      var url = "/" + type + "/" + info_url;
       avatarBoxes.push(
         {
           url: url,
-          info_url: rowProperties.join(", "),
-          favicon_url: "http://" + rowProperties.join(", ") +  "/favicon.ico",
-          info_line1: ""//rowProperties[1]
+          info_url: info_url,
+          favicon_url: "http://" + info_url +  "/favicon.ico",
+          info_line1: info_line1
         });
     });
     myQuery.on("end", function() {
@@ -60,8 +64,8 @@ app.get("/", function(req, res){
     });
   }
   // pass data to views
-  getAvatarInfo("SELECT DISTINCT target FROM connections", "trackers", function(trackers){
-    getAvatarInfo("SELECT DISTINCT source FROM connections", "websites", function(websites){
+  getAvatarInfo("trackers", function(trackers){
+    getAvatarInfo("websites", function(websites){
       var data = {
         trackers: trackers,
         websites: websites,
