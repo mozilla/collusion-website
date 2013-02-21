@@ -8,7 +8,7 @@ body {
 }
 
 .main{
-  width: 752px;
+  width: 832px;
   margin: 20px auto 0 auto;
 }
 
@@ -16,7 +16,7 @@ body {
   float: left;
   background: white;
   box-shadow: 0 2px 2px 3px rgba(0, 0, 0, 0.1);
-  width: 344px;
+  width: 384px;
   height: 260px;
   margin: 10px;
   overflow: hidden;
@@ -30,14 +30,14 @@ body {
 
 .avatar_box{
   float: left;
-  width: 150px;
+  width: 170px;
   height: 50px;
   margin: 5px;
   padding: 5px;
   border: 1px solid #ccc;
   overflow: hidden;
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 11px;
+  line-height: 14px;
   cursor: pointer;
   background: #EEEEEE;
   color: #444444;

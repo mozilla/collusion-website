@@ -22,6 +22,7 @@ app.get("/", function(req, res){
   function makeAvatar(query, type, callback){
     var avatarBoxes = "";
     var client = new pg.Client(process.env.DATABASE_URL);
+    
     client.connect(function(err) {
       if (err) console.log(err);
     });
@@ -39,9 +40,14 @@ app.get("/", function(req, res){
       var url = "/" + type + "/" + rowProperties[0];
       //var anchor = "<a href='" + url +  "'>" + rowProperties.join(", ");
       // TODO: favicon not found error handling
-      var favicon = "<img src='http://" + rowProperties.join(", ") +  "/favicon.ico'></br>";
+      var favicon = "<img src='http://" + rowProperties.join(", ") +  "/favicon.ico' onerror=this.style.display='none'>";
       //avatarBoxes = avatarBoxes + "<div class='avatar_box'>" + favicon + anchor + "</a></div>";
-      avatarBoxes = avatarBoxes + "<a href='" + url + "'><div class='avatar_box'>" + favicon + rowProperties.join(", ") +"</div></a>";
+      avatarBoxes =
+          avatarBoxes
+          + "<a href='" + url + "'><div class='avatar_box'>"
+          + favicon + "<b>" + rowProperties.join(", ") + "</b>"
+          + "</br> Websites Connected: "
+          + "</div></a>";
 
     });
 
