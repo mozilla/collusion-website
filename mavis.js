@@ -48,7 +48,7 @@ app.get('/', function(req, res){
 */
   
   getTableColumns("connections", function(arr){
-  /* 
+  
     var client2 = new pg.Client(process.env.DATABASE_URL);
     client2.connect(function(err) {
       if (err) console.log(err);
@@ -60,7 +60,7 @@ app.get('/', function(req, res){
       console.log(queryInsert(connectionArray[i]));
     }
     client2.on('drain', client2.end.bind(client2));
-  */
+  
     
     var selectForm = 
           '<form action="/selectRows" enctype="multipart/form-data" method="get"> Select * From '+

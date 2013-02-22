@@ -3,7 +3,6 @@ var app = express();
 var pg = require("pg");
 var handlebars = require("handlebars");
 var cons = require("consolidate"); // template engine consolidation library
-//var webmakerNav = require("/webmaker-nav");
 
 
 app.configure(function(){
@@ -38,10 +37,10 @@ app.get("/", function(req, res){
     var myQuery = "";
     var avatarBoxes = new Array();
     if ( type == "trackers" ){
-      myQuery = client.query("SELECT target, COUNT(target) FROM connections GROUP BY target");
+      myQuery = client.query("SELECT target, COUNT(target) FROM connections GROUP BY target ORDER BY COUNT(target) DESC LIMIT 6");
     }
     if ( type == "websites" ){
-      myQuery = client.query("SELECT source, COUNT(source) FROM connections GROUP BY source");
+      myQuery = client.query("SELECT source, COUNT(source) FROM connections where sourceVisited = true GROUP BY source");
     }
     myQuery.on("error", function(error) {
       if (error) console.log("=== ERRORRR === " + error);
