@@ -22,9 +22,15 @@ handlebars.registerHelper('avatarBox', function(items, options) {
   return boxes;
 });
 
-
 /* Index Page ========================================================= */
+
 app.get("/", function(req, res){
+  res.render("index.html");
+});
+
+
+/* Explore Data front page ========================================================= */
+app.get("/browse_data", function(req, res){
   
   /* Retrieve data from database and save it as an array of objects */
   function getAvatarInfo(type, callback){
@@ -69,7 +75,7 @@ app.get("/", function(req, res){
         trackers: trackers,
         websites: websites,
       }
-      res.render("index.html", data);    
+      res.render("browse_data.html", data);    
     });
   });
   

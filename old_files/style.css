@@ -1,0 +1,79 @@
+html {
+  font-family: "Open Sans";
+  background: url('/images/grain.png') repeat, #F5F1E8;
+}
+
+body {
+  margin: 0;
+}
+
+.main{
+  width: 896px;
+  margin: 20px auto 0 auto;
+}
+
+.section_box {
+  float: left;
+  background: white;
+  box-shadow: 0 2px 2px 3px rgba(0, 0, 0, 0.1);
+  width: 416px;
+  height: 253px;
+  margin: 10px;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.section_box h4{
+  font-size: 20px;
+  margin: 5px;
+}
+
+.avatar_box{
+  float: left;
+  width: 186px;
+  height: 50px;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  font-size: 11px;
+  line-height: 14px;
+  cursor: pointer;
+  background: #EEEEEE;
+  color: #444444;
+}
+
+.avatar_box:hover{
+  background: #CAE1F4;
+  color: black;
+}
+
+.avatar_box img{
+  padding-right: 5px;
+  width: 16px;
+  height: 16px;
+}
+
+
+/*
+ul{
+  list-style-type: square;
+  line-height: 15px;
+}
+
+li a{
+  text-decoration: none;
+  color: #555555;
+  font-size: 12px;
+}
+
+li img{
+  padding-right: 5px;
+  width: 15px;
+  height: 15px;
+}
+
+li a:hover{
+  color: orange;
+}
+*/

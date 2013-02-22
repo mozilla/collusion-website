@@ -2,14 +2,17 @@
 <html>
     <head>
         <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/sandstone.css" type="text/css" />
         <link rel="stylesheet" href="/styles/style.css" type="text/css" />
         <link rel="stylesheet" href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" />
         <link rel="stylesheet" href="/webmaker-nav/css/webmaker-nav.css" type="text/css" />
         <title>Collusion Temp</title>
     </head>
-    
+  
     <body>
-        <header>
+        
+      
+        <div id="outer-wrapper">
             <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
             <!-- Begin webmaker nav -->
             <div id="webmakerNavContainer">
@@ -30,59 +33,50 @@
                 </div>
             </div>
             <!-- / webmaker nav -->
-        </header>
-        
-        <!--
-         <div style="padding: 0 0 0 550px; font-size: 12px"><input id="simulate-login-error" type="checkbox">Simulate login error</input></div>
-         -->
-        
-        <!-- ****************************** main ****************************** -->
-        <div class="main">
-            <!-- =============== Visualizations =============== -->
-            <div class="section_box">
-                <h4>Visualizations</h4>
-                <img src="images/nodes.png" style="margin: 0 70px; height: 200px">
+            <div id="wrapper" style="border: 0px solid red">
+                <div class="header">
+                    <div class="container">
+                        <span class="collusion_logo">Collusion</span> directory
                     </div>
-            <!-- =============== Third-Party Connections =============== -->
-            <div class="section_box">
-                <h4>Most Active Third-Party Connections</h4>
-                {{! only output this if an avatarBox exists }}
-                {{#if trackers}}
-                {{#avatarBox trackers}}
-                <a href="{{{url}}}">
-                    <div class="avatar_box">
-                        <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
-                            <b>{{info_url}}</b>
-                            <br>
-                            Websites connected: {{info_line1}}
-                            </div>
-                </a>
-                {{/avatarBox}}
-                {{/if}}
+                </div>
+                <div class="container">
+                    
+                    <div class="leftColumn">
+                        <section class="data_section">
+                            <h4>The data</h4>
+                            <p>Browse third-party connections data uploaded by anonymous data donors. Browse third-party connections data uploaded by anonymous data donors. Browse third-party connections data uploaded by anonymous data donors.
+                            </p>
+                            <a href="/browse_data" class="button">Browse the data</a>
+                            <img src="/images/visualization_carousel.png" style="margin-top: 30px">
+                        </section>
+                        <section class="blog_section">
+                            <h6>BLOG</h6>
+                            <header>
+                                  <h5>Happy Privacy Day! An Update from the Collusion Visualization Design Team</h5>
+                            </header>
+                            <p>January 28, 2013</p>
+                            <p>For the past several months, I have been leading a design team at Emily Carr and Mozilla with Mozilla's Collusion lead developer Dethe Elza to develop an interactive visualization layer for the Firefox Collusion Add-on. We're taking this opportunity on Data Privacy Day to give a progress report on the new design for Collusion visualization interface, especially since Mozilla has been named the Most Trusted Internet Company for Privacy in 2012.</p>
+
+                            <p>Our goals are to make it easy for people to make sense of their own browsing data, expose relationships between websites and third parties - which normally remain hidden - and ultimately give people the tools to make their own decisions about their online privacy.</p>
+
+                            <p>Toward these goals, we are adopting three main design approaches that will engage users who have various levels of technical knowledge and interest in privacy issues. The first approach engages people with little technical knowledge by giving them a tool to view and explore their own personal internet browsing history. The second will enable those already knowledgeable about privacy issues to find relationships, patterns and trends among trackers and the web sites that enable them. The third will let  users act on what they find in the Collusion data in real time. Together these three interfaces will empower users to take control over their own online privacy and perhaps take a step towards changing our expectations and policies toward how and when people track us across the Web.</p>
+
+                            <p>We look forward to hearing your feedback. You can contact me @amberfj on Twitter or Dethe @dethe.</p>
+                        </section>
+                    </div>
+                    <div class="rightColumn">
+                        <section class="get_involved_section">
+                            <h5>Get involved</h5>
+                        </section>
+                        <section class="feeds_section">
+                            <h5>Community Feeds</h5>
+                        </section>
+                    </div>
+                </div>
             </div>
-            <!-- =============== Hello World =============== -->
-            <div class="section_box">
-                <h4>Hello World</h4>
-            </div>
-            <!-- =============== Visited Websites =============== -->
-            <div class="section_box">
-                <h4>Recent Visited Websites</h4>
-                {{! only output this if an avatarBox exists }}
-                {{#if websites}}
-                {{#avatarBox websites}}
-                <a href="{{{url}}}">
-                    <div class="avatar_box">
-                        <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
-                            <b>{{info_url}}</b>
-                            <br>
-                            Third-party connections: {{info_line1}}
-                            </div>
-                </a>
-                {{/avatarBox}}
-                {{/if}}
-            </div>
+            <!-- <div id="modal-overlay"> not sure if we should have this</div> -->
         </div>
-        
+      
         <script src="/js/require.js"></script>
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script>
@@ -111,8 +105,9 @@
                     });
             </script>
         <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
-        
+      
+      
     </body>
-    
+
 </html>
 
