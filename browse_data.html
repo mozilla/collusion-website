@@ -41,9 +41,9 @@
                     </div>
                 </div>
                 <div class="container">
-                    
+                <!-- ========================= Left Column ========================= -->
                     <div class="leftColumn">
-                        <!-- =============== Third-Party Connections =============== -->
+                        <!-- === Third-Party Connections === -->
                         <div class="section_box">
                             <h4>Most Active Third-Party Connections</h4>
                             {{! only output this if an avatarBox exists }}
@@ -60,13 +60,13 @@
                             {{/avatarBox}}
                             {{/if}}
                         </div>
-                        <!-- =============== Visited Websites =============== -->
+                        <!-- === Visited Websites === -->
                         <div class="section_box">
                             <h4>Recent Visited Websites</h4>
                             {{! only output this if an avatarBox exists }}
                             {{#if websites}}
                             {{#avatarBox websites}}
-                            <a href="{{{url}}}" class="avatar_box">>
+                            <a href="{{{url}}}" class="avatar_box">
                                 <div>
                                     <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
                                         <b>{{info_url}}</b>
@@ -78,25 +78,27 @@
                             {{/if}}
                         </div>
                     </div>
+                <!-- ========================= Right Column ========================= -->
                     <div class="rightColumn">
                         <section class="get_involved_section">
                             <header class="section_header">Get involved</header>
                             <div class="subsection">
-                                <i class="icon-eye-open"></i>
+                                <i class="icon-eye-open subsection_icon"></i>
                                 <div>
                                     <header>Try the browser add-on</header>
                                     Surface information about your tracking and browsing habits by using the Firefox addon
+                                    <a href="https://addons.mozilla.org/en-us/firefox/addon/collusion/" class="button-blue"><i class="icon-download"></i>Download now</a>
                                 </div>
                             </div>
                             <div class="subsection">
-                                <i class="icon-upload"></i>
+                                <i class="icon-upload subsection_icon"></i>
                                 <div>
                                     <header>Donate data</header>
                                     If you're using Collusion already, you can submit data anonymously to help build our database about trackers.
                                 </div>
                             </div>
                             <div class="subsection">
-                                <i class="icon-edit"></i>
+                                <i class="icon-edit subsection_icon"></i>
                                 <div>
                                     <header>Edit a tracker profile</header>
                                     If you're using Collusion already, you can submit data anonymously to help build our database about trackers.
