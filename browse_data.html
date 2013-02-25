@@ -49,13 +49,13 @@
                             {{! only output this if an avatarBox exists }}
                             {{#if trackers}}
                             {{#avatarBox trackers}}
-                            <a href="{{{url}}}">
-                                <div class="avatar_box">
+                            <a href="{{{url}}}" class="avatar_box">
+                                <div >
                                     <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
                                         <b>{{info_url}}</b>
                                         <br>
                                         Websites connected: {{info_line1}}
-                                        </div>
+                                </div>
                             </a>
                             {{/avatarBox}}
                             {{/if}}
@@ -66,13 +66,13 @@
                             {{! only output this if an avatarBox exists }}
                             {{#if websites}}
                             {{#avatarBox websites}}
-                            <a href="{{{url}}}">
-                                <div class="avatar_box">
+                            <a href="{{{url}}}" class="avatar_box">>
+                                <div>
                                     <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
                                         <b>{{info_url}}</b>
                                         <br>
                                         Third-party connections: {{info_line1}}
-                                        </div>
+                                </div>
                             </a>
                             {{/avatarBox}}
                             {{/if}}
