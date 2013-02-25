@@ -2,14 +2,18 @@
 <html>
     <head>
         <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
-        <link rel="stylesheet" href="/styles/style.css" type="text/css" />
+        <link rel="stylesheet"href="/styles/font-awesome.css" type="text/css" />
         <link rel="stylesheet" href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" />
+        <link rel="stylesheet" href="/styles/sandstone.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/style.css" type="text/css" />
         <link rel="stylesheet" href="/webmaker-nav/css/webmaker-nav.css" type="text/css" />
         <title>Collusion Temp</title>
     </head>
-    
+  
     <body>
-        <header>
+        
+      
+        <div id="outer-wrapper">
             <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
             <!-- Begin webmaker nav -->
             <div id="webmakerNavContainer">
@@ -30,59 +34,89 @@
                 </div>
             </div>
             <!-- / webmaker nav -->
-        </header>
-        
-        <!--
-         <div style="padding: 0 0 0 550px; font-size: 12px"><input id="simulate-login-error" type="checkbox">Simulate login error</input></div>
-         -->
-        
-        <!-- ****************************** main ****************************** -->
-        <div class="main">
-            <!-- =============== Visualizations =============== -->
-            <div class="section_box">
-                <h4>Visualizations</h4>
-                <img src="images/nodes.png" style="margin: 0 70px; height: 200px">
+            <div id="wrapper">
+                <div class="header">
+                    <div class="container">
+                        <a href="/" class="collusion_logo"><span class="collusion_label">Collusion</span> directory</a>
                     </div>
-            <!-- =============== Third-Party Connections =============== -->
-            <div class="section_box">
-                <h4>Most Active Third-Party Connections</h4>
-                {{! only output this if an avatarBox exists }}
-                {{#if trackers}}
-                {{#avatarBox trackers}}
-                <a href="{{{url}}}">
-                    <div class="avatar_box">
-                        <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
-                            <b>{{info_url}}</b>
-                            <br>
-                            Websites connected: {{info_line1}}
+                </div>
+                <div class="container">
+                    
+                    <div class="leftColumn">
+                        <!-- =============== Third-Party Connections =============== -->
+                        <div class="section_box">
+                            <h4>Most Active Third-Party Connections</h4>
+                            {{! only output this if an avatarBox exists }}
+                            {{#if trackers}}
+                            {{#avatarBox trackers}}
+                            <a href="{{{url}}}">
+                                <div class="avatar_box">
+                                    <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
+                                        <b>{{info_url}}</b>
+                                        <br>
+                                        Websites connected: {{info_line1}}
+                                        </div>
+                            </a>
+                            {{/avatarBox}}
+                            {{/if}}
+                        </div>
+                        <!-- =============== Visited Websites =============== -->
+                        <div class="section_box">
+                            <h4>Recent Visited Websites</h4>
+                            {{! only output this if an avatarBox exists }}
+                            {{#if websites}}
+                            {{#avatarBox websites}}
+                            <a href="{{{url}}}">
+                                <div class="avatar_box">
+                                    <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
+                                        <b>{{info_url}}</b>
+                                        <br>
+                                        Third-party connections: {{info_line1}}
+                                        </div>
+                            </a>
+                            {{/avatarBox}}
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="rightColumn">
+                        <section class="get_involved_section">
+                            <header class="section_header">Get involved</header>
+                            <div class="subsection">
+                                <i class="icon-eye-open"></i>
+                                <div>
+                                    <header>Try the browser add-on</header>
+                                    Surface information about your tracking and browsing habits by using the Firefox addon
+                                </div>
                             </div>
-                </a>
-                {{/avatarBox}}
-                {{/if}}
-            </div>
-            <!-- =============== Hello World =============== -->
-            <div class="section_box">
-                <h4>Hello World</h4>
-            </div>
-            <!-- =============== Visited Websites =============== -->
-            <div class="section_box">
-                <h4>Recent Visited Websites</h4>
-                {{! only output this if an avatarBox exists }}
-                {{#if websites}}
-                {{#avatarBox websites}}
-                <a href="{{{url}}}">
-                    <div class="avatar_box">
-                        <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
-                            <b>{{info_url}}</b>
-                            <br>
-                            Third-party connections: {{info_line1}}
+                            <div class="subsection">
+                                <i class="icon-upload"></i>
+                                <div>
+                                    <header>Donate data</header>
+                                    If you're using Collusion already, you can submit data anonymously to help build our database about trackers.
+                                </div>
                             </div>
-                </a>
-                {{/avatarBox}}
-                {{/if}}
+                            <div class="subsection">
+                                <i class="icon-edit"></i>
+                                <div>
+                                    <header>Edit a tracker profile</header>
+                                    If you're using Collusion already, you can submit data anonymously to help build our database about trackers.
+                                </div>
+                            </div>
+                        </section>
+                        <section class="feed_section">
+                            <header class="section_header">Community Feed</header>
+                            <ul>
+                              <li>xxx donated anonymous data.</li>
+                              <li>yyy got a first-donor achievement.</li>
+                              <li>zzz edited Facebook's tracker profile.</li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
             </div>
+            <!-- <div id="modal-overlay"> not sure if we should have this</div> -->
         </div>
-        
+      
         <script src="/js/require.js"></script>
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script>
@@ -111,8 +145,24 @@
                     });
             </script>
         <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
-        
+      
+      
     </body>
-    
+
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
