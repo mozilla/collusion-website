@@ -2,14 +2,18 @@
 <html>
     <head>
         <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
-        <link rel="stylesheet" href="/styles/style.css" type="text/css" />
+        <link rel="stylesheet"href="/styles/font-awesome.css" type="text/css" />
         <link rel="stylesheet" href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" />
+        <link rel="stylesheet" href="/styles/sandstone.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/style.css" type="text/css" />
         <link rel="stylesheet" href="/webmaker-nav/css/webmaker-nav.css" type="text/css" />
         <title>Collusion Temp</title>
     </head>
-    
+  
     <body>
-        <header>
+        
+      
+        <div id="outer-wrapper">
             <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
             <!-- Begin webmaker nav -->
             <div id="webmakerNavContainer">
@@ -30,48 +34,90 @@
                 </div>
             </div>
             <!-- / webmaker nav -->
-        </header>
-        
-        <!--
-         <div style="padding: 0 0 0 550px; font-size: 12px"><input id="simulate-login-error" type="checkbox">Simulate login error</input></div>
-         -->
-        
-        <!-- ******************** main ******************** -->
-        <div class="main">
-            <div>
-                <h2>Third-Party Connection</h2>
-                <h4>The site {{{tracker}}} is potentially aware of your visits to the following websites.</h4>
-                {{{details}}}
-                <div>
+            <div id="wrapper">
+                <div class="header">
+                    <div class="container">
+                        <a href="/" class="collusion_logo"><span class="collusion_label">Collusion</span> directory</a>
+                    </div>
                 </div>
-                
-                <script src="/js/require.js"></script>
-                <script src="/js/jquery-1.9.1.min.js"></script>
-                <script>
-                    require.config({
-                                   packages: [{
-                                              name: "webmaker-nav",
-                                              location: "/webmaker-nav"
-                                              }]
-                                   });
-                    require([ "webmaker-nav" ], function( Webmaker ) {
-                            var webmakerNav = new Webmaker({
-                                                           container: document.querySelector( "#webmakerNavContainer" ),
-                                                           loginBtnCallback: function() {
-                                                           //            if ( document.querySelector( "#simulate-login-error" ).checked )
-                                                           //              webmakerNav.showLoginError();
-                                                           //            else
-                                                           //              webmakerNav.views.login({username: "testuser@mozilla.org"});
-                                                           },
-                                                           logoutBtnCallback: function() {
-                                                           webmakerNav.views.logout();
-                                                           },
-                                                           feedbackCallback: function() {
-                                                           console.log( "do feedback stuff" );
-                                                           }
-                                                           });
-                            });
-                    </script>
-                <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
-                </body>
+                <div class="container">
+                <!-- ========================= Left Column ========================= -->
+                    <div class="leftColumn">
+                        <h4>Third-Party Connection</h4>
+                        <h6>The site {{{tracker}}} is potentially aware of your visits to the following websites.</h6>
+                        {{{details}}}
+                    </div>
+                <!-- ========================= Right Column ========================= -->
+                    <div class="rightColumn">
+                        <section class="get_involved_section">
+                            <header class="section_header">Get involved</header>
+                            <div class="subsection">
+                                <i class="icon-eye-open subsection_icon"></i>
+                                <div>
+                                    <header>Try the browser add-on</header>
+                                    Surface information about your tracking and browsing habits by using the Firefox addon
+                                    <a href="https://addons.mozilla.org/en-us/firefox/addon/collusion/" class="button-blue"><i class="icon-download"></i>Download now</a>
+                                </div>
+                            </div>
+                            <div class="subsection">
+                                <i class="icon-upload subsection_icon"></i>
+                                <div>
+                                    <header>Donate data</header>
+                                    If you're using Collusion already, you can submit data anonymously to help build our database about trackers.
+                                </div>
+                            </div>
+                            <div class="subsection">
+                                <i class="icon-edit subsection_icon"></i>
+                                <div>
+                                    <header>Edit a tracker profile</header>
+                                    If you're using Collusion already, you can submit data anonymously to help build our database about trackers.
+                                </div>
+                            </div>
+                        </section>
+                        <section class="feed_section">
+                            <header class="section_header">Community Feed</header>
+                            <ul>
+                              <li>xxx donated anonymous data.</li>
+                              <li>yyy got a first-donor achievement.</li>
+                              <li>zzz edited Facebook's tracker profile.</li>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <!-- <div id="modal-overlay"> not sure if we should have this</div> -->
+        </div>
+      
+        <script src="/js/require.js"></script>
+        <script src="/js/jquery-1.9.1.min.js"></script>
+        <script>
+            require.config({
+                           packages: [{
+                                      name: "webmaker-nav",
+                                      location: "/webmaker-nav"
+                                      }]
+                           });
+            require([ "webmaker-nav" ], function( Webmaker ) {
+                    var webmakerNav = new Webmaker({
+                                                   container: document.querySelector( "#webmakerNavContainer" ),
+                                                   loginBtnCallback: function() {
+                                                   if ( document.querySelector( "#simulate-login-error" ).checked )
+                                                   webmakerNav.showLoginError();
+                                                   else
+                                                   webmakerNav.views.login({username: "testuser@mozilla.org"});
+                                                   },
+                                                   logoutBtnCallback: function() {
+                                                   webmakerNav.views.logout();
+                                                   },
+                                                   feedbackCallback: function() {
+                                                   console.log( "do feedback stuff" );
+                                                   }
+                                                   });
+                    });
+            </script>
+        <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
+      
+      
+    </body>
+
 </html>
