@@ -1,1 +1,1 @@
-web: node mavis.js
+web: node index.js
