@@ -27,7 +27,7 @@ handlebars.registerHelper('avatarBox', function(items, options) {
 /* Index Page ========================================================= */
 
 app.get("/", function(req, res){
-  dbReset();
+  //dbReset();
   res.render("index.html");
 });
 
