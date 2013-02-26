@@ -43,10 +43,10 @@ app.get("/browse_data", function(req, res){
     var myQuery = "";
     var avatarBoxes = new Array();
     if ( type == "trackers" ){
-      myQuery = client.query("SELECT target, COUNT(target) FROM connections GROUP BY target ORDER BY COUNT(target) DESC LIMIT 6");
+      myQuery = client.query("SELECT target, COUNT(target) FROM connections GROUP BY target ORDER BY COUNT(target) DESC LIMIT 5");
     }
     if ( type == "websites" ){
-      myQuery = client.query("SELECT source, COUNT(source) FROM connections where sourceVisited = true GROUP BY source");
+      myQuery = client.query("SELECT source, COUNT(source), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source");
     }
     myQuery.on("error", function(error) {
       if (error) console.log("=== ERRORRR === " + error);
@@ -60,7 +60,8 @@ app.get("/browse_data", function(req, res){
           url: url,
           info_url: info_url,
           favicon_url: "http://" + info_url +  "/favicon.ico",
-          info_line1: info_line1
+          info_line1: info_line1,
+          info_line2: row[ Object.keys(row)[2] ]
         });
     });
     myQuery.on("end", function() {

@@ -105,16 +105,9 @@ a.collusion_logo {
 }
 
 
-
-
-.section_box h4{
-  font-size: 20px;
-  margin: 5px;
-}
-
 .avatar_box{
   box-shadow: 0 2px 2px 3px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  width: 400px;
   height: 100px;
   margin: 30px;
   padding: 5px;

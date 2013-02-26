@@ -44,8 +44,8 @@
                 <!-- ========================= Left Column ========================= -->
                     <div class="leftColumn">
                         <!-- === Third-Party Connections === -->
-                        <div class="section_box">
-                            <h4>Most Active Third-Party Connections</h4>
+                        <section class="section_box">
+                            <h4>"Top 5" Third-Party Connections</h4>
                             {{! only output this if an avatarBox exists }}
                             {{#if trackers}}
                             {{#avatarBox trackers}}
@@ -59,10 +59,10 @@
                             </a>
                             {{/avatarBox}}
                             {{/if}}
-                        </div>
+                        </section>
                         <!-- === Visited Websites === -->
-                        <div class="section_box">
-                            <h4>Recent Visited Websites</h4>
+                        <section class="section_box">
+                            <h4>Recently Visited Websites</h4>
                             {{! only output this if an avatarBox exists }}
                             {{#if websites}}
                             {{#avatarBox websites}}
@@ -70,13 +70,14 @@
                                 <div>
                                     <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{favicon_url}}}">
                                         <b>{{info_url}}</b>
-                                        <br>
-                                        Third-party connections: {{info_line1}}
+                                        <br/>
+                                        Third-party connections: {{info_line1}}<br/>
+                                        Last visited on {{info_line2}}
                                 </div>
                             </a>
                             {{/avatarBox}}
                             {{/if}}
-                        </div>
+                        </section>
                     </div>
                 <!-- ========================= Right Column ========================= -->
                     <div class="rightColumn">
@@ -86,7 +87,7 @@
                                 <i class="icon-eye-open subsection_icon"></i>
                                 <div>
                                     <header>Try the browser add-on</header>
-                                    Surface information about your tracking and browsing habits by using the Firefox addon
+                                    Surface information about your tracking and browsing habits by using the Firefox addon<br/>
                                     <a href="https://addons.mozilla.org/en-us/firefox/addon/collusion/" class="button-blue"><i class="icon-download"></i>Download now</a>
                                 </div>
                             </div>
