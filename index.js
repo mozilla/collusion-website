@@ -27,7 +27,7 @@ handlebars.registerHelper('avatarBox', function(items, options) {
 /* Index Page ========================================================= */
 
 app.get("/", function(req, res){
-  //dbReset();
+  dbReset();
   res.render("index.html");
 });
 
@@ -46,10 +46,10 @@ app.get("/browse_data", function(req, res){
     var myQuery = "";
     var avatarBoxes = new Array();
     if ( type == "trackers" ){
-      myQuery = client.query("SELECT target, COUNT(target) FROM connections GROUP BY target ORDER BY COUNT(target) DESC LIMIT 5");
+      myQuery = client.query("SELECT target, COUNT(distinct source) FROM connections GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 5");
     }
     if ( type == "websites" ){
-      myQuery = client.query("SELECT source, COUNT(source), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source");
+      myQuery = client.query("SELECT source, COUNT(distinct target), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source");
     }
     myQuery.on("error", function(error) {
       if (error) console.log("=== ERRORRR === " + error);
