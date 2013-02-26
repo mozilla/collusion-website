@@ -185,7 +185,7 @@ function dbReset(){
     if (err) console.log(err);
   });
   
-  client.query("drop table connections");
+  //client.query("drop table connections");
   client.query("CREATE TABLE connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp timestamp, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )");
   
     
