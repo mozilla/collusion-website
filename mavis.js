@@ -32,7 +32,7 @@ app.get('/', function(req, res){
   var connectionArray = JSON.parse(jsonConnectionString);
   var printedRow = "";
 
-/*
+
   var client = new pg.Client(process.env.DATABASE_URL);
 
   client.connect(function(err) {
@@ -45,10 +45,10 @@ app.get('/', function(req, res){
   //client.end();
     
   client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
-*/
+
   
   getTableColumns("connections", function(arr){
-  
+  /*
     var client2 = new pg.Client(process.env.DATABASE_URL);
     client2.connect(function(err) {
       if (err) console.log(err);
@@ -59,7 +59,7 @@ app.get('/', function(req, res){
       client2.query(queryInsert(connectionArray[i]));
       console.log(queryInsert(connectionArray[i]));
     }
-    client2.on('drain', client2.end.bind(client2));
+    client2.on('drain', client2.end.bind(client2));*/
   
     
     var selectForm = 
