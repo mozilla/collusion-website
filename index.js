@@ -6,6 +6,8 @@ var cons = require("consolidate"); // template engine consolidation library
 
 var jsonVar = require("./jsonVar.js");
 
+var fs = require("fs");
+
 
 app.configure(function(){
   app.set("view engine", "handlebars");
@@ -24,11 +26,51 @@ handlebars.registerHelper('avatarBox', function(items, options) {
   return boxes;
 });
 
-/* Index Page ========================================================= */
 
+
+/* Index Page ========================================================= */
 app.get("/", function(req, res){
   //dbReset();
   res.render("index.html");
+});
+
+
+/* Donate data handler ========================================================= */
+app.post("/donate", function(req, res){
+  function formatString(value){
+    if ( typeof value == "string" ){
+      value = "'" + value + "'";
+    }
+    
+    return value;
+  }
+  
+  
+  fs.readFile('index.json', 'utf8', function (err,data) {
+    if (err) {
+      return console.log(err);
+    }
+    var jsonObj = JSON.parse(data);
+    var properties = Object.keys(jsonObj);
+    if ( jsonObj.format == 'CollusionSaveFile' && jsonObj.version == '1.0' ){ // check format and version of the json file
+      var connections = jsonObj.connections;
+      var client = new pg.Client(process.env.DATABASE_URL);
+      client.query("DELETE FROM connections");
+      client.query("ALTER SEQUENCE connections_id_seq RESTART WITH 1");
+      var insertQuery = "INSERT into connections(source, target, timestamp, contentType, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ";
+      client.connect(function(err) {
+        if (err) console.log(err);
+      });
+      for (var i=0; i<connections.length; i++){
+        var values = connections[i].map(formatString);
+        values[2] = "to_timestamp("+ parseInt(values[2]) / 1000 + ")";  // Converts a UNIX time to PostgreSQL timetamp
+        client.query( insertQuery + "(" + values +")" );
+      }
+    } 
+  });
+  
+  res.send("Thanks for donating!");
+  
 });
 
 
@@ -185,46 +227,47 @@ function dbReset(){
     if (err) console.log(err);
   });
   
-  client.query("drop table connections");
-  client.query("CREATE TABLE connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp timestamp, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )", function(){
-  function convertToTimestamp(unixTime){
-    return "to_timestamp("+ parseInt(unixTime) / 1000 + ")";
-  }
-
+  //client.query("drop table connections");
+  //client.query("CREATE TABLE connections( id SERIAL PRIMARY KEY, source varchar(100), target varchar(100), timestamp timestamp, contentType varchar(50), cookie boolean, sourceVisited boolean, secure boolean, sourcePathDepth int, sourceQueryDepth int )", function(){
+  client.query("DELETE FROM connections", function(){
+    client.query("ALTER SEQUENCE connections_id_seq RESTART WITH 1");
   
-  var jsonConnectionString = jsonVar.jsonConnectionString;
-  var connectionArray = JSON.parse(jsonConnectionString);
-  
-  function queryInsert(obj){
-    var prefix = "INSERT into connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ";
-    var valuesArr = new Array();
-    for (var i=0; i<obj.length; i++){
-      if (i==0 || i==1 || i==3){ // hardcoded.  BAD!
-        valuesArr.push("'" + obj[i] + "'");
-      }else if (i==2){
-        valuesArr.push(convertToTimestamp(obj[i]));
-      }
-      else{
-        valuesArr.push(obj[i]);
-      }
+    function convertToTimestamp(unixTime){
+      return "to_timestamp("+ parseInt(unixTime) / 1000 + ")";
     }
-    
-    var queryInsertString = prefix + "(" + valuesArr.join(",") + ")";
-    //console.log("queryInsert" + queryInsert);
-    
-    return queryInsertString;
-  }
 
-  
-  var client2 = new pg.Client(process.env.DATABASE_URL);
-    client2.connect(function(err) {
-      if (err) console.log(err);
-    });
-    for (var i=0; i<connectionArray.length; i++){
-      client2.query(queryInsert(connectionArray[i]));
-      //console.log(queryInsert(connectionArray[i]));
+    
+    var jsonConnectionString = jsonVar.jsonConnectionString;
+    var connectionArray = JSON.parse(jsonConnectionString);
+    
+    function queryInsert(obj){
+      var prefix = "INSERT into connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ";
+      var valuesArr = new Array();
+      for (var i=0; i<obj.length; i++){
+        if (i==0 || i==1 || i==3){ // hardcoded.  BAD!
+          valuesArr.push("'" + obj[i] + "'");
+        }else if (i==2){
+          valuesArr.push(convertToTimestamp(obj[i]));
+        }
+        else{
+          valuesArr.push(obj[i]);
+        }
+      }
+      
+      var queryInsertString = prefix + "(" + valuesArr.join(",") + ")";
+      //console.log("queryInsert" + queryInsert);
+      
+      return queryInsertString;
     }
-    client2.on('drain', client2.end.bind(client2));
+    var client2 = new pg.Client(process.env.DATABASE_URL);
+      client2.connect(function(err) {
+        if (err) console.log(err);
+      });
+      for (var i=0; i<connectionArray.length; i++){
+        client2.query(queryInsert(connectionArray[i]));
+        //console.log(queryInsert(connectionArray[i]));
+      }
+      client2.on('drain', client2.end.bind(client2));
   
   });
   

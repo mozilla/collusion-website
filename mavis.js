@@ -213,7 +213,9 @@ function querySelect(filter){
 
 
 /* Converts a UNIX time to PostgreSQL timetamp =========================== */
-
+function convertToTimestamp(unixTime){
+  return "to_timestamp("+ parseInt(unixTime) / 1000 + ")";
+}
 
 // checking for the process environment variable PORT, not just hardcoding it to 3000
 app.listen(process.env.PORT || 3000);
