@@ -88,7 +88,9 @@ a.collusion_logo {
 }
 
 .get_involved_section header,
-.feed_section header{
+.feed_section header,
+.search-section header,
+.explain-section header{
   font-weight: bold;
 }
 
