@@ -125,7 +125,7 @@ app.get("/browse_data", function(req, res){
 /* Tracker Details ==================================================== */
 //app.param('tracker', /^\d+$/);
 app.get("/trackers/:tracker", function(req, res){
-  showQueryResult("SELECT DISTINCT source FROM connections where target = '" + req.params.tracker + "'", "details", function(details){
+  showQueryResult("SELECT DISTINCT source FROM connections where target = '" + req.params.tracker + "'", "websites", function(details){
     //console.log(rows);
     var data = {
       tracker: req.params.tracker,
@@ -139,7 +139,7 @@ app.get("/trackers/:tracker", function(req, res){
 
 /* Website Details ==================================================== */
 app.get("/websites/:website", function(req, res){
-  showQueryResult("SELECT DISTINCT target FROM connections where source = '" + req.params.website + "'", "details", function(details){
+  showQueryResult("SELECT DISTINCT target FROM connections where source = '" + req.params.website + "'", "trackers", function(details){
     //console.log(rows);
     var data = {
       website: req.params.website,
@@ -172,7 +172,7 @@ app.get("/websites/:website", function(req, res){
 
 
 /* Print query result ================================================== */
-function showQueryResult(query, type, callback){
+function showQueryResult(query, link_type, callback){
 
   var client = new pg.Client(process.env.DATABASE_URL);
   var wrapper = "<ul>";
@@ -191,15 +191,9 @@ function showQueryResult(query, type, callback){
       rowProperties.push(row[prop]);
     }
     //wrapper = wrapper + "<li><a href=''>" + rowProperties.join(", ") + "</a></li>";
-    var url = "/" + type + "/" + rowProperties[0];
+    var url = "/" + link_type + "/" + rowProperties[0];
     var anchor = "<a href='" + url +  "'>" + rowProperties.join(", ");
-    if ( type == "trackers" ||  type == "websites" ){
-      // TODO: favicon not found error handling
-      var favicon = "<img src='http://" + rowProperties.join(", ") +  "/favicon.ico'>";
-      wrapper = wrapper + "<li>" + favicon + anchor + "</a></li>";
-    }else{
-      wrapper = wrapper + "<li>" + anchor + "</a></li>";
-    }
+    wrapper = wrapper + "<li>" + anchor + "</a></li>";
   });
 
   myQuery.on("end", function() {
