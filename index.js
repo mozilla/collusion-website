@@ -194,7 +194,8 @@ function showQueryResult(query, link_type, callback){
     //wrapper = wrapper + "<li><a href=''>" + rowProperties.join(", ") + "</a></li>";
     //console.log(rowProperties[1]);
     var url = "/" + link_type + "/" + rowProperties[0];
-    var anchor = "<a href='" + url +  "'>" + rowProperties.join(", ") + "</a>";
+    //var anchor = "<a href='" + url +  "'>" + rowProperties.join(", ") + "</a>";
+    var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
     wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
   });
 
