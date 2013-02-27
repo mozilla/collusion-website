@@ -64,7 +64,7 @@ app.post("/donate", function(req, res){
     } 
   });
   
-  res.send("Thanks for donating!");
+  res.send("Thanks!");
   
 });
 
