@@ -44,11 +44,13 @@
                 <!-- ========================= Left Column ========================= -->
                     <div class="left_column">
                         <section>
-                            <h4>Third-Party Connection</h4>
+                            <h4>{{{tracker}}}</h4>
                             The site <b>{{{tracker}}}</b> is potentially aware of your visits to the following websites.</br>
-                            <input id="filter-cookie" type="checkbox" checked="true">Show Cookie-Based Connections</input></br>
-                            <input id="filter-noncookie" type="checkbox" checked="true">Show Non-Cookie-Based Connections</input></br>
-                            {{{details}}}
+                            <div class="float-right filter-options">
+                              <input id="filter-cookie" type="checkbox" checked="true">Show Cookie-Based Connections</input></br>
+                              <input id="filter-noncookie" type="checkbox" checked="true">Show Non-Cookie-Based Connections</input></br>
+                            </div>
+                            <div style="float-left">{{{details}}}</div>
                         </section>
                     </div>
                 <!-- ========================= Right Column ========================= -->

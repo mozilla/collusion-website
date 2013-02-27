@@ -44,11 +44,13 @@
                 <!-- ========================= Left Column ========================= -->
                     <div class="left_column">
                         <section>
-                          <h4>Website Visited</h4>
+                          <h4>{{{website}}}</h4>
                           When you visit <b>{{{website}}}</b>, it informs the following websites about you.</br>
-                          <input id="filter-cookie" type="checkbox" checked="true">Show Cookie-Based Connections</input></br>
-                          <input id="filter-noncookie" type="checkbox" checked="true">Show Non-Cookie-Based Connections</input></br>
-                          {{{details}}}
+                          <div class="float-right filter-options">
+                              <input id="filter-cookie" type="checkbox" checked="true">Show Cookie-Based Connections</input></br>
+                              <input id="filter-noncookie" type="checkbox" checked="true">Show Non-Cookie-Based Connections</input></br>
+                          </div>
+                          <div style="float-left">{{{details}}}</div>
                         </section>
                     </div>
                 <!-- ========================= Right Column ========================= -->
