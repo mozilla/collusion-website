@@ -46,6 +46,8 @@
                         <section>
                           <h4>Website Visited</h4>
                           When you visit <b>{{{website}}}</b>, it informs the following websites about you.</br>
+                          <input id="filter-cookie" type="checkbox" checked="true">Show Cookie-Based Connections</input></br>
+                          <input id="filter-noncookie" type="checkbox" checked="true">Show Non-Cookie-Based Connections</input></br>
                           {{{details}}}
                         </section>
                     </div>
@@ -93,6 +95,14 @@
         <script src="/js/require.js"></script>
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script>
+            $("#filter-cookie").click(function(){
+                  $("ul li[cookie-connection=true] a").toggleClass("greyed-out");
+            });
+          
+            $("#filter-noncookie").click(function(){
+                  $("ul li[cookie-connection=false] a").toggleClass("greyed-out");
+            });
+          
             require.config({
                            packages: [{
                                       name: "webmaker-nav",

@@ -18,6 +18,7 @@ app.configure(function(){
 });
 
 
+
 handlebars.registerHelper('avatarBox', function(items, options) {
   var boxes = "";
   for(var i=0, l=items.length; i<l; i++) {
@@ -85,7 +86,7 @@ app.get("/browse_data", function(req, res){
       myQuery = client.query("SELECT target, COUNT(distinct source) FROM connections GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 5");
     }
     if ( type == "websites" ){
-      myQuery = client.query("SELECT source, COUNT(distinct target), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source ORDER BY MAX(timestamp)");
+      myQuery = client.query("SELECT source, COUNT(distinct target), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source ORDER BY COUNT(distinct target) DESC");
     }
     myQuery.on("error", function(error) {
       if (error) console.log("=== ERRORRR === " + error);
@@ -125,7 +126,7 @@ app.get("/browse_data", function(req, res){
 /* Tracker Details ==================================================== */
 //app.param('tracker', /^\d+$/);
 app.get("/trackers/:tracker", function(req, res){
-  showQueryResult("SELECT DISTINCT source FROM connections where target = '" + req.params.tracker + "'", "websites", function(details){
+  showQueryResult("SELECT DISTINCT source, cookie FROM connections where target = '" + req.params.tracker + "'", "websites", function(details){
     //console.log(rows);
     var data = {
       tracker: req.params.tracker,
@@ -139,7 +140,7 @@ app.get("/trackers/:tracker", function(req, res){
 
 /* Website Details ==================================================== */
 app.get("/websites/:website", function(req, res){
-  showQueryResult("SELECT DISTINCT target FROM connections where source = '" + req.params.website + "'", "trackers", function(details){
+  showQueryResult("SELECT DISTINCT target, cookie FROM connections where source = '" + req.params.website + "'", "trackers", function(details){
     //console.log(rows);
     var data = {
       website: req.params.website,
@@ -191,9 +192,10 @@ function showQueryResult(query, link_type, callback){
       rowProperties.push(row[prop]);
     }
     //wrapper = wrapper + "<li><a href=''>" + rowProperties.join(", ") + "</a></li>";
+    //console.log(rowProperties[1]);
     var url = "/" + link_type + "/" + rowProperties[0];
-    var anchor = "<a href='" + url +  "'>" + rowProperties.join(", ");
-    wrapper = wrapper + "<li>" + anchor + "</a></li>";
+    var anchor = "<a href='" + url +  "'>" + rowProperties.join(", ") + "</a>";
+    wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
   });
 
   myQuery.on("end", function() {
