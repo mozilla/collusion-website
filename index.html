@@ -111,10 +111,8 @@
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script>
             $(".donate-data").click(function(){
-                console.log("========== DONATE DATA BUTTON CLICKED ========");
-                $.post("/donate", function(msg) {
+                $.post("/donate", data, function(msg) {
                     alert(msg);
-                    //$('#response').html(list); // show the list
                 });
             });
           

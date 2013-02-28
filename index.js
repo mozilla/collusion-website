@@ -15,6 +15,7 @@ app.configure(function(){
   app.set("views", __dirname + "/");
   app.engine("html", cons.handlebars);
   app.use(express.static(__dirname + "/public"));
+  app.use(express.bodyParser());    
 });
 
 
@@ -37,39 +38,69 @@ app.get("/", function(req, res){
 
 /* Donate data handler ========================================================= */
 app.post("/donate", function(req, res){
-  function formatString(value){
-    return (typeof value == "string") ? ("'" + value + "'") : value;
-  }
-  
   fs.readFile('index.json', 'utf8', function (err,data) {
     if (err) {
       return console.log(err);
     }
     var jsonObj = JSON.parse(data);
-    var properties = Object.keys(jsonObj);
-    if ( jsonObj.format == 'CollusionSaveFile' && jsonObj.version == '1.0' ){ // check format and version of the json file
+    if ( jsonObj.format == 'CollusionSaveFile' && jsonObj.version == '1.0' ){ // check format and version
       var connections = jsonObj.connections;
       var client = new pg.Client(process.env.DATABASE_URL);
-      client.query("DELETE FROM connections");
-      client.query("ALTER SEQUENCE connections_id_seq RESTART WITH 1");
-      var insertQuery = "INSERT into connections(source, target, timestamp, contentType, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES ";
       client.connect(function(err) {
-        if (err) console.log(err);
+          if (err) console.log(err);
       });
+//      client.query("DELETE FROM connections");
+//      client.query("ALTER SEQUENCE connections_id_seq RESTART WITH 1");
       for (var i=0; i<connections.length; i++){
-        var values = connections[i].map(formatString);
-        values[2] = "to_timestamp("+ parseInt(values[2]) / 1000 + ")";  // Converts a UNIX time to PostgreSQL timetamp
-        client.query( insertQuery + "(" + values +")" );
+        var timestamp = parseInt(connections[i][2]) / 1000; // converts this UNIX time format from milliseconds to seconds
+        client.query({
+          text: "INSERT INTO connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES (quote_literal($1), quote_literal($2), to_timestamp($3), quote_literal($4), $5, $6, $7, $8, $9)",
+          values: connections[i]
+        }, function(err,result){
+              if (err) {
+                console.log(err);
+                res.send("Sorry. Error occurred. Please try again.");
+              }else res.send("Thanks!");
+        });
       }
-      res.send("Thanks!");
     }else{
       res.send("Sorry. Format/version not supported.");
     }
   });
-  
-  
-  
 });
+
+
+
+
+/* Donate data handler ========================================================= */
+app.post("/donateData", function(req, res){
+  var jsonObj = req.body;
+  if ( jsonObj.format == 'CollusionSaveFile' && jsonObj.version == '1.0' ){ // check format and version
+    var connections = jsonObj.connections;
+    var client = new pg.Client(process.env.DATABASE_URL);
+    client.connect(function(err) {
+        if (err) console.log(err);
+    });
+    for (var i=0; i<connections.length; i++){
+      var timestamp = parseInt(connections[i][2]) / 1000; // converts this UNIX time format from milliseconds to seconds
+      client.query({
+        text: "INSERT INTO connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES (quote_literal($1), quote_literal($2), to_timestamp($3), quote_literal($4), $5, $6, $7, $8, $9)",
+        values: connections[i]
+      }, function(err,result){
+            if (err) {
+              console.log(err);
+              res.send("Sorry. Error occurred. Please try again.");
+            }else res.send("Thanks!");
+      });
+    }
+  }else{
+    res.send("Sorry. Format/version not supported.");
+  }
+});
+
+
+
+
 
 
 /* Explore Data front page ========================================================= */
