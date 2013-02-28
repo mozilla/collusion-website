@@ -63,7 +63,25 @@
       
         <script src="/js/require.js"></script>
         <script src="/js/jquery-1.9.1.min.js"></script>
+        <script src="/js/parseurl.js"></script>
         <script>
+            /* 
+              Based on https://github.com/toolness/url-demystifier 
+              and uses Steven Levithan's parseUri 1.2.2
+            */
+            var url = window.location.pathname.split("/")[2];
+            var info = parseUri(url);
+            var jsonURL = "http://freegeoip.net/json/" + info.host;
+            $.getJSON(jsonURL, function(geoip) {
+                  geoip.has_name = geoip.city && geoip.region_name &&
+                                   geoip.country_name;
+                  geoip.host = info.host;
+                  for ( var property in geoip){
+                    console.log(property + ": " + geoip[property]);
+                  }
+            });
+            /* --- */
+            
             $("ul li[cookie-connection=true]").addClass("cookie");
             $("ul li[cookie-connection=false]").addClass("non-cookie");
         
