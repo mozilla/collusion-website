@@ -126,7 +126,7 @@ app.get("/browse_data", function(req, res){
 /* Tracker Details ==================================================== */
 //app.param('tracker', /^\d+$/);
 app.get("/trackers/:tracker", function(req, res){
-  showQueryResult("SELECT DISTINCT source, cookie FROM connections where target = '" + req.params.tracker + "'", "websites", function(details){
+  showQueryResult("SELECT DISTINCT source, cookie FROM connections where target = '" + req.params.tracker + "' ORDER BY source", "websites", function(details){
     //console.log(rows);
     var data = {
       tracker: req.params.tracker,
@@ -140,8 +140,9 @@ app.get("/trackers/:tracker", function(req, res){
 
 /* Website Details ==================================================== */
 app.get("/websites/:website", function(req, res){
-  showQueryResult("SELECT DISTINCT target, cookie FROM connections where source = '" + req.params.website + "'", "trackers", function(details){
-    //console.log(rows);
+  //showQueryResult("SELECT DISTINCT target, cookie FROM connections where source = '" + req.params.website + "'", "trackers", function(details){
+  showQueryResult("SELECT DISTINCT target, cookie FROM connections where source = '" + req.params.website + "' ORDER BY target", "trackers", function(details){
+      //console.log(rows);
     var data = {
       website: req.params.website,
       details: details
@@ -174,7 +175,6 @@ app.get("/websites/:website", function(req, res){
 
 /* Print query result ================================================== */
 function showQueryResult(query, link_type, callback){
-
   var client = new pg.Client(process.env.DATABASE_URL);
   var wrapper = "<ul>";
   client.connect(function(err) {
@@ -194,8 +194,8 @@ function showQueryResult(query, link_type, callback){
     //wrapper = wrapper + "<li><a href=''>" + rowProperties.join(", ") + "</a></li>";
     //console.log(rowProperties[1]);
     var url = "/" + link_type + "/" + rowProperties[0];
-    //var anchor = "<a href='" + url +  "'>" + rowProperties.join(", ") + "</a>";
     var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
+    //var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
     wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
   });
 

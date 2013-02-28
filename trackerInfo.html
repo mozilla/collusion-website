@@ -64,12 +64,15 @@
         <script src="/js/require.js"></script>
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script>
+            $("ul li[cookie-connection=true]").addClass("cookie");
+            $("ul li[cookie-connection=false]").addClass("non-cookie");
+        
             $("#filter-cookie").click(function(){
-                  $("ul li[cookie-connection=true] a").toggleClass("greyed-out");
+                  $("ul li[cookie-connection=true], ul li[cookie-connection=true] a").toggleClass("cookie").toggleClass("greyed-out");
             });
           
             $("#filter-noncookie").click(function(){
-                  $("ul li[cookie-connection=false] a").toggleClass("greyed-out");
+                  $("ul li[cookie-connection=false], ul li[cookie-connection=false] a").toggleClass("non-cookie").toggleClass("greyed-out");
             });
         
             require.config({
