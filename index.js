@@ -61,10 +61,13 @@ app.post("/donate", function(req, res){
         values[2] = "to_timestamp("+ parseInt(values[2]) / 1000 + ")";  // Converts a UNIX time to PostgreSQL timetamp
         client.query( insertQuery + "(" + values +")" );
       }
-    } 
+      res.send("Thanks!");
+    }else{
+      res.send("Sorry. Format/version not supported.");
+    }
   });
   
-  res.send("Thanks!");
+  
   
 });
 
