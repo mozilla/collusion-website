@@ -99,6 +99,22 @@ app.post("/donateData", function(req, res){
 });
 
 
+/* showResult by ID number ========================================================= */
+app.get("/showResult", function(req,res){
+  var client = new pg.Client(process.env.DATABASE_URL);
+  client.connect(function(err) {
+      if (err) console.log(err);
+  });
+  var query = client.query({
+    text: "SELECT * FROM connections WHERE id = $1",
+    values: [ req.query.id ]
+  });
+
+  query.on('row', function(row) {
+    res.send(row);
+  });
+});
+
 
 
 
