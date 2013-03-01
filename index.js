@@ -99,20 +99,28 @@ app.post("/donateData", function(req, res){
 });
 
 
-/* showResult by ID number ========================================================= */
+/* show SELECT query result ========================================================= */
 app.get("/showResult", function(req,res){
-  var client = new pg.Client(process.env.DATABASE_URL);
-  client.connect(function(err) {
-      if (err) console.log(err);
-  });
-  var query = client.query({
-    text: "SELECT * FROM connections WHERE id = $1",
-    values: [ req.query.id ]
-  });
-
-  query.on('row', function(row) {
-    res.send(row);
-  });
+  if ( Object.keys(req.query).length != 0 ){;
+    var client = new pg.Client(process.env.DATABASE_URL);
+    client.connect(function(err) {
+        if (err) console.log(err);
+    });
+    var filter = new Array();
+    for ( prop in req.query ){
+      filter.push(prop + " = " + req.query[prop]);
+    }
+    var select = "";
+    if ( filter ){
+      select = " WHERE " + filter.join(" AND ");
+    }
+    var query = client.query("SELECT * FROM connections" + select, function(err, result){
+      if (err) res.send("Error encountered.  Check your query please.");
+      res.send(result);
+    });
+  }else{
+    res.send("Oops! Enter the GET query please!");
+  }
 });
 
 
