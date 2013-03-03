@@ -142,68 +142,105 @@ app.get("/browse_data", function(req, res){
 /* Tracker Details ==================================================== */
 //app.param('tracker', /^\d+$/);
 app.get("/trackers/:tracker", function(req, res){
-  showQueryResult("SELECT DISTINCT source, cookie FROM connections where target = '" + req.params.tracker + "' ORDER BY source", "websites", function(details){
-    //console.log(rows);
-    var data = {
-      tracker: req.params.tracker,
-      details: details
-    };
-    res.render("trackerInfo.html", data);  
-  });
+  var query = {"target": req.params.tracker};
+  var queryString = JSON.stringify(query);
   
+  var options = {
+    hostname: "localhost",
+    port: 7000,
+    path: "/getTracker",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": queryString.length
+    }
+  };
+  
+  var getReq = http.request(options, function(response) {
+    response.setEncoding("utf8");
+    response.on("data", function (result) {
+      result = JSON.parse(result);
+      var wrapper = "<ul>";
+      for (var i=0; i<result.rowCount; i++ ){
+        var row = result.rows[i];
+        var rowProperties = new Array();
+        for (var prop in row){
+          rowProperties.push(row[prop]);
+        }
+        var url = "/websites/" + rowProperties[0];
+        var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
+        wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
+      }
+      wrapper += "</ul>";
+      var data = {
+        tracker: req.params.tracker,
+        details: wrapper
+      };
+      res.render("trackerInfo.html", data); 
+    });
+  });
+
+  getReq.on("error", function(e) {
+    console.log("problem with request: " + e.message);
+  });
+
+  // write data to request body
+  getReq.write(queryString);
+  getReq.end();
+
 });
 
 
 /* Website Details ==================================================== */
 app.get("/websites/:website", function(req, res){
-  //showQueryResult("SELECT DISTINCT target, cookie FROM connections where source = '" + req.params.website + "'", "trackers", function(details){
-  showQueryResult("SELECT DISTINCT target, cookie FROM connections where source = '" + req.params.website + "' ORDER BY target", "trackers", function(details){
-      //console.log(rows);
-    var data = {
-      website: req.params.website,
-      details: details
-    };
-    res.render("websiteInfo.html", data);  
-  });
-});
-
-
-
-
-
-/* Print query result ================================================== */
-function showQueryResult(query, link_type, callback){
-  var client = new pg.Client(process.env.DATABASE_URL);
-  var wrapper = "<ul>";
-  client.connect(function(err) {
-    if (err) console.log(err);
-  });
+  var query = {"source": req.params.website};
+  var queryString = JSON.stringify(query);
   
-  var myQuery = client.query(query);
-  myQuery.on("error", function(error) {
-    if (error) console.log("=== ERRORRR === " + error);
-  });
-
-  myQuery.on("row", function(row) {
-    var rowProperties = new Array();
-    for (var prop in row){
-      rowProperties.push(row[prop]);
+  var options = {
+    hostname: "localhost",
+    port: 7000,
+    path: "/getVisitedWebsite",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": queryString.length
     }
-    //wrapper = wrapper + "<li><a href=''>" + rowProperties.join(", ") + "</a></li>";
-    //console.log(rowProperties[1]);
-    var url = "/" + link_type + "/" + rowProperties[0];
-    var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
-    //var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
-    wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
+  };
+  
+  var getReq = http.request(options, function(response) {
+    response.setEncoding("utf8");
+    response.on("data", function (result) {
+      result = JSON.parse(result);
+      var wrapper = "<ul>";
+      for (var i=0; i<result.rowCount; i++ ){
+        var row = result.rows[i];
+        var rowProperties = new Array();
+        for (var prop in row){
+          rowProperties.push(row[prop]);
+        }
+        var url = "/trackers/" + rowProperties[0];
+        var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
+        wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
+      }
+      wrapper += "</ul>";
+      var data = {
+        website: req.params.website,
+        details: wrapper
+      };
+      res.render("websiteInfo.html", data); 
+    });
   });
 
-  myQuery.on("end", function() {
-    wrapper += "</ul>";
-    callback(wrapper);
-    client.end();
-    
+  getReq.on("error", function(e) {
+    console.log("problem with request: " + e.message);
   });
-}
+
+  // write data to request body
+  getReq.write(queryString);
+  getReq.end();
+
+  
+});
 
 
 /**************************************************
