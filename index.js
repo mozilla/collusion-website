@@ -8,6 +8,9 @@ var jsonVar = require("./jsonVar.js");
 
 var fs = require("fs");
 
+var http = require("http");
+var https = require("https");
+
 
 app.configure(function(){
   app.set("view engine", "handlebars");
@@ -72,58 +75,50 @@ app.post("/donate", function(req, res){
 
 
 
-/* Donate data handler ========================================================= */
-app.post("/donateData", function(req, res){
-  var jsonObj = req.body;
-  if ( jsonObj.format == 'CollusionSaveFile' && jsonObj.version == '1.0' ){ // check format and version
-    var connections = jsonObj.connections;
-    var client = new pg.Client(process.env.DATABASE_URL);
-    client.connect(function(err) {
-        if (err) console.log(err);
-    });
-    for (var i=0; i<connections.length; i++){
-      var timestamp = parseInt(connections[i][2]) / 1000; // converts this UNIX time format from milliseconds to seconds
-      client.query({
-        text: "INSERT INTO connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES (quote_literal($1), quote_literal($2), to_timestamp($3), quote_literal($4), $5, $6, $7, $8, $9)",
-        values: connections[i]
-      }, function(err,result){
-            if (err) {
-              console.log(err);
-              res.send("Sorry. Error occurred. Please try again.");
-            }else res.send("Thanks!");
+/*
+*   TESTING TO SEE IF THE CODE WORKS WITH THE NEW DATABASE SERVER
+*/
+app.get("/foo", function(req,res){
+    
+  // =====================================
+  function getTest(){
+    var query = {"source": "www.google.com"};
+    
+    var queryString = JSON.stringify(query);
+    console.log(queryString);
+    
+    var options = {
+      hostname: "localhost",
+      port: 7000,
+      path: "/showResult",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": queryString.length
+      }
+    };
+    
+    var getReq = http.request(options, function(response) {
+      response.setEncoding("utf8");
+      response.on("data", function (chunk) {
+        console.log("GET data response: " + chunk);
+        res.send("GET data response: " + chunk);
       });
-    }
-  }else{
-    res.send("Sorry. Format/version not supported.");
-  }
-});
-
-
-/* show SELECT query result ========================================================= */
-app.get("/showResult", function(req,res){
-  if ( Object.keys(req.query).length != 0 ){;
-    var client = new pg.Client(process.env.DATABASE_URL);
-    client.connect(function(err) {
-        if (err) console.log(err);
     });
-    var filter = new Array();
-    for ( prop in req.query ){
-      filter.push(prop + " = " + req.query[prop]);
-    }
-    var select = "";
-    if ( filter ){
-      select = " WHERE " + filter.join(" AND ");
-    }
-    var query = client.query("SELECT * FROM connections" + select, function(err, result){
-      if (err) res.send("Error encountered.  Check your query please.");
-      res.send(result);
+
+    getReq.on("error", function(e) {
+      console.log("problem with request: " + e.message);
     });
-  }else{
-    res.send("Oops! Enter the GET query please!");
-  }
+
+    // write data to request body
+    getReq.write(queryString);
+    getReq.end();
+  };
+  
+  postTest();
+  //getTest();
+
 });
-
-
 
 
 
@@ -213,24 +208,6 @@ app.get("/websites/:website", function(req, res){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Print query result ================================================== */
 function showQueryResult(query, link_type, callback){
   var client = new pg.Client(process.env.DATABASE_URL);
@@ -266,9 +243,49 @@ function showQueryResult(query, link_type, callback){
 }
 
 
+/******************************
+*   Post data
+*/
+function postTest(){
+    // sample data
+    var postData = {"format":"CollusionSaveFile","version":"1.0","token":"{400932ee-77f5-2b4e-8cf7-01a811e057f9}","connections":[["www.mozilla.org","ssl.google-analytics.com",1361906176810,"image/gif",false,false,true,1,0],["localhost","www.mozilla.org",1361906852997,"text/html",true,true,false,4,0]]};
+    
+    var postDataString = JSON.stringify(postData);
+    
+    var options = {
+      hostname: "localhost",
+      port: 7000,
+      path: "/donateData",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Content-Length": postDataString.length
+      }
+    };
+    
+    var postReq = http.request(options, function(response) {
+      response.setEncoding("utf8");
+      response.on("data", function (chunk) {
+        console.log("POST data response: " + chunk);
+        res.send("POST data response: " + chunk);
+      });
+    });
+
+    postReq.on("error", function(e) {
+      console.log("problem with request: " + e.message);
+    });
+
+    // write data to request body
+    postReq.write(postDataString);
+    postReq.end();
+  }
 
 
 
 
 
-app.listen(process.env.PORT || 3000);
+
+
+app.listen(process.env.PORT, function() {
+  console.log("Listening on " + process.env.PORT);
+});
