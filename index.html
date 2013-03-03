@@ -111,14 +111,7 @@
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script>
             $(".donate-data").click(function(){
-                var data = {};
-                data.format = "CollusionSaveFile";
-                data.version = "1.0";
-                data.token = "{400932ee-77f5-2b4e-8cf7-01a811e057f9}";
-                data.connections = [["www.google.com","ssl.gstatic.com",1361905531767,"application/x-unknown-content-type",false,true,true,3,0],["boingboing.net","www.youtube.com",1361928510848,"text/html",true,true,false,2,0]];
-                $.get("/showResult", data, function(msg) {
-                    alert(msg);
-                });
+              $.post("/donate");
             });
           
             // GET TEST: source = www.google.com

@@ -1,13 +1,7 @@
 var express = require("express");
 var app = express();
-var pg = require("pg");
 var handlebars = require("handlebars");
 var cons = require("consolidate"); // template engine consolidation library
-
-var jsonVar = require("./jsonVar.js");
-
-var fs = require("fs");
-
 var http = require("http");
 var https = require("https");
 
@@ -40,40 +34,11 @@ app.get("/", function(req, res){
 });
 
 
-/* Donate data handler ========================================================= */
+/* Donate data button handler ========================================================= */
 app.post("/donate", function(req, res){
-  fs.readFile('index.json', 'utf8', function (err,data) {
-    if (err) {
-      return console.log(err);
-    }
-    var jsonObj = JSON.parse(data);
-    if ( jsonObj.format == 'CollusionSaveFile' && jsonObj.version == '1.0' ){ // check format and version
-      var connections = jsonObj.connections;
-      var client = new pg.Client(process.env.DATABASE_URL);
-      client.connect(function(err) {
-          if (err) console.log(err);
-      });
-//      client.query("DELETE FROM connections");
-//      client.query("ALTER SEQUENCE connections_id_seq RESTART WITH 1");
-      for (var i=0; i<connections.length; i++){
-        var timestamp = parseInt(connections[i][2]) / 1000; // converts this UNIX time format from milliseconds to seconds
-        client.query({
-          text: "INSERT INTO connections(source, target, timestamp, contenttype, cookie, sourcevisited, secure, sourcepathdepth, sourcequerydepth) VALUES (quote_literal($1), quote_literal($2), to_timestamp($3), quote_literal($4), $5, $6, $7, $8, $9)",
-          values: connections[i]
-        }, function(err,result){
-              if (err) {
-                console.log(err);
-                res.send("Sorry. Error occurred. Please try again.");
-              }else res.send("Thanks!");
-        });
-      }
-    }else{
-      res.send("Sorry. Format/version not supported.");
-    }
-  });
+  console.log("hiiiiii");
+  postData(res);
 });
-
-
 
 
 /*
