@@ -79,45 +79,8 @@ app.post("/donate", function(req, res){
 *   TESTING TO SEE IF THE CODE WORKS WITH THE NEW DATABASE SERVER
 */
 app.get("/foo", function(req,res){
-    
-  // =====================================
-  function getTest(){
-    var query = {"source": "www.google.com"};
-    
-    var queryString = JSON.stringify(query);
-    console.log(queryString);
-    
-    var options = {
-      hostname: "localhost",
-      port: 7000,
-      path: "/showResult",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Content-Length": queryString.length
-      }
-    };
-    
-    var getReq = http.request(options, function(response) {
-      response.setEncoding("utf8");
-      response.on("data", function (chunk) {
-        console.log("GET data response: " + chunk);
-        res.send("GET data response: " + chunk);
-      });
-    });
-
-    getReq.on("error", function(e) {
-      console.log("problem with request: " + e.message);
-    });
-
-    // write data to request body
-    getReq.write(queryString);
-    getReq.end();
-  };
-  
-  postTest();
-  //getTest();
-
+  postData(res);
+  //getData(res);
 });
 
 
@@ -243,12 +206,12 @@ function showQueryResult(query, link_type, callback){
 }
 
 
-/******************************
+/**************************************************
 *   Post data
 */
-function postTest(){
+function postData(res){
     // sample data
-    var postData = {"format":"CollusionSaveFile","version":"1.0","token":"{400932ee-77f5-2b4e-8cf7-01a811e057f9}","connections":[["www.mozilla.org","ssl.google-analytics.com",1361906176810,"image/gif",false,false,true,1,0],["localhost","www.mozilla.org",1361906852997,"text/html",true,true,false,4,0]]};
+    var postData = {"format":"CollusionSaveFile","version":"1.0","token":"{400932ee-77f5-2b4e-8cf7-01a811e057f9}","connections":[["www.google.com","ssl.gstatic.com",1361905531767,"application/x-unknown-content-type",false,true,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176061,"text/javascript",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176065,"text/javascript",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176069,"text/javascript",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176092,"text/css",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176121,"text/css",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176200,"image/png",false,false,true,4,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176202,"image/png",false,false,true,4,0],["www.mozilla.org","ssl.google-analytics.com",1361906176472,"application/x-unknown-content-type",false,false,true,1,0],["www.mozilla.org","statse.webtrendslive.com",1361906176621,"image/gif",true,false,true,10,0],["www.mozilla.org","www.google-analytics.com",1361906176735,"application/x-unknown-content-type",false,false,true,3,0],["www.mozilla.org","ssl.google-analytics.com",1361906176810,"image/gif",false,false,true,1,0],["localhost","www.mozilla.org",1361906852997,"text/html",true,true,false,4,0],["localhost","www.mozilla.org",1361906853001,"text/html",true,true,false,4,0],["localhost","www.mozilla.org",1361906853108,"text/html",true,true,false,5,0],["localhost","www.mozilla.org",1361906853113,"text/html",true,true,false,5,0],["localhost","mozorg.cdn.mozilla.net",1361906853206,"text/css",false,true,false,3,0],["localhost","www.mozilla.org",1361906853218,"text/javascript",true,true,false,3,0],["localhost","people.mozilla.org",1361906853651,"application/x-unknown-content-type",true,true,false,4,0],["localhost","www.mozilla.org",1361906919903,"text/html",true,true,false,4,0],["localhost","www.mozilla.org",1361906919907,"text/html",false,true,false,4,0]]};
     
     var postDataString = JSON.stringify(postData);
     
@@ -280,6 +243,43 @@ function postTest(){
     postReq.end();
   }
 
+
+
+/**************************************************
+*   Get data
+*/
+function getData(res){
+  var query = {"source": "www.google.com"};
+  var queryString = JSON.stringify(query);
+  console.log(queryString);
+  
+  var options = {
+    hostname: "localhost",
+    port: 7000,
+    path: "/getData",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": queryString.length
+    }
+  };
+  
+  var getReq = http.request(options, function(response) {
+    response.setEncoding("utf8");
+    response.on("data", function (chunk) {
+      console.log("GET data response: " + chunk);
+      res.send("GET data response: " + chunk);
+    });
+  });
+
+  getReq.on("error", function(e) {
+    console.log("problem with request: " + e.message);
+  });
+
+  // write data to request body
+  getReq.write(queryString);
+  getReq.end();
+};
 
 
 

@@ -124,9 +124,10 @@
             // GET TEST: source = www.google.com
             $.ajax({
               type: "GET",
-              url: "http://localhost:7000/showResult",
+              url: "http://localhost:7000/getData",
               data: {
-                source: "www.mozilla.org"
+                target: "*.mozilla.org"
+                //secure: true
               },
               success: function(data, textStatus, jqXHR){
                 console.log(Object.keys(data));
