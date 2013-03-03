@@ -95,9 +95,7 @@ app.get("/browse_data", function(req, res){
   var queryString = JSON.stringify(query);
   
   var options = {
-    //hostname: "mavis-db-server.herokuapp.com",
-    hostname: "localhost",
-    port: 7000,
+    hostname: "mavis-db-server.herokuapp.com",
     path: "/getBrowseData",
     method: "GET",
     headers: {
