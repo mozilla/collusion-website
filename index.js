@@ -146,8 +146,9 @@ app.get("/trackers/:tracker", function(req, res){
   var queryString = JSON.stringify(query);
   
   var options = {
-    hostname: "localhost",
-    port: 7000,
+    hostname: "mavis-db-server.herokuapp.com",
+//    hostname: "localhost",
+//    port: 7000,
     path: "/getTracker",
     method: "GET",
     headers: {
@@ -197,8 +198,9 @@ app.get("/websites/:website", function(req, res){
   var queryString = JSON.stringify(query);
   
   var options = {
-    hostname: "localhost",
-    port: 7000,
+    hostname: "mavis-db-server.herokuapp.com",
+//    hostname: "localhost",
+//    port: 7000,
     path: "/getVisitedWebsite",
     method: "GET",
     headers: {
