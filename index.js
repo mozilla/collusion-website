@@ -27,21 +27,25 @@ handlebars.registerHelper('avatarBox', function(items, options) {
 
 
 
-/* Index Page ========================================================= */
+/**************************************************
+*   Index page
+*/
 app.get("/", function(req, res){
   //postData(res);
   res.render("index.html");
 });
 
 
-/* Donate data button handler ========================================================= */
+/**************************************************
+*   Donate data button handler
+*/
 app.post("/donate", function(req, res){
   console.log("hiiiiii");
   postData(res);
 });
 
 
-/*
+/**************************************************
 *   TESTING TO SEE IF THE CODE WORKS WITH THE NEW DATABASE SERVER
 */
 app.get("/foo", function(req,res){
@@ -50,8 +54,9 @@ app.get("/foo", function(req,res){
 });
 
 
-
-/* Explore Data front page ========================================================= */
+/**************************************************
+*   Browse data page
+*/
 app.get("/browse_data", function(req, res){
   var query = {};
   query.trackersQuery = "SELECT target, COUNT(distinct source) FROM connections GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 5";
@@ -123,7 +128,9 @@ app.get("/browse_data", function(req, res){
 });
 
 
-/* Tracker Details ==================================================== */
+/**************************************************
+*   Tracker details
+*/
 //app.param('tracker', /^\d+$/);
 app.get("/trackers/:tracker", function(req, res){
   var query = {"target": req.params.tracker};
@@ -176,7 +183,9 @@ app.get("/trackers/:tracker", function(req, res){
 });
 
 
-/* Website Details ==================================================== */
+/**************************************************
+*   Website details
+*/
 app.get("/websites/:website", function(req, res){
   var query = {"source": req.params.website};
   var queryString = JSON.stringify(query);
@@ -264,7 +273,6 @@ function postData(res){
     postReq.write(postDataString);
     postReq.end();
   }
-
 
 
 /**************************************************
