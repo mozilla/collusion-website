@@ -35,7 +35,7 @@ handlebars.registerHelper('avatarBox', function(items, options) {
 
 /* Index Page ========================================================= */
 app.get("/", function(req, res){
-  postData(res);
+  //postData(res);
   res.render("index.html");
 });
 
@@ -256,8 +256,7 @@ function postData(res){
     var postDataString = JSON.stringify(postData);
     
     var options = {
-      hostname: "localhost",
-      port: 7000,
+      hostname: "mavis-db-server.herokuapp.com",
       path: "/donateData",
       method: "POST",
       headers: {
