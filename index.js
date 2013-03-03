@@ -88,55 +88,75 @@ app.get("/foo", function(req,res){
 
 /* Explore Data front page ========================================================= */
 app.get("/browse_data", function(req, res){
+  var query = {};
+  query.trackersQuery = "SELECT target, COUNT(distinct source) FROM connections GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 5";
+  query.websitesQuery = "SELECT source, COUNT(distinct target), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source ORDER BY COUNT(distinct target) DESC";
+
+  var queryString = JSON.stringify(query);
   
-  /* Retrieve data from database and save it as an array of objects */
-  function getAvatarInfo(type, callback){
-    // create a database connection
-    var client = new pg.Client(process.env.DATABASE_URL);
-    client.connect(function(err) {
-      if (err) console.log(err);
-    });
-    // execute query and save retrieved data as an array of objects
-    var myQuery = "";
-    var avatarBoxes = new Array();
-    if ( type == "trackers" ){
-      myQuery = client.query("SELECT target, COUNT(distinct source) FROM connections GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 5");
+  var options = {
+    //hostname: "mavis-db-server.herokuapp.com",
+    hostname: "localhost",
+    port: 7000,
+    path: "/getBrowseData",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": queryString.length
     }
-    if ( type == "websites" ){
-      myQuery = client.query("SELECT source, COUNT(distinct target), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source ORDER BY COUNT(distinct target) DESC");
-    }
-    myQuery.on("error", function(error) {
-      if (error) console.log("=== ERRORRR === " + error);
-    });
-    myQuery.on("row", function(row, i) {
-      var info_url = row[ Object.keys(row)[0] ];
-      var info_line1 = row[ Object.keys(row)[1] ];
-      var url = "/" + type + "/" + info_url;
-      avatarBoxes.push(
-        {
-          url: url,
-          info_url: info_url,
-          favicon_url: "http://" + info_url +  "/favicon.ico",
-          info_line1: info_line1,
-          info_line2: row[ Object.keys(row)[2] ]
-        });
-    });
-    myQuery.on("end", function() {
-      callback(avatarBoxes);
-      client.end();
-    });
-  }
-  // pass data to views
-  getAvatarInfo("trackers", function(trackers){
-    getAvatarInfo("websites", function(websites){
-      var data = {
-        trackers: trackers,
-        websites: websites,
+  };
+  
+  var trackerBoxes = new Array();
+  var websiteBoxes = new Array();
+  var getReq = http.request(options, function(response) {
+    response.setEncoding("utf8");
+    response.on("data", function (result) {
+      result = JSON.parse(result);
+      for (var i=0; i<result.trackers.length; i++ ){
+        var row = result.trackers[i];
+        var info_url = row[ Object.keys(row)[0] ];
+        var info_line1 = row[ Object.keys(row)[1] ];
+        var url = "/trackers/" + info_url;
+        trackerBoxes.push(
+          {
+            url: url,
+            info_url: info_url,
+            favicon_url: "http://" + info_url +  "/favicon.ico",
+            info_line1: info_line1,
+            info_line2: row[ Object.keys(row)[2] ]
+          });
       }
-      res.render("browse_data.html", data);    
+      for (var i=0; i<result.websites.length; i++ ){
+        var row = result.websites[i];
+        var info_url = row[ Object.keys(row)[0] ];
+        var info_line1 = row[ Object.keys(row)[1] ];
+        var url = "/websites/" + info_url;
+        websiteBoxes.push(
+          {
+            url: url,
+            info_url: info_url,
+            favicon_url: "http://" + info_url +  "/favicon.ico",
+            info_line1: info_line1,
+            info_line2: row[ Object.keys(row)[2] ]
+          });
+      }
+      var data = {
+        trackers: trackerBoxes,
+        websites: websiteBoxes,
+      }
+      res.render("browse_data.html", data);
+      
     });
   });
-  
+
+  getReq.on("error", function(e) {
+    console.log("problem with request: " + e.message);
+  });
+
+  // write data to request body
+  getReq.write(queryString);
+  getReq.end();
+    
 });
 
 
