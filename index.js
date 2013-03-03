@@ -35,6 +35,7 @@ handlebars.registerHelper('avatarBox', function(items, options) {
 
 /* Index Page ========================================================= */
 app.get("/", function(req, res){
+  postData(res);
   res.render("index.html");
 });
 
