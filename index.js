@@ -64,7 +64,7 @@ app.get("/browse-data", function(req, res){
   var queryString = JSON.stringify(query);
   
   var options = {
-    hostname: "mavis-db-server.herokuapp.com",
+    hostname: "collusiondb.herokuapp.com",
     path: "/getBrowseData",
     method: "GET",
     headers: {
@@ -136,7 +136,7 @@ app.get("/trackers/:tracker", function(req, res){
   var queryString = JSON.stringify(query);
   
   var options = {
-    hostname: "mavis-db-server.herokuapp.com",
+    hostname: "collusiondb.herokuapp.com",
 //    hostname: "localhost",
 //    port: 7000,
     path: "/getTracker",
@@ -190,7 +190,7 @@ app.get("/websites/:website", function(req, res){
   var queryString = JSON.stringify(query);
   
   var options = {
-    hostname: "mavis-db-server.herokuapp.com",
+    hostname: "collusiondb.herokuapp.com",
 //    hostname: "localhost",
 //    port: 7000,
     path: "/getVisitedWebsite",
@@ -247,7 +247,7 @@ function postData(res){
     var postDataString = JSON.stringify(postData);
     
     var options = {
-      hostname: "mavis-db-server.herokuapp.com",
+      hostname: "collusiondb.herokuapp.com",
       path: "/donateData",
       method: "POST",
       headers: {
@@ -283,7 +283,7 @@ function getData(res){
   console.log(queryString);
   
   var options = {
-    hostname: "mavis-db-server.herokuapp.com",
+    hostname: "collusiondb.herokuapp.com",
     path: "/getData",
     method: "GET",
     headers: {
