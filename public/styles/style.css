@@ -56,12 +56,12 @@ a.collusion-logo {
   width: 350px;
 }
 
-.blog_section{
+.blog-section{
   padding-right: 50px;
   width: 100%;
 }
 
-.feed_section ul{
+.feed-section ul{
   list-style-type: none;
   padding-left: 20px;
 }
@@ -71,7 +71,7 @@ a.collusion-logo {
   overflow: hidden;
 }
 
-.subsection_icon{
+.subsection-icon{
   float: left;
   font-size: 35px;
   width: 40px;
@@ -87,14 +87,14 @@ a.collusion-logo {
   width: calc(100% - 55px);
 }
 
-.get_involved_section header,
-.feed_section header,
+.get-involved-section header,
+.feed-section header,
 .search-section header,
 .explain-section header{
   font-weight: bold;
 }
 
-.section-header, .blog_section header{
+.section-header, .blog-section header{
   font-size: 18px;
   margin-bottom: 15px;
 }
