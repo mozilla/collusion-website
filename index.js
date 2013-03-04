@@ -81,28 +81,28 @@ app.get("/browse-data", function(req, res){
       result = JSON.parse(result);
       for (var i=0; i<result.trackers.length; i++ ){
         var row = result.trackers[i];
-        var info_url = row[ Object.keys(row)[0] ];
+        var infoUrl = row[ Object.keys(row)[0] ];
         var info_line1 = row[ Object.keys(row)[1] ];
-        var url = "/trackers/" + info_url;
+        var url = "/trackers/" + infoUrl;
         trackerBoxes.push(
           {
             url: url,
-            info_url: info_url,
-            favicon_url: "http://" + info_url +  "/favicon.ico",
+            infoUrl: infoUrl,
+            faviconUrl: "http://" + infoUrl +  "/favicon.ico",
             info_line1: info_line1,
             info_line2: row[ Object.keys(row)[2] ]
           });
       }
       for (var i=0; i<result.websites.length; i++ ){
         var row = result.websites[i];
-        var info_url = row[ Object.keys(row)[0] ];
+        var infoUrl = row[ Object.keys(row)[0] ];
         var info_line1 = row[ Object.keys(row)[1] ];
-        var url = "/websites/" + info_url;
+        var url = "/websites/" + infoUrl;
         websiteBoxes.push(
           {
             url: url,
-            info_url: info_url,
-            favicon_url: "http://" + info_url +  "/favicon.ico",
+            infoUrl: infoUrl,
+            faviconUrl: "http://" + infoUrl +  "/favicon.ico",
             info_line1: info_line1,
             info_line2: row[ Object.keys(row)[2] ]
           });

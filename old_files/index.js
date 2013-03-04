@@ -46,14 +46,14 @@ app.get("/", function(req, res){
       if (error) console.log("=== ERRORRR === " + error);
     });
     myQuery.on("row", function(row, i) {
-      var info_url = row[ Object.keys(row)[0] ];
+      var infoUrl = row[ Object.keys(row)[0] ];
       var info_line1 = row[ Object.keys(row)[1] ];
-      var url = "/" + type + "/" + info_url;
+      var url = "/" + type + "/" + info-url;
       avatarBoxes.push(
         {
           url: url,
-          info_url: info_url,
-          favicon_url: "http://" + info_url +  "/favicon.ico",
+          info-url: infoUrl,
+          faviconUrl: "http://" + info-url +  "/favicon.ico",
           info_line1: info_line1
         });
     });
