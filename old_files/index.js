@@ -47,14 +47,14 @@ app.get("/", function(req, res){
     });
     myQuery.on("row", function(row, i) {
       var infoUrl = row[ Object.keys(row)[0] ];
-      var info_line1 = row[ Object.keys(row)[1] ];
+      var infoLine1 = row[ Object.keys(row)[1] ];
       var url = "/" + type + "/" + info-url;
       avatarBoxes.push(
         {
           url: url,
           info-url: infoUrl,
           faviconUrl: "http://" + info-url +  "/favicon.ico",
-          info_line1: info_line1
+          infoLine1: infoLine1
         });
     });
     myQuery.on("end", function() {
