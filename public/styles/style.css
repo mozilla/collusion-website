@@ -32,16 +32,16 @@ section {
   position: relative;
 }
 
-a.collusion_logo {
+a.collusion-logo {
   text-decoration: none;
   color: #555555;
 }
 
-.collusion_label {
+.collusion-label {
   color: white;
 }
 
-.left_column {
+.left-column {
   float: left;
   padding-top: 20px;
   padding-right: 20px;
@@ -49,7 +49,7 @@ a.collusion_logo {
   width: 780px;
 }
 
-.right_column{
+.right-column{
   padding-top: 20px;
   float: left;
   padding-left: 25px;
