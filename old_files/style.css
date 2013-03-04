@@ -28,7 +28,7 @@ body {
   margin: 5px;
 }
 
-.avatar_box{
+.avatar-box{
   float: left;
   width: 186px;
   height: 50px;
@@ -43,12 +43,12 @@ body {
   color: #444444;
 }
 
-.avatar_box:hover{
+.avatar-box:hover{
   background: #CAE1F4;
   color: black;
 }
 
-.avatar_box img{
+.avatar-box img{
   padding-right: 5px;
   width: 16px;
   height: 16px;
