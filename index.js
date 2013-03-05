@@ -5,7 +5,6 @@ var cons = require("consolidate"); // template engine consolidation library
 var http = require("http");
 var https = require("https");
 
-
 app.configure(function(){
     app.set("view engine", "handlebars");
     app.set("view options", { layout: false });
@@ -14,7 +13,6 @@ app.configure(function(){
     app.use(express.static(__dirname + "/public"));
     app.use(express.bodyParser());    
 });
-
 
 
 handlebars.registerHelper('avatarBox', function(items, options) {
@@ -26,18 +24,16 @@ handlebars.registerHelper('avatarBox', function(items, options) {
 });
 
 
-
 /**************************************************
 *   Index page
 */
 app.get("/", function(req, res){
-    //postData(res);
     res.render("index.html");
 });
 
 
 /**************************************************
-*   Donate data button handler
+*   Donate data button handler (testing purpose)
 */
 app.post("/donate", function(req, res){
     postData(res);
@@ -58,8 +54,8 @@ app.get("/foo", function(req,res){
 */
 app.get("/browse-data", function(req, res){
     var query = {};
-    query.trackersQuery = "SELECT target, COUNT(distinct source) FROM connections GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 5";
-    query.websitesQuery = "SELECT source, COUNT(distinct target), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source ORDER BY COUNT(distinct target) DESC";
+    query.trackersQuery = "SELECT target, COUNT(distinct source) FROM connections GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 10";
+    query.websitesQuery = "SELECT source, COUNT(distinct target), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source ORDER BY COUNT(distinct target) DESC LIMIT 10";
 
     var queryString = JSON.stringify(query);
   
