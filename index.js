@@ -75,11 +75,15 @@ app.get("/browse-data", function(req, res){
   
   var trackerBoxes = new Array();
   var websiteBoxes = new Array();
-  var getReq = http.request(options, function(response) {
+  var result = "";
+  var reqGet = http.request(options, function(response) {
     response.setEncoding("utf8");
-    response.on("data", function (result) {
-      result = JSON.parse(result);
-      for (var i=0; i<result.trackers.length; i++ ){
+    response.on("data", function (chunk) {
+      result += chunk;
+    });
+    response.on("end", function(){
+        result = JSON.parse(result);
+        for (var i=0; i<result.trackers.length; i++ ){
         var row = result.trackers[i];
         var infoUrl = row[ Object.keys(row)[0] ];
         var infoLine1 = row[ Object.keys(row)[1] ];
@@ -92,8 +96,8 @@ app.get("/browse-data", function(req, res){
             infoLine1: infoLine1,
             infoLine2: row[ Object.keys(row)[2] ]
           });
-      }
-      for (var i=0; i<result.websites.length; i++ ){
+        }
+        for (var i=0; i<result.websites.length; i++ ){
         var row = result.websites[i];
         var infoUrl = row[ Object.keys(row)[0] ];
         var infoLine1 = row[ Object.keys(row)[1] ];
@@ -106,23 +110,22 @@ app.get("/browse-data", function(req, res){
             infoLine1: infoLine1,
             infoLine2: row[ Object.keys(row)[2] ]
           });
-      }
-      var data = {
+        }
+        var data = {
         trackers: trackerBoxes,
         websites: websiteBoxes,
-      }
-      res.render("browse-data.html", data);
-      
+        }
+        res.render("browse-data.html", data);
     });
   });
 
-  getReq.on("error", function(e) {
-    console.log("problem with request: " + e.message);
+  reqGet.on("error", function(e) {
+    console.log("Problem with GET request: " + e.message);
   });
 
   // write data to request body
-  getReq.write(queryString);
-  getReq.end();
+  reqGet.write(queryString);
+  reqGet.end();
     
 });
 
@@ -147,12 +150,16 @@ app.get("/trackers/:tracker", function(req, res){
     }
   };
   
+  var result = ""
   var getReq = http.request(options, function(response) {
     response.setEncoding("utf8");
-    response.on("data", function (result) {
-      result = JSON.parse(result);
-      var wrapper = "<ul>";
-      for (var i=0; i<result.rowCount; i++ ){
+    response.on("data", function (chunk) {
+       result += chunk;
+    });
+    response.on("end", function(){
+        result = JSON.parse(result);
+        var wrapper = "<ul>";
+        for (var i=0; i<result.rowCount; i++ ){
         var row = result.rows[i];
         var rowProperties = new Array();
         for (var prop in row){
@@ -161,13 +168,13 @@ app.get("/trackers/:tracker", function(req, res){
         var url = "/websites/" + rowProperties[0];
         var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
         wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
-      }
-      wrapper += "</ul>";
-      var data = {
+        }
+        wrapper += "</ul>";
+        var data = {
         tracker: req.params.tracker,
         details: wrapper
-      };
-      res.render("trackerInfo.html", data); 
+        };
+        res.render("trackerInfo.html", data);
     });
   });
 
@@ -201,12 +208,16 @@ app.get("/websites/:website", function(req, res){
     }
   };
   
+  var result = "";
   var getReq = http.request(options, function(response) {
     response.setEncoding("utf8");
-    response.on("data", function (result) {
-      result = JSON.parse(result);
-      var wrapper = "<ul>";
-      for (var i=0; i<result.rowCount; i++ ){
+    response.on("data", function (chunk) {
+       result += chunk;
+    });
+    response.on("end", function(){
+        result = JSON.parse(result);
+        var wrapper = "<ul>";
+        for (var i=0; i<result.rowCount; i++ ){
         var row = result.rows[i];
         var rowProperties = new Array();
         for (var prop in row){
@@ -215,13 +226,13 @@ app.get("/websites/:website", function(req, res){
         var url = "/trackers/" + rowProperties[0];
         var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
         wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
-      }
-      wrapper += "</ul>";
-      var data = {
+        }
+        wrapper += "</ul>";
+        var data = {
         website: req.params.website,
         details: wrapper
-      };
-      res.render("websiteInfo.html", data); 
+        };
+        res.render("websiteInfo.html", data);
     });
   });
 
