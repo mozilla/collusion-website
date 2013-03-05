@@ -258,11 +258,15 @@ function postData(res){
         }
     };
     
+    var result = "";
     var postReq = http.request(options, function(response) {
         response.setEncoding("utf8");
         response.on("data", function (chunk) {
-            console.log("POST data response: " + chunk);
-            res.send("POST data response: " + chunk);
+            result += chunk;
+        });
+        response.on("end", function(){
+            console.log("POST data response: " + result);
+            res.send("POST data response: " + result);
         });
     });
 
@@ -294,11 +298,15 @@ function getData(res){
         }
     };
   
+    var result = "";
     var getReq = http.request(options, function(response) {
         response.setEncoding("utf8");
         response.on("data", function (chunk) {
-            console.log("GET data response: " + chunk);
-            res.send("GET data response: " + chunk);
+            result += chunk;
+        });
+        response.on("end", function(){
+            console.log("GET data response: " + result);
+            res.send("GET data response: " + result);
         });
     });
 
