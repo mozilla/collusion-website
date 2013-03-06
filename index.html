@@ -117,10 +117,10 @@
             // GET TEST
             $.ajax({
               type: "GET",
-              url: "http://mavis-db-server.herokuapp.com/getData",
+              url: "http://collusiondb-development.herokuapp.com/getData",
               data: {
-                target: "*.mozilla.org"
-                //secure: true
+                dateSince: "2013-02-28",
+                dateBefore: "2013-02-27"
               },
               success: function(data, textStatus, jqXHR){
                 console.log(Object.keys(data));

@@ -44,13 +44,20 @@
                 <!-- ========================= Left Column ========================= -->
                     <div class="left-column">
                         <section>
-                          <h4>{{{website}}}</h4>
-                          When you visit <b>{{{website}}}</b>, it informs the following websites about you.</br>
-                          <div class="float-right filter-options">
-                              <input id="filter-cookie" type="checkbox" checked="true">Show Cookie-Based Connections</input></br>
-                              <input id="filter-noncookie" type="checkbox" checked="true">Show Non-Cookie-Based Connections</input></br>
-                          </div>
-                          <div style="float-left">{{{details}}}</div>
+                            <div class="website-header">
+                                <h4>{{{website}}}</h4>
+                                <div class="">
+                                    its server is located in <span class="city"></span>, <span class="region"></span>, <span class="country"></span>
+                                </div>
+                            </div>                          
+                            <div class="detail-section">     
+                                When you visit this site, it informs the following websites about you.</br>
+                                <div class="filter-options float-right">
+                                  <input id="filter-cookie" type="checkbox" checked="true">Show Cookie-Based Connections</input></br>
+                                  <input id="filter-noncookie" type="checkbox" checked="true">Show Non-Cookie-Based Connections</input></br>
+                                </div>
+                                {{{details}}}
+                            </div>
                         </section>
                     </div>
                 <!-- ========================= Right Column ========================= -->
@@ -79,8 +86,11 @@
                   for ( var property in geoip){
                     console.log(property + ": " + geoip[property]);
                   }
+                  $(".city").html(geoip.city);
+                  $(".region").html(geoip.region_name);
+                  $(".country").html(geoip.country_name);
             });
-            /* --- */
+            /* ----------------------------------------------------------- */
             
             $("ul li[cookie-connection=true]").addClass("cookie");
             $("ul li[cookie-connection=false]").addClass("non-cookie");

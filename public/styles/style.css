@@ -163,7 +163,14 @@ ul li.non-cookie{
   color: #555555;
 }
 
+.tracker-header, .website-header {
+    border: 1px dashed grey;
+    padding: 10px;
+}
 
+.detail-section {
+    margin-top: 20px;
+}
 
 
 
