@@ -52,7 +52,7 @@ app.get("/foo", function(req,res){
 /**************************************************
 *   Browse data page
 */
-app.get("/browse-data", function(req, res){
+app.get("/browseData", function(req, res){
     var query = {};
     query.trackersQuery = "SELECT target, COUNT(distinct source) FROM connections GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 10";
     query.websitesQuery = "SELECT source, COUNT(distinct target), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source ORDER BY COUNT(distinct target) DESC LIMIT 10";
@@ -111,7 +111,7 @@ app.get("/browse-data", function(req, res){
                 trackers: trackerBoxes,
                 websites: websiteBoxes
             }
-            res.render("browse-data.html", data);
+            res.render("browseData.html", data);
         });
     });
 

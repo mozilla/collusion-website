@@ -1,3 +1,4 @@
 mavis.env
 tempServer.xcworkspace/*
 /node_modules/*
+.DS_Store
