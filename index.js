@@ -161,7 +161,8 @@ app.get("/trackers/:tracker", function(req, res){
                 }
                 var url = "/websites/" + rowProperties[0];
                 var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
-                wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
+                var ifCookie = rowProperties[1] == '1';
+                wrapper = wrapper + "<li cookie-connection=" + ifCookie + ">" + anchor + "</li>";
             }
             wrapper += "</ul>";
             var data = {
@@ -217,7 +218,8 @@ app.get("/websites/:website", function(req, res){
                 }
                 var url = "/trackers/" + rowProperties[0];
                 var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
-                wrapper = wrapper + "<li cookie-connection=" + rowProperties[1] + ">" + anchor + "</li>";
+                var ifCookie = rowProperties[1] == '1';
+                wrapper = wrapper + "<li cookie-connection=" + ifCookie + ">" + anchor + "</li>";
             }
             wrapper += "</ul>";
             var data = {
