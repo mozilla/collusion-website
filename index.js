@@ -54,8 +54,8 @@ app.get("/foo", function(req,res){
 */
 app.get("/browseData", function(req, res){
     var query = {};
-    query.trackersQuery = "SELECT target, COUNT(distinct source) FROM connections GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 10";
-    query.websitesQuery = "SELECT source, COUNT(distinct target), MAX(timestamp) FROM connections where sourceVisited = true GROUP BY source ORDER BY COUNT(distinct target) DESC LIMIT 10";
+    query.trackersQuery = "SELECT target, COUNT(distinct source) FROM Connection GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 10";
+    query.websitesQuery = "SELECT source, COUNT(distinct target), MAX(timestamp) FROM Connection where sourceVisited = true GROUP BY source ORDER BY COUNT(distinct target) DESC LIMIT 10";
 
     var queryString = JSON.stringify(query);
   
@@ -80,32 +80,32 @@ app.get("/browseData", function(req, res){
         response.on("end", function(){
             result = JSON.parse(result);
             for (var i=0; i<result.trackers.length; i++ ){
-            var row = result.trackers[i];
-            var infoUrl = row[ Object.keys(row)[0] ];
-            var infoLine1 = row[ Object.keys(row)[1] ];
-            var url = "/trackers/" + infoUrl;
-            trackerBoxes.push(
-                {
-                    url: url,
-                    infoUrl: infoUrl,
-                    faviconUrl: "http://" + infoUrl +  "/favicon.ico",
-                    infoLine1: infoLine1,
-                    infoLine2: row[ Object.keys(row)[2] ]
+                var row = result.trackers[i];
+                var infoUrl = row[ Object.keys(row)[0] ];
+                var infoLine1 = row[ Object.keys(row)[1] ];
+                var url = "/trackers/" + infoUrl;
+                trackerBoxes.push(
+                    {
+                        url: url,
+                        infoUrl: infoUrl,
+                        faviconUrl: "http://" + infoUrl +  "/favicon.ico",
+                        infoLine1: infoLine1,
+                        infoLine2: row[ Object.keys(row)[2] ]
                 });
             }
             for (var i=0; i<result.websites.length; i++ ){
             var row = result.websites[i];
-            var infoUrl = row[ Object.keys(row)[0] ];
-            var infoLine1 = row[ Object.keys(row)[1] ];
-            var url = "/websites/" + infoUrl;
-            websiteBoxes.push(
-                {
-                    url: url,
-                    infoUrl: infoUrl,
-                    faviconUrl: "http://" + infoUrl +  "/favicon.ico",
-                    infoLine1: infoLine1,
-                    infoLine2: row[ Object.keys(row)[2] ]
-                });
+                var infoUrl = row[ Object.keys(row)[0] ];
+                var infoLine1 = row[ Object.keys(row)[1] ];
+                var url = "/websites/" + infoUrl;
+                websiteBoxes.push(
+                    {
+                        url: url,
+                        infoUrl: infoUrl,
+                        faviconUrl: "http://" + infoUrl +  "/favicon.ico",
+                        infoLine1: infoLine1,
+                        infoLine2: row[ Object.keys(row)[2] ]
+                    });
             }
             var data = {
                 trackers: trackerBoxes,
@@ -244,7 +244,7 @@ app.get("/websites/:website", function(req, res){
 */
 function postData(res){
     // sample data
-    var postData = {"format":"Collusion Save File","version":"1.0","token":"{400932ee-77f5-2b4e-8cf7-01a811e057f9}","connections":[["postgres.heroku.com","api.mixpanel.com",1362360219365,"application/json",true,true,true,2,0],["postgres.heroku.com","secure.adnxs.com",1362360219437,"image/gif",true,true,true,1,0]]};
+    var postData = {"format":"Collusion Save File","version":"1.0","token":"{400932ee-77f5-2b4e-8cf7-01a811e057f9}","connections":[["boingboing.net","keywords.fmpub.net",1361928518710,"text/html",true,false,false,2,0],["boingboing.net","tenzing.fmpub.net",1361938518745,"application/x-javascript",true,false,false,1,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176069,"text/javascript",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1362006176092,"text/css",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176202,"image/png",false,false,true,4,0],["www.mozilla.org","ssl.google-analytics.com",1361966176472,"application/x-unknown-content-type",false,false,true,1,0],["github.com","secure.gravatar.com",1361985631520,"application/x-unknown-content-type",false,true,true,5,0],["github.com","secure.gravatar.com",1361985631544,"application/x-unknown-content-type",false,true,true,5,0],["github.com","secure.gravatar.com",1362985631568,"application/x-unknown-content-type",false,true,true,5,0],["postgres.heroku.com","heroku-logs.herokuapp.com",1363376865580,"text/plain",false,true,true,4,0],["postgres.heroku.com","heroku-logs.herokuapp.com",1372376884626,"text/plain",false,true,true,4,0]]};
     
     var postDataString = JSON.stringify(postData);
     
