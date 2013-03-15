@@ -134,6 +134,10 @@ a.collusion-logo {
   height: 16px;
 }
 
+.highlight-country{
+    fill: #9B55E6 !important;
+}
+
 .greyed-out{
   color: rgba(204, 204, 204, 0.5);
 }
