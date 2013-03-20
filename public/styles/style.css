@@ -175,12 +175,12 @@ ul li.non-cookie{
 
 .sub-left{
     float: left;
-    width: 540px;
+    width: 690px;
     padding-left: 10px;
 }
 
 .sub-right{
-    width: 630px;
+    width: 480px;
     padding: 0 10px;
     float: left;
 }

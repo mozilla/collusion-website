@@ -2703,7 +2703,7 @@
                               
                                     </div>
                                     <!-- SVG world map code ends ===========================  -->
-                                    Server located in <br /><span class="city"></span>, <span class="region"></span>, <span class="country"></span><br /><br />
+                                    Server located in <span class="country"></span><br /><br />
                                     Privacy Score: ____
 
 
@@ -2743,8 +2743,6 @@
                   for ( var property in geoip){
                     //console.log(property + ": " + geoip[property]);
                   }
-                  $(".city").html(geoip.city);
-                  $(".region").html(geoip.region_name);
                   $(".country").html(geoip.country_name);
                   countryCode = geoip.country_code;
                   var svg = d3.select("svg");
