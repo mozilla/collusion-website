@@ -135,7 +135,7 @@ a.collusion-logo {
 }
 
 .highlight-country{
-    fill: #9B55E6 !important;
+    fill: #0ca0e2 !important;
 }
 
 .greyed-out{
@@ -168,13 +168,77 @@ ul li.non-cookie{
 }
 
 .tracker-header, .website-header {
-    border: 1px dashed grey;
-    padding: 10px;
+    width: 100%;
+    color: #fff;
+    line-height: 60px;
+}
+
+.sub-left{
+    float: left;
+    width: 540px;
+    padding-left: 10px;
+}
+
+.sub-right{
+    width: 630px;
+    padding: 0 10px;
+    float: left;
+}
+
+.tracker-header .header-left, .website-header .header-right{
+    height: 60px;
+    background: #2e323b;
+    line-height: 60px;
+    font-size: 15px;
+    position: relative;
+}
+
+.website-header .header-left{
+    height: 60px;
+    background: #2e323b;
+    line-height: 60px;
+    font-size: 15px;
+    position: relative;
+}
+
+
+.header-left div{
+    vertical-align: middle;
+    display: inline;
+}
+
+.site-url {
+    background: rgba(255,255,255,0.2);
+    font-size: 25px;
+    padding: 0 10px;
+}
+
+.website-header .site-url{
+    margin-left: 10px;
+}
+
+.tracks-people-label{
+    padding-left: 20px;
+    position: absolute;
+    right: 10px;
+}
+
+.tracker-header .header-right, .website-header .header-left{
+    height: 60px;
+    background: #37ade2;
 }
 
 .detail-section {
     margin-top: 20px;
 }
+
+
+.connections ul{
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 30px;
+}
+
 
 
 

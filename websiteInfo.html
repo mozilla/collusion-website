@@ -41,13 +41,19 @@
                     </div>
                 </div>
                 <div class="container">
-                <!-- ========================= Left Column ========================= -->
-                    <div class="left-column">
                         <section>
                             <div class="website-header">
-                                <h4>{{{website}}}</h4>
-                                <div class="">
-                                    Its server is located in <span class="city"></span>, <span class="region"></span>, <span class="country"></span><br />
+                                <div class="header-left sub-left">
+                                    <div class="visit-site-label"> When people visit</div><div class="site-url">{{{website}}}</div>
+                                </div>
+                                <div class="header-right sub-right">
+                                    These sites tracks them.
+                                </div>
+                                <div style="clear: both"></div>
+                                
+                            </div>                          
+                            <div class="detail-section">
+                                <div class="map-section sub-left">
                                     <!-- SVG world map code starts; based on BlankMap-World6,_compact.svg by Canuckguy et al. =========================  -->
                                     <div class="world-map">
 <?xml version="1.0" encoding="UTF-8"?>
@@ -2697,21 +2703,21 @@
                               
                                     </div>
                                     <!-- SVG world map code ends ===========================  -->
+                                    Server located in <br /><span class="city"></span>, <span class="region"></span>, <span class="country"></span><br /><br />
+                                    Privacy Score: ____
+
+
+                                    </div>
                                 </div>
-                            </div>                          
-                            <div class="detail-section">     
-                                When you visit this site, it informs the following websites about you.</br>
-                                <div class="filter-options float-right">
-                                  <input id="filter-cookie" type="checkbox" checked="true">Show <span style="color: #ED9118">Cookie-Based</span> Connections</input></br>
-                                  <input id="filter-noncookie" type="checkbox" checked="true">Show <span style="color: #3DABB3">Non-Cookie-Based</span> Connections</input></br>
+                                <div class="connections sub-right">
+                                    <div class="filter-options">
+                                      <input id="filter-cookie" type="checkbox" checked="true">Show <span style="color: #ED9118">Cookie-Based</span> Connections</input></br>
+                                      <input id="filter-noncookie" type="checkbox" checked="true">Show <span style="color: #3DABB3">Non-Cookie-Based</span> Connections</input></br>
+                                    </div>
+                                    {{{details}}}
                                 </div>
-                                {{{details}}}
                             </div>
                         </section>
-                    </div>
-                <!-- ========================= Right Column ========================= -->
-                    <div class="right-column">
-                    </div>
                 </div>
             </div>
             <!-- <div id="modal-overlay"> not sure if we should have this</div> -->
@@ -2744,12 +2750,14 @@
                   var svg = d3.select("svg");
                   var countryOnMap = d3.select("svg").select("#" + countryCode.toLowerCase());
                   console.log(countryOnMap);
+;
                   countryOnMap.classed("highlight-country", true);
                   countryOnMap.selectAll("path").classed("highlight-country", true);
             });
             /* ----------------------------------------------------------- */
             
             
+        
             $("ul li[cookie-connection=true]").addClass("cookie");
             $("ul li[cookie-connection=false]").addClass("non-cookie");
         
@@ -2760,7 +2768,7 @@
             $("#filter-noncookie").click(function(){
                   $("ul li[cookie-connection=false], ul li[cookie-connection=false] a").toggleClass("non-cookie").toggleClass("greyed-out");
             });
-          
+        
             require.config({
                            packages: [{
                                       name: "webmaker-nav",
@@ -2791,4 +2799,3 @@
     </body>
 
 </html>
-

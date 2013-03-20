@@ -41,13 +41,19 @@
                     </div>
                 </div>
                 <div class="container">
-                <!-- ========================= Left Column ========================= -->
-                    <div class="left-column">
                         <section>
-                            <div class="website-header">
-                                <h4>{{{tracker}}}</h4>
-                                <div class="">
-                                    Its server is located in <span class="city"></span>, <span class="region"></span>, <span class="country"></span><br />
+                            <div class="tracker-header">
+                                <div class="header-left sub-left">
+                                    <div class="site-url">{{{tracker}}}</div><div class="tracks-people-label"> tracks people</div>
+                                </div>
+                                <div class="header-right sub-right">
+                                    when they visit these sites.
+                                </div>
+                                <div style="clear: both"></div>
+                                
+                            </div>                          
+                            <div class="detail-section">
+                                <div class="map-section sub-left">
                                     <!-- SVG world map code starts; based on BlankMap-World6,_compact.svg by Canuckguy et al. =========================  -->
                                     <div class="world-map">
 <?xml version="1.0" encoding="UTF-8"?>
@@ -2694,24 +2700,24 @@
     <circle class="circlexx sg" cx="2065.0579" cy="748.100055" id="sg." r="6.01303"/>
   </g>
 </svg>
-                                    
+                              
                                     </div>
                                     <!-- SVG world map code ends ===========================  -->
+                                    Server located in <br /><span class="city"></span>, <span class="region"></span>, <span class="country"></span><br /><br />
+                                    Privacy Score: ____
+
+
+                                    </div>
                                 </div>
-                            </div>                          
-                            <div class="detail-section">     
-                                This site is potentially aware of your visits to the following websites.<br/>
-                                <div class="filter-options float-right">
-                                  <input id="filter-cookie" type="checkbox" checked="true">Show <span style="color: #ED9118">Cookie-Based</span> Connections</input></br>
-                                  <input id="filter-noncookie" type="checkbox" checked="true">Show <span style="color: #3DABB3">Non-Cookie-Based</span> Connections</input></br>
+                                <div class="connections sub-right">
+                                    <div class="filter-options">
+                                      <input id="filter-cookie" type="checkbox" checked="true">Show <span style="color: #ED9118">Cookie-Based</span> Connections</input></br>
+                                      <input id="filter-noncookie" type="checkbox" checked="true">Show <span style="color: #3DABB3">Non-Cookie-Based</span> Connections</input></br>
+                                    </div>
+                                    {{{details}}}
                                 </div>
-                                {{{details}}}
                             </div>
                         </section>
-                    </div>
-                <!-- ========================= Right Column ========================= -->
-                    <div class="right-column">
-                    </div>
                 </div>
             </div>
             <!-- <div id="modal-overlay"> not sure if we should have this</div> -->
@@ -2743,8 +2749,8 @@
                   countryCode = geoip.country_code;
                   var svg = d3.select("svg");
                   var countryOnMap = d3.select("svg").select("#" + countryCode.toLowerCase());
-                  //svg.attr("width", "750px");
                   console.log(countryOnMap);
+;
                   countryOnMap.classed("highlight-country", true);
                   countryOnMap.selectAll("path").classed("highlight-country", true);
             });
