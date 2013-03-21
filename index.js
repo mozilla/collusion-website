@@ -54,9 +54,6 @@ app.get("/foo", function(req,res){
 */
 app.get("/browseData", function(req, res){
     var query = {};
-    query.trackersQuery = "SELECT target, COUNT(distinct source) FROM Connection GROUP BY target ORDER BY COUNT(distinct source) DESC LIMIT 10";
-    query.websitesQuery = "SELECT source, COUNT(distinct target), MAX(timestamp) FROM Connection where sourceVisited = true GROUP BY source ORDER BY COUNT(distinct target) DESC LIMIT 10";
-
     var queryString = JSON.stringify(query);
   
     var options = {
@@ -83,7 +80,7 @@ app.get("/browseData", function(req, res){
                 var row = result.trackers[i];
                 var infoUrl = row[ Object.keys(row)[0] ];
                 var infoLine1 = row[ Object.keys(row)[1] ];
-                var url = "/trackers/" + infoUrl;
+                var url = "/third-party-websites/" + infoUrl;
                 trackerBoxes.push(
                     {
                         url: url,
@@ -130,13 +127,13 @@ app.get("/browseData", function(req, res){
 *   Tracker details
 */
 //app.param('tracker', /^\d+$/);
-app.get("/trackers/:tracker", function(req, res){
+app.get("/third-party-websites/:tracker", function(req, res){
     var query = {"target": req.params.tracker};
     var queryString = JSON.stringify(query);
   
     var options = {
         hostname: "collusiondb-development.herokuapp.com",
-        path: "/getTracker",
+        path: "/getThirdPartyWebsite",
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -169,7 +166,7 @@ app.get("/trackers/:tracker", function(req, res){
               tracker: req.params.tracker,
               details: wrapper
             };
-            res.render("trackerInfo.html", data);
+            res.render("thirdPartyWebsiteInfo.html", data);
         });
     });
 
