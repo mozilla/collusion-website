@@ -94,7 +94,7 @@ app.get("/browseData", function(req, res){
             var row = result.websites[i];
                 var infoUrl = row[ Object.keys(row)[0] ];
                 var infoLine1 = row[ Object.keys(row)[1] ];
-                var url = "/websites/" + infoUrl;
+                var url = "/visited-websites/" + infoUrl;
                 websiteBoxes.push(
                     {
                         url: url,
@@ -156,7 +156,7 @@ app.get("/third-party-websites/:tracker", function(req, res){
                 for (var prop in row){
                     rowProperties.push(row[prop]);
                 }
-                var url = "/websites/" + rowProperties[0];
+                var url = "/visited-websites/" + rowProperties[0];
                 var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
                 var ifCookie = rowProperties[1] == '1';
                 wrapper = wrapper + "<li cookie-connection=" + ifCookie + ">" + anchor + "</li>";
@@ -182,9 +182,9 @@ app.get("/third-party-websites/:tracker", function(req, res){
 
 
 /**************************************************
-*   Website details
+*   Visited Website details
 */
-app.get("/websites/:website", function(req, res){
+app.get("/visited-websites/:website", function(req, res){
     var query = {"source": req.params.website};
     var queryString = JSON.stringify(query);
 
@@ -213,7 +213,7 @@ app.get("/websites/:website", function(req, res){
                 for (var prop in row){
                   rowProperties.push(row[prop]);
                 }
-                var url = "/trackers/" + rowProperties[0];
+                var url = "/third-party-websites/" + rowProperties[0];
                 var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
                 var ifCookie = rowProperties[1] == '1';
                 wrapper = wrapper + "<li cookie-connection=" + ifCookie + ">" + anchor + "</li>";
@@ -223,7 +223,7 @@ app.get("/websites/:website", function(req, res){
                 website: req.params.website,
                 details: wrapper
             };
-            res.render("websiteInfo.html", data);
+            res.render("visitedWebsiteInfo.html", data);
         });
     });
 
