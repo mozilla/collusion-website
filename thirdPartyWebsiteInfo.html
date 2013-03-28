@@ -57,7 +57,7 @@
                                     <!-- SVG world map code starts; based on BlankMap-World6,_compact.svg by Canuckguy et al. =========================  -->
                                     <div class="world-map">
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 81.5 2711.3 1196.7">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 81.5 2711.3 1196.7"  width="70%" height="70%">
   <style type="text/css"> 
 /*
  * Below are Cascading Style Sheet (CSS) definitions in use in this file,
@@ -2749,7 +2749,6 @@
                   var svg = d3.select("svg");
                   var countryOnMap = d3.select("svg").select("#" + countryCode.toLowerCase());
                   console.log(countryOnMap);
-;
                   countryOnMap.classed("highlight-country", true);
                   countryOnMap.selectAll("path").classed("highlight-country", true);
             });
