@@ -57,7 +57,7 @@ app.get("/browseData", function(req, res){
     var queryString = JSON.stringify(query);
 
     var options = {
-        hostname: process.env.DATABASE_URL,// || "collusiondb-development.herokuapp.com",
+        hostname: process.env.DATABASE_URL || "collusiondb-development.herokuapp.com",
         port: process.env.DATABASE_PORT || 80,
         path: "/getBrowseData",
         method: "GET",
