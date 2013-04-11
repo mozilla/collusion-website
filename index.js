@@ -11,7 +11,7 @@ app.configure(function(){
     app.set("views", __dirname + "/");
     app.engine("html", cons.handlebars);
     app.use(express.static(__dirname + "/public"));
-    app.use(express.bodyParser());    
+    app.use(express.bodyParser());
 });
 
 
@@ -55,9 +55,10 @@ app.get("/foo", function(req,res){
 app.get("/browseData", function(req, res){
     var query = {};
     var queryString = JSON.stringify(query);
-  
+
     var options = {
-        hostname: "collusiondb-development.herokuapp.com",
+        hostname: process.env.DATABASE_URL,// || "collusiondb-development.herokuapp.com",
+        port: process.env.DATABASE_PORT || 80,
         path: "/getBrowseData",
         method: "GET",
         headers: {
@@ -65,7 +66,7 @@ app.get("/browseData", function(req, res){
             "Content-Length": queryString.length
         }
     };
-  
+
     var trackerBoxes = new Array();
     var websiteBoxes = new Array();
     var result = "";
@@ -119,7 +120,7 @@ app.get("/browseData", function(req, res){
     // write data to request body
     reqGet.write(queryString);
     reqGet.end();
-    
+
 });
 
 
@@ -130,7 +131,7 @@ app.get("/browseData", function(req, res){
 app.get("/third-party-websites/:tracker", function(req, res){
     var query = {"target": req.params.tracker};
     var queryString = JSON.stringify(query);
-  
+
     var options = {
         hostname: "collusiondb-development.herokuapp.com",
         path: "/getThirdPartyWebsite",
@@ -140,7 +141,7 @@ app.get("/third-party-websites/:tracker", function(req, res){
           "Content-Length": queryString.length
         }
     };
-  
+
     var result = ""
     var getReq = http.request(options, function(response) {
         response.setEncoding("utf8");
@@ -197,7 +198,7 @@ app.get("/visited-websites/:website", function(req, res){
             "Content-Length": queryString.length
         }
     };
-  
+
     var result = "";
     var getReq = http.request(options, function(response) {
         response.setEncoding("utf8");
@@ -244,9 +245,9 @@ app.get("/visited-websites/:website", function(req, res){
 function postData(res){
     // sample data
     var postData = {"format":"Collusion Save File","version":"1.0","token":"{400932ee-77f5-2b4e-8cf7-01a811e057f9}","connections":[["boingboing.net","keywords.fmpub.net",1361928518710,"text/html",true,false,false,2,0],["boingboing.net","tenzing.fmpub.net",1361938518745,"application/x-javascript",true,false,false,1,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176069,"text/javascript",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1362006176092,"text/css",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176202,"image/png",false,false,true,4,0],["www.mozilla.org","ssl.google-analytics.com",1361966176472,"application/x-unknown-content-type",false,false,true,1,0],["github.com","secure.gravatar.com",1361985631520,"application/x-unknown-content-type",false,true,true,5,0],["github.com","secure.gravatar.com",1361985631544,"application/x-unknown-content-type",false,true,true,5,0],["github.com","secure.gravatar.com",1362985631568,"application/x-unknown-content-type",false,true,true,5,0],["postgres.heroku.com","heroku-logs.herokuapp.com",1363376865580,"text/plain",false,true,true,4,0],["postgres.heroku.com","heroku-logs.herokuapp.com",1372376884626,"text/plain",false,true,true,4,0]]};
-    
+
     var postDataString = JSON.stringify(postData);
-    
+
     var options = {
         hostname: "collusiondb-development.herokuapp.com",
         path: "/donateData",
@@ -256,7 +257,7 @@ function postData(res){
             "Content-Length": postDataString.length
         }
     };
-    
+
     var result = "";
     var postReq = http.request(options, function(response) {
         response.setEncoding("utf8");
@@ -286,7 +287,7 @@ function getData(res){
     var query = {"source": "ca.yahoo.com", };
     var queryString = JSON.stringify(query);
     //console.log(queryString);
-  
+
     var options = {
         hostname: "collusiondb-development.herokuapp.com",
         path: "/getData",
@@ -296,7 +297,7 @@ function getData(res){
             "Content-Length": queryString.length
         }
     };
-  
+
     var result = "";
     var getReq = http.request(options, function(response) {
         response.setEncoding("utf8");
