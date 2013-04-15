@@ -15,7 +15,7 @@ app.configure(function(){
 });
 
 
-handlebars.registerHelper("avatarBox", function(items, options) {
+handlebars.registerHelper("profileThumb", function(items, options) {
     var boxes = "";
     for(var i=0, l=items.length; i<l; i++) {
         boxes = boxes + options.fn(items[i]);
@@ -69,8 +69,6 @@ app.get("/browseData", function(req, res){
         }
     };
 
-    var trackerBoxes = new Array();
-    var websiteBoxes = new Array();
     var result = "";
     var reqGet = http.request(options, function(response) {
         response.setEncoding("utf8");
@@ -79,44 +77,16 @@ app.get("/browseData", function(req, res){
         });
         response.on("end", function(){
             result = JSON.parse(result);
-            for (var i=0; i<result.trackers.length; i++ ){
-                var row = result.trackers[i];
-                var infoUrl = row[ Object.keys(row)[0] ];
-                var infoLine1 = row[ Object.keys(row)[1] ];
-                var url = "/third-party-websites/" + infoUrl;
-                trackerBoxes.push(
-                    {
-                        url: url,
-                        infoUrl: infoUrl,
-                        faviconUrl: "http://" + infoUrl +  "/favicon.ico",
-                        infoLine1: infoLine1,
-                        infoLine2: row[ Object.keys(row)[2] ]
-                });
-            }
-            for (var i=0; i<result.websites.length; i++ ){
-            var row = result.websites[i];
-                var infoUrl = row[ Object.keys(row)[0] ];
-                var infoLine1 = row[ Object.keys(row)[1] ];
-                var url = "/visited-websites/" + infoUrl;
-                websiteBoxes.push(
-                    {
-                        url: url,
-                        infoUrl: infoUrl,
-                        faviconUrl: "http://" + infoUrl +  "/favicon.ico",
-                        infoLine1: infoLine1,
-                        infoLine2: row[ Object.keys(row)[2] ]
-                    });
-            }
             var data = {
-                trackers: trackerBoxes,
-                websites: websiteBoxes
+                trackers: buildProfileThumb("thirdParty", result.trackers),
+                websites: buildProfileThumb("visited", result.websites)
             }
             res.render("browseData.html", data);
         });
     });
 
     reqGet.on("error", function(err) {
-        if (err) console.log("[ ERROR ] Problem with request: " + e.message);
+        if (err) console.log("[ ERROR ] Problem with request: " + err.message);
     });
 
     // write data to request body
@@ -127,12 +97,44 @@ app.get("/browseData", function(req, res){
 
 
 /**************************************************
-*   Third Party Website details
+*   Helper method for the browse data page
 */
-app.get("/third-party-websites/:tracker", function(req, res){
+function buildProfileThumb(type, objArr){
+    var result = [];
+    var urlPath = "";
+    if ( type == "thirdParty" ){
+        urlPath = "/third-party-websites/";
+    }else{
+        urlPath = "/visited-websites/";
+    }
+    
+    for (var i=0; i<objArr.length; i++ ){
+        var row = objArr[i];
+        var infoUrl = row[ Object.keys(row)[0] ];
+        var infoLine1 = row[ Object.keys(row)[1] ];
+        var url = urlPath + infoUrl;
+        result.push(
+            {
+                url: url,
+                infoUrl: infoUrl,
+                faviconUrl: "http://" + infoUrl +  "/favicon.ico",
+                infoLine1: infoLine1,
+                infoLine2: row[ Object.keys(row)[2] ]
+        });
+    }
+    
+    return result;
+}
+
+
+/**************************************************
+*   Third Party Website details
+*   A third party website profile page should show a list of sites that it has sent connections to
+*/
+app.get("/third-party-websites/:site", function(req, res){
     var query = {};
-    query.profileName = req.params.tracker;
-    query.query = {"target": req.params.tracker};
+    query.profileName = req.params.site;
+    query.query = {"target": req.params.site};
     query.path = "/getThirdPartyWebsite";
     
     getSiteProfile("thirdParty",query,function(data){
@@ -143,11 +145,12 @@ app.get("/third-party-websites/:tracker", function(req, res){
 
 /**************************************************
 *   Visited Website details
+*   A visited website profile page should show a list of third party sites that it has received connections from
 */
-app.get("/visited-websites/:website", function(req, res){
+app.get("/visited-websites/:site", function(req, res){
     var query = {};
-    query.profileName = req.params.website;
-    query.query = {"source": req.params.website};
+    query.profileName = req.params.site;
+    query.query = {"source": req.params.site};
     query.path = "/getVisitedWebsite";
     
     getSiteProfile("visited",query,function(data){
@@ -158,6 +161,10 @@ app.get("/visited-websites/:website", function(req, res){
 
 /**************************************************
 *   Get site profile page
+*   A site can be visited, third party, or both.  
+*   We want to show site profile page accordingly to its context.
+*   A third party website profile page should show a list of sites that it has sent connections to
+*   A visited website profile page should show a list of third party sites that it has received connections from
 */
 function getSiteProfile(type,query,callback){
     var queryString = JSON.stringify(query.query);
@@ -205,7 +212,7 @@ function getSiteProfile(type,query,callback){
     });
 
     getReq.on("error", function(err) {
-        if (err) console.log("[ ERROR ] Problem with request: " + e.message);
+        if (err) console.log("[ ERROR ] Problem with request: " + err.message);
     });
 
     // write data to request body

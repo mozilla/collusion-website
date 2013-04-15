@@ -46,10 +46,10 @@
                         <!-- === Third-Party Connections === -->
                         <section class="section-box">
                             <h4>"Top 10" Third-Party Connections</h4>
-                            {{! only output this if an avatarBox exists }}
+                            {{! only output this if a profileThumb exists }}
                             {{#if trackers}}
-                            {{#avatarBox trackers}}
-                            <a href="{{{url}}}" class="avatar-box">
+                            {{#profileThumb trackers}}
+                            <a href="{{{url}}}" class="profile-thumb">
                                 <div >
                                     <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{faviconUrl}}}">
                                         <b>{{infoUrl}}</b>
@@ -57,7 +57,7 @@
                                         Websites connected: {{infoLine1}}
                                 </div>
                             </a>
-                            {{/avatarBox}}
+                            {{/profileThumb}}
                             {{/if}}
                         </section>
                         <!-- === Visited Websites === -->
@@ -65,8 +65,8 @@
                             <h4>"Top 10 Most Connected" Websites</h4>
                             {{! only output this if an avatarBox exists }}
                             {{#if websites}}
-                            {{#avatarBox websites}}
-                            <a href="{{{url}}}" class="avatar-box">
+                            {{#profileThumb websites}}
+                            <a href="{{{url}}}" class="profile-thumb">
                                 <div>
                                     <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{faviconUrl}}}">
                                         <b>{{infoUrl}}</b>
@@ -75,7 +75,7 @@
                                         <!-- Last visited on {{infoLine2}} -->
                                 </div>
                             </a>
-                            {{/avatarBox}}
+                            {{/profileThumb}}
                             {{/if}}
                         </section>
                     </div>
