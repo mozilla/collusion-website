@@ -3,7 +3,7 @@ var app = express();
 var handlebars = require("handlebars");
 var cons = require("consolidate"); // template engine consolidation library
 var http = require("http");
-var https = require("https");
+var test = require("./test.js");
 
 app.configure(function(){
     app.set("view engine", "handlebars");
@@ -15,13 +15,23 @@ app.configure(function(){
 });
 
 
-handlebars.registerHelper('avatarBox', function(items, options) {
+handlebars.registerHelper("avatarBox", function(items, options) {
     var boxes = "";
     for(var i=0, l=items.length; i<l; i++) {
         boxes = boxes + options.fn(items[i]);
     }
     return boxes;
 });
+
+
+handlebars.registerHelper("siteList", function(items, options) {
+    var result = "";
+    for(var i=0, l=items.length; i<l; i++) {
+        result = result + options.fn(items[i]);
+    }
+    return result;
+});
+
 
 
 /**************************************************
@@ -33,19 +43,11 @@ app.get("/", function(req, res){
 
 
 /**************************************************
-*   Donate data button handler (testing purpose)
+*   TESTING
 */
-app.post("/donate", function(req, res){
-    postData(res);
-});
-
-
-/**************************************************
-*   TESTING TO SEE IF THE CODE WORKS WITH THE NEW DATABASE SERVER
-*/
-app.get("/foo", function(req,res){
-    postData(res);
-    //getData(res);
+app.get("/test", function(req,res){
+    //test.postData(res);
+    test.getData(res);
 });
 
 
@@ -125,60 +127,10 @@ app.get("/browseData", function(req, res){
 
 
 /**************************************************
-*   Tracker details
+*   Third Party Website details
 */
-//app.param('tracker', /^\d+$/);
 app.get("/third-party-websites/:tracker", function(req, res){
-    var query = {"target": req.params.tracker};
-    var queryString = JSON.stringify(query);
-
-    var options = {
-        hostname: "collusiondb-development.herokuapp.com",
-        path: "/getThirdPartyWebsite",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Content-Length": queryString.length
-        }
-    };
-
-    var result = ""
-    var getReq = http.request(options, function(response) {
-        response.setEncoding("utf8");
-        response.on("data", function (chunk) {
-            result += chunk;
-        });
-        response.on("end", function(){
-            result = JSON.parse(result);
-            var wrapper = "<ul>";
-            for (var i=0; i<result.rowCount; i++ ){
-                var row = result.rows[i];
-                var rowProperties = new Array();
-                for (var prop in row){
-                    rowProperties.push(row[prop]);
-                }
-                var url = "/visited-websites/" + rowProperties[0];
-                var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
-                var ifCookie = rowProperties[1] == '1';
-                wrapper = wrapper + "<li cookie-connection=" + ifCookie + ">" + anchor + "</li>";
-            }
-            wrapper += "</ul>";
-            var data = {
-              tracker: req.params.tracker,
-              details: wrapper
-            };
-            res.render("thirdPartyWebsiteInfo.html", data);
-        });
-    });
-
-    getReq.on("error", function(e) {
-        console.log("Problem with request: " + e.message);
-    });
-
-    // write data to request body
-    getReq.write(queryString);
-    getReq.end();
-
+    getSiteProfile("thirdParty",req,res)
 });
 
 
@@ -186,12 +138,30 @@ app.get("/third-party-websites/:tracker", function(req, res){
 *   Visited Website details
 */
 app.get("/visited-websites/:website", function(req, res){
-    var query = {"source": req.params.website};
+    getSiteProfile("visited",req,res);
+});
+
+
+/**************************************************
+*   Get site profile page
+*/
+function getSiteProfile(type, req,res){
+    var query;
+    var path;
+    if ( type == "thirdParty" ){
+        query = {"target": req.params.tracker};
+        path = "/getThirdPartyWebsite";
+    }else{
+        query = {"source": req.params.website};
+        path = "/getVisitedWebsite";
+    }
+    
     var queryString = JSON.stringify(query);
 
     var options = {
-        hostname: "collusiondb-development.herokuapp.com",
-        path: "/getVisitedWebsite",
+        hostname: process.env.DATABASE_URL || "collusiondb-development.herokuapp.com",
+        port: process.env.DATABASE_PORT || 80,
+        path: path,
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -207,24 +177,36 @@ app.get("/visited-websites/:website", function(req, res){
         });
         response.on("end", function(){
             result = JSON.parse(result);
-            var wrapper = "<ul>";
+            var sites = [];
             for (var i=0; i<result.rowCount; i++ ){
                 var row = result.rows[i];
-                var rowProperties = new Array();
-                for (var prop in row){
-                  rowProperties.push(row[prop]);
-                }
-                var url = "/third-party-websites/" + rowProperties[0];
-                var anchor = "<a href='" + url +  "'>" + rowProperties[0] + "</a>";
-                var ifCookie = rowProperties[1] == '1';
-                wrapper = wrapper + "<li cookie-connection=" + ifCookie + ">" + anchor + "</li>";
+                var site = {};
+                site.ifCookie = (row["cookie"] == "1").toString();
+                if ( type == "thirdParty" ){
+                    site.siteUrl = row["source"];
+                    site.pageUrl = "/visited-websites/" + row["source"];
+                }else{ 
+                    site.siteUrl = row["target"];
+                    site.pageUrl = "/third-party-websites/" + row["target"];
+                } 
+                sites.push(site);
             }
-            wrapper += "</ul>";
-            var data = {
-                website: req.params.website,
-                details: wrapper
-            };
-            res.render("visitedWebsiteInfo.html", data);
+            
+            if ( type == "thirdParty" ){
+                var data = {
+                    tracker: req.params.tracker,
+                    sites: sites
+                };
+                res.render("thirdPartyWebsiteInfo.html", data);
+            }else{
+                var data = {
+                    website: req.params.website,
+                    sites: sites
+                };
+                res.render("visitedWebsiteInfo.html", data);
+            }
+            
+            
         });
     });
 
@@ -235,92 +217,7 @@ app.get("/visited-websites/:website", function(req, res){
     // write data to request body
     getReq.write(queryString);
     getReq.end();
-
-});
-
-
-/**************************************************
-*   Post data (testing purpose)
-*/
-function postData(res){
-    // sample data
-    var postData = {"format":"Collusion Save File","version":"1.0","token":"{400932ee-77f5-2b4e-8cf7-01a811e057f9}","connections":[["boingboing.net","keywords.fmpub.net",1361928518710,"text/html",true,false,false,2,0],["boingboing.net","tenzing.fmpub.net",1361938518745,"application/x-javascript",true,false,false,1,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176069,"text/javascript",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1362006176092,"text/css",false,false,true,3,0],["www.mozilla.org","mozorg.cdn.mozilla.net",1361906176202,"image/png",false,false,true,4,0],["www.mozilla.org","ssl.google-analytics.com",1361966176472,"application/x-unknown-content-type",false,false,true,1,0],["github.com","secure.gravatar.com",1361985631520,"application/x-unknown-content-type",false,true,true,5,0],["github.com","secure.gravatar.com",1361985631544,"application/x-unknown-content-type",false,true,true,5,0],["github.com","secure.gravatar.com",1362985631568,"application/x-unknown-content-type",false,true,true,5,0],["postgres.heroku.com","heroku-logs.herokuapp.com",1363376865580,"text/plain",false,true,true,4,0],["postgres.heroku.com","heroku-logs.herokuapp.com",1372376884626,"text/plain",false,true,true,4,0]]};
-
-    var postDataString = JSON.stringify(postData);
-
-    var options = {
-        hostname: "collusiondb-development.herokuapp.com",
-        path: "/donateData",
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Content-Length": postDataString.length
-        }
-    };
-
-    var result = "";
-    var postReq = http.request(options, function(response) {
-        response.setEncoding("utf8");
-        response.on("data", function (chunk) {
-            result += chunk;
-        });
-        response.on("end", function(){
-            console.log("POST data response: " + result);
-            res.send("POST data response: " + result);
-        });
-    });
-
-    postReq.on("error", function(e) {
-       console.log("problem with request: " + e.message);
-    });
-
-    // write data to request body
-    postReq.write(postDataString);
-    postReq.end();
 }
-
-
-/**************************************************
-*   Get data (testing purpose)
-*/
-function getData(res){
-    var query = {"source": "ca.yahoo.com", };
-    var queryString = JSON.stringify(query);
-    //console.log(queryString);
-
-    var options = {
-        hostname: "collusiondb-development.herokuapp.com",
-        path: "/getData",
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Content-Length": queryString.length
-        }
-    };
-
-    var result = "";
-    var getReq = http.request(options, function(response) {
-        response.setEncoding("utf8");
-        response.on("data", function (chunk) {
-            result += chunk;
-        });
-        response.on("end", function(){
-            //console.log("GET data response: " + result);
-            //res.send("GET data response: " + result);
-        });
-    });
-
-    getReq.on("error", function(e) {
-        console.log("problem with request: " + e.message);
-    });
-
-    // write data to request body
-    getReq.write(queryString);
-    getReq.end();
-};
-
-
-
 
 
 

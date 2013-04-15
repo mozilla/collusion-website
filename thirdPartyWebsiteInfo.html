@@ -2714,7 +2714,15 @@
                                       <input id="filter-cookie" type="checkbox" checked="true">Show <span style="color: #ED9118">Cookie-Based</span> Connections</input></br>
                                       <input id="filter-noncookie" type="checkbox" checked="true">Show <span style="color: #3DABB3">Non-Cookie-Based</span> Connections</input></br>
                                     </div>
-                                    {{{details}}}
+                                    {{#if sites}}
+                                    <ul>
+                                        {{#siteList sites}}
+                                        <li cookie-connection="{{ifCookie}}">
+                                            <a href="{{pageUrl}}">{{siteUrl}}</a>
+                                        </li>
+                                        {{/siteList}}
+                                    </ul>
+                                    {{/if}}
                                 </div>
                             </div>
                         </section>
@@ -2748,16 +2756,15 @@
                   countryCode = geoip.country_code;
                   var svg = d3.select("svg");
                   var countryOnMap = d3.select("svg").select("#" + countryCode.toLowerCase());
-                  console.log(countryOnMap);
+                  //console.log(countryOnMap);
                   countryOnMap.classed("highlight-country", true);
                   countryOnMap.selectAll("path").classed("highlight-country", true);
             });
             /* ----------------------------------------------------------- */
             
-            
         
-            $("ul li[cookie-connection=true]").addClass("cookie");
-            $("ul li[cookie-connection=false]").addClass("non-cookie");
+            $(".connections ul li[cookie-connection=true]").addClass("cookie");
+            $(".connections ul li[cookie-connection=false]").addClass("non-cookie");
         
             $("#filter-cookie").click(function(){
                   $("ul li[cookie-connection=true], ul li[cookie-connection=true] a").toggleClass("cookie").toggleClass("greyed-out");
