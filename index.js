@@ -115,8 +115,8 @@ app.get("/browseData", function(req, res){
         });
     });
 
-    reqGet.on("error", function(e) {
-        console.log("Problem with GET request: " + e.message);
+    reqGet.on("error", function(err) {
+        if (err) console.log("[ ERROR ] Problem with request: " + e.message);
     });
 
     // write data to request body
@@ -130,7 +130,14 @@ app.get("/browseData", function(req, res){
 *   Third Party Website details
 */
 app.get("/third-party-websites/:tracker", function(req, res){
-    getSiteProfile("thirdParty",req,res)
+    var query = {};
+    query.profileName = req.params.tracker;
+    query.query = {"target": req.params.tracker};
+    query.path = "/getThirdPartyWebsite";
+    
+    getSiteProfile("thirdParty",query,function(data){
+        res.render("thirdPartyWebsiteInfo.html", data);    
+    });
 });
 
 
@@ -138,37 +145,33 @@ app.get("/third-party-websites/:tracker", function(req, res){
 *   Visited Website details
 */
 app.get("/visited-websites/:website", function(req, res){
-    getSiteProfile("visited",req,res);
+    var query = {};
+    query.profileName = req.params.website;
+    query.query = {"source": req.params.website};
+    query.path = "/getVisitedWebsite";
+    
+    getSiteProfile("visited",query,function(data){
+         res.render("visitedWebsiteInfo.html", data);
+    });
 });
 
 
 /**************************************************
 *   Get site profile page
 */
-function getSiteProfile(type, req,res){
-    var query;
-    var path;
-    if ( type == "thirdParty" ){
-        query = {"target": req.params.tracker};
-        path = "/getThirdPartyWebsite";
-    }else{
-        query = {"source": req.params.website};
-        path = "/getVisitedWebsite";
-    }
-    
-    var queryString = JSON.stringify(query);
-
+function getSiteProfile(type,query,callback){
+    var queryString = JSON.stringify(query.query);
     var options = {
         hostname: process.env.DATABASE_URL || "collusiondb-development.herokuapp.com",
         port: process.env.DATABASE_PORT || 80,
-        path: path,
+        path: query.path,
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             "Content-Length": queryString.length
         }
     };
-
+    
     var result = "";
     var getReq = http.request(options, function(response) {
         response.setEncoding("utf8");
@@ -191,27 +194,18 @@ function getSiteProfile(type, req,res){
                 } 
                 sites.push(site);
             }
-            
-            if ( type == "thirdParty" ){
-                var data = {
-                    tracker: req.params.tracker,
+
+            var data = {
+                    profileName: query.profileName,
                     sites: sites
-                };
-                res.render("thirdPartyWebsiteInfo.html", data);
-            }else{
-                var data = {
-                    website: req.params.website,
-                    sites: sites
-                };
-                res.render("visitedWebsiteInfo.html", data);
-            }
+            };
             
-            
+            callback(data);
         });
     });
 
-    getReq.on("error", function(e) {
-        console.log("problem with request: " + e.message);
+    getReq.on("error", function(err) {
+        if (err) console.log("[ ERROR ] Problem with request: " + e.message);
     });
 
     // write data to request body
