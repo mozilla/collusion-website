@@ -3,12 +3,14 @@ var app = express();
 var handlebars = require("handlebars");
 var cons = require("consolidate"); // template engine consolidation library
 var http = require("http");
+var fs = require('fs');
+var path = require('path');
 var test = require("./test.js");
 
 app.configure(function(){
-    app.set("view engine", "handlebars");
+    app.set("view engine", "html");
     app.set("view options", { layout: false });
-    app.set("views", __dirname + "/");
+    app.set("views", __dirname + "/views");
     app.engine("html", cons.handlebars);
     app.use(express.static(__dirname + "/public"));
     app.use(express.bodyParser());
@@ -32,16 +34,17 @@ handlebars.registerHelper("siteList", function(items, options) {
     return result;
 });
 
-handlebars.registerPartial("header", '<head>' + 
-        '<link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />' +
-        '<link rel="stylesheet" href="/styles/font-awesome.css" type="text/css" />' +
-        '<link rel="stylesheet" href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" />' +
-        '<link rel="stylesheet" href="/styles/sandstone.css" type="text/css" />' +
-        '<link rel="stylesheet" href="/styles/style.css" type="text/css" />' +
-        '<link rel="stylesheet" href="/webmaker-nav/css/webmaker-nav.css" type="text/css" />' +
-        '<title>Collusion Website - Development</title>' +
-        '</head>'
-        );
+var viewdir = path.join(__dirname, 'views');
+fs.readdirSync(viewdir).forEach(function(filename){
+    var ext = path.extname(filename);
+    if (filename[0] === '_' && ext === '.html'){
+        var filepath = path.join(viewdir, filename);
+        var stringtemplate = fs.readFileSync(filepath, 'utf8');
+        var templatename = path.basename(filename, ext).slice(1);
+        handlebars.registerPartial(templatename, stringtemplate);
+        //console.log('registering %s partial: %s characters', templatename, stringtemplate.length);
+    }
+});
 
 
 /**************************************************
@@ -91,7 +94,7 @@ app.get("/browseData", function(req, res){
                 trackers: buildProfileThumb("thirdParty", result.trackers),
                 websites: buildProfileThumb("visited", result.websites)
             }
-            res.render("browseData.html", data);
+            res.render("browseData", data);
         });
     });
 
