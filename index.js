@@ -107,7 +107,7 @@ function buildProfileThumb(type, objArr){
     }else{
         urlPath = "/visited-websites/";
     }
-    
+
     for (var i=0; i<objArr.length; i++ ){
         var row = objArr[i];
         var infoUrl = row[ Object.keys(row)[0] ];
@@ -122,7 +122,7 @@ function buildProfileThumb(type, objArr){
                 infoLine2: row[ Object.keys(row)[2] ]
         });
     }
-    
+
     return result;
 }
 
@@ -136,9 +136,9 @@ app.get("/third-party-websites/:site", function(req, res){
     query.profileName = req.params.site;
     query.query = {"target": req.params.site};
     query.path = "/getThirdPartyWebsite";
-    
+
     getSiteProfile("thirdParty",query,function(data){
-        res.render("thirdPartyWebsiteInfo.html", data);    
+        res.render("thirdPartyWebsiteInfo.html", data);
     });
 });
 
@@ -152,7 +152,7 @@ app.get("/visited-websites/:site", function(req, res){
     query.profileName = req.params.site;
     query.query = {"source": req.params.site};
     query.path = "/getVisitedWebsite";
-    
+
     getSiteProfile("visited",query,function(data){
          res.render("visitedWebsiteInfo.html", data);
     });
@@ -161,7 +161,7 @@ app.get("/visited-websites/:site", function(req, res){
 
 /**************************************************
 *   Get site profile page
-*   A site can be visited, third party, or both.  
+*   A site can be visited, third party, or both.
 *   We want to show site profile page accordingly to its context.
 *   A third party website profile page should show a list of sites that it has sent connections to
 *   A visited website profile page should show a list of third party sites that it has received connections from
@@ -178,7 +178,7 @@ function getSiteProfile(type,query,callback){
             "Content-Length": queryString.length
         }
     };
-    
+
     var result = "";
     var getReq = http.request(options, function(response) {
         response.setEncoding("utf8");
@@ -186,7 +186,17 @@ function getSiteProfile(type,query,callback){
             result += chunk;
         });
         response.on("end", function(){
-            result = JSON.parse(result);
+            try{
+                result = JSON.parse(result);
+            }catch(e){
+                console.log('Database Error: %s', e.message);
+                console.log(result);
+                callback({
+                    profileName: query.profileName,
+                    sites: []
+                });
+                return;
+            }
             var sites = [];
             for (var i=0; i<result.rowCount; i++ ){
                 var row = result.rows[i];
@@ -195,10 +205,10 @@ function getSiteProfile(type,query,callback){
                 if ( type == "thirdParty" ){
                     site.siteUrl = row["source"];
                     site.pageUrl = "/visited-websites/" + row["source"];
-                }else{ 
+                }else{
                     site.siteUrl = row["target"];
                     site.pageUrl = "/third-party-websites/" + row["target"];
-                } 
+                }
                 sites.push(site);
             }
 
@@ -206,7 +216,7 @@ function getSiteProfile(type,query,callback){
                     profileName: query.profileName,
                     sites: sites
             };
-            
+
             callback(data);
         });
     });
