@@ -9,10 +9,10 @@
         <link rel="stylesheet" href="/webmaker-nav/css/webmaker-nav.css" type="text/css" />
         <title>Collusion Website - Development</title>
     </head>
-  
+
     <body>
-        
-      
+
+
         <div id="outer-wrapper">
             <a href="http://www.mozilla.org/" id="tabzilla">mozilla</a>
             <!-- Begin webmaker nav -->
@@ -50,15 +50,17 @@
                                     These sites tracks them.
                                 </div>
                                 <div style="clear: both"></div>
-                                
-                            </div>                          
+
+                            </div>
                             <div class="detail-section">
                                 <div class="map-section sub-left">
+                                    <svg class="vizcanvas" width="70%" height="70%" viewBox="0 0 1000 1000">  </svg>
+
                                     <!-- SVG world map code starts; based on BlankMap-World6,_compact.svg by Canuckguy et al. =========================  -->
                                     <div class="world-map">
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 81.5 2711.3 1196.7" width="70%" height="70%">
-  <style type="text/css"> 
+<svg id="worldmap" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 81.5 2711.3 1196.7" width="70%" height="70%">
+  <style type="text/css">
 /*
  * Below are Cascading Style Sheet (CSS) definitions in use in this file,
  * which allow easily changing how countries are displayed.
@@ -2700,7 +2702,7 @@
     <circle class="circlexx sg" cx="2065.0579" cy="748.100055" id="sg." r="6.01303"/>
   </g>
 </svg>
-                              
+
                                     </div>
                                     <!-- SVG world map code ends ===========================  -->
                                     Server located in <span class="country"></span><br /><br />
@@ -2731,14 +2733,14 @@
             </div>
             <!-- <div id="modal-overlay"> not sure if we should have this</div> -->
         </div>
-      
+
         <script src="/js/require.js"></script>
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script src="/js/parseurl.js"></script>
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script>
-            /* 
-              Based on https://github.com/toolness/url-demystifier 
+            /*
+              Based on https://github.com/toolness/url-demystifier
               and uses Steven Levithan's parseUri 1.2.2
             */
             var url = window.location.pathname.split("/")[2];
@@ -2754,27 +2756,27 @@
                   }
                   $(".country").html(geoip.country_name);
                   countryCode = geoip.country_code;
-                  var svg = d3.select("svg");
-                  var countryOnMap = d3.select("svg").select("#" + countryCode.toLowerCase());
+                  var svg = d3.select("#worldmap");
+                  var countryOnMap = d3.select("#worldmap").select("#" + countryCode.toLowerCase());
                   //console.log(countryOnMap);
                   countryOnMap.classed("highlight-country", true);
                   countryOnMap.selectAll("path").classed("highlight-country", true);
             });
             /* ----------------------------------------------------------- */
-            
-            
-        
+
+
+
             $("ul li[cookie-connection=true]").addClass("cookie");
             $("ul li[cookie-connection=false]").addClass("non-cookie");
-        
+
             $("#filter-cookie").click(function(){
                   $("ul li[cookie-connection=true], ul li[cookie-connection=true] a").toggleClass("cookie").toggleClass("greyed-out");
             });
-          
+
             $("#filter-noncookie").click(function(){
                   $("ul li[cookie-connection=false], ul li[cookie-connection=false] a").toggleClass("non-cookie").toggleClass("greyed-out");
             });
-        
+
             require.config({
                            packages: [{
                                       name: "webmaker-nav",
@@ -2800,8 +2802,10 @@
             });
             </script>
         <script src="//www.mozilla.org/tabzilla/media/js/tabzilla.js"></script>
-      
-      
+        <script src="/js/collusion.js"></script>
+        <script>getCollusionData("{{{profileName}}}");</script>
+
+
     </body>
 
 </html>
