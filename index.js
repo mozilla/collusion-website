@@ -51,7 +51,7 @@ fs.readdirSync(viewdir).forEach(function(filename){
 *   Index page
 */
 app.get("/", function(req, res){
-    res.render("index.html");
+    res.render("index");
 });
 
 
@@ -151,7 +151,7 @@ app.get("/third-party-websites/:site", function(req, res){
     query.path = "/getThirdPartyWebsite";
 
     getSiteProfile("thirdParty",query,function(data){
-        res.render("thirdPartyWebsiteInfo.html", data);
+        res.render("thirdPartyWebsiteInfo", data);
     });
 });
 
@@ -167,7 +167,7 @@ app.get("/visited-websites/:site", function(req, res){
     query.path = "/getVisitedWebsite";
 
     getSiteProfile("visited",query,function(data){
-         res.render("visitedWebsiteInfo.html", data);
+         res.render("visitedWebsiteInfo", data);
     });
 });
 
