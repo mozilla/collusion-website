@@ -32,6 +32,16 @@ handlebars.registerHelper("siteList", function(items, options) {
     return result;
 });
 
+handlebars.registerPartial("header", '<head>' + 
+        '<link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />' +
+        '<link rel="stylesheet" href="/styles/font-awesome.css" type="text/css" />' +
+        '<link rel="stylesheet" href="//www.mozilla.org/tabzilla/media/css/tabzilla.css" />' +
+        '<link rel="stylesheet" href="/styles/sandstone.css" type="text/css" />' +
+        '<link rel="stylesheet" href="/styles/style.css" type="text/css" />' +
+        '<link rel="stylesheet" href="/webmaker-nav/css/webmaker-nav.css" type="text/css" />' +
+        '<title>Collusion Website - Development</title>' +
+        '</head>'
+        );
 
 
 /**************************************************
