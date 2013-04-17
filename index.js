@@ -91,7 +91,8 @@ app.get("/browseData", function(req, res){
         response.on("end", function(){
             result = JSON.parse(result);
             var data = {
-                websites: buildProfileThumb("visited", result)
+                timeRange: new Date(Date.now()-86400000) + " and " + new Date(Date.now()),
+                websites: buildProfileThumb(result)
             }
             res.render("browseData", data);
         });
@@ -111,7 +112,7 @@ app.get("/browseData", function(req, res){
 /**************************************************
 *   Helper method for the browse data page
 */
-function buildProfileThumb(type, objArr){
+function buildProfileThumb(objArr){
     var result = [];
     var urlPath = "/profile/";
     for ( var key in objArr ){
