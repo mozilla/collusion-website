@@ -58,7 +58,11 @@
         <script src="/js/profile.js"></script>
         <script src="/js/webmakerNav.js"></script>
         <script src="/js/collusion.js"></script>
-        <script>getCollusionData("{{{profileName}}}");</script>
+        <script>
+            setSiteProfile("{{{profileName}}}",function(data){
+                loadData(data);
+            });
+        </script>
 
     </body>
 

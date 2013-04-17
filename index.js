@@ -118,7 +118,7 @@ function buildProfileThumb(type, objArr){
         var site = objArr[key];
         var infoUrl = key;
         var infoLine1 = site.howMany;
-        var infoLine2 = site.nodeType;
+        var infoLine2 = site.linkedFrom.length + site.linkedTo.length;
         var url = urlPath + infoUrl;
         result.push(
             {
@@ -136,91 +136,19 @@ function buildProfileThumb(type, objArr){
 
 
 /**************************************************
-*   Visited Website details
-*   A visited website profile page should show a list of third party sites that it has received connections from
+*   Site Profile
 */
 app.get("/profile/:site", function(req, res){
     var query = {};
     query.profileName = req.params.site;
     query.query = {"name": req.params.site};
-    query.path = "/getWebsiteProfile";
+    query.path = "/getSiteProfile";
 
-    getSiteProfile(query,function(data){
-         res.render("websiteProfile", data);
-    });
-});
-
-
-/**************************************************
-*   Get site profile page
-*   A site can be visited, third party, or both.
-*   We want to show site profile page accordingly to its context.
-*   A third party website profile page should show a list of sites that it has sent connections to
-*   A visited website profile page should show a list of third party sites that it has received connections from
-*/
-function getSiteProfile(query,callback){
-    var queryString = JSON.stringify(query.query);
-    var options = {
-        hostname: process.env.DATABASE_URL || "collusiondb-development.herokuapp.com",
-        port: process.env.DATABASE_PORT || 80,
-        path: query.path,
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Content-Length": queryString.length
-        }
+    var data = {
+        profileName: query.profileName,
     };
-
-    var result = "";
-    var getReq = http.request(options, function(response) {
-        response.setEncoding("utf8");
-        response.on("data", function (chunk) {
-            result += chunk;
-        });
-        response.on("end", function(){
-            try{
-                result = JSON.parse(result);
-            }catch(e){
-                console.log('Database Error: %s', e.message);
-                console.log(result);
-                callback({
-                    profileName: query.profileName,
-                    sites: []
-                });
-                return;
-            }
-            var sites = [];
-            for ( var key in result ){
-                if ( key != query.profileName ){
-                    var row = result[key];
-                    var site = {};
-                    //site.ifCookie = (row["cookie"] == "1").toString();
-                    site.ifCookie = "false";
-                    site.siteUrl = key;
-                    site.pageUrl = "/profile/" + key;
-                    sites.push(site);
-                }
-                
-            }
-
-            var data = {
-                    profileName: query.profileName,
-                    sites: sites
-            };
-
-            callback(data);
-        });
-    });
-
-    getReq.on("error", function(err) {
-        if (err) console.log("[ ERROR ] Problem with request: " + err.message);
-    });
-
-    // write data to request body
-    getReq.write(queryString);
-    getReq.end();
-}
-
+    res.render("siteProfile", data);
+});
 
 
 app.listen(process.env.PORT, function() {

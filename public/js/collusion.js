@@ -13,6 +13,8 @@ var requestAnimationFrame =
     window.webkitRequestAnimationFrame;
 
 function loadData(data){
+    vis = d3.select('.vizcanvas');
+
     console.log(data);
     console.log('data arriving');
     nodemap = data;
@@ -70,17 +72,6 @@ function loadData(data){
     };
     initGraph();
 }
-function getCollusionData(name){
-    // load data from public server
-    // just getting default for now, see
-    // https://github.com/mmmavis/temp-collusion-db-server
-    // for more options
-    console.log('getCollusionData("%s")', name);
-    vis = d3.select('.vizcanvas');
-    var s = document.createElement('script');
-    s.src="http://collusiondb-development.herokuapp.com/getData?callback=loadData&aggregateData=true&name=" + name;
-    document.body.appendChild(s);
-};
 
 
 // UTILITIES FOR CREATING POLYGONS
