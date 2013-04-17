@@ -27,6 +27,7 @@
                         <div class="detail-section">
                             <div class="map-section sub-left">
                                 <svg class="vizcanvas" width="70%" height="70%" viewBox="0 0 1000 1000">  </svg>
+                                {{> map }}
                                 <div>
                                     Server located in <span class="country"></span><br /><br />
                                     Privacy Score: ____
@@ -60,6 +61,7 @@
         <script src="/js/collusion.js"></script>
         <script>
             setSiteProfile("{{{profileName}}}",function(data){
+                console.log(data);
                 loadData(data);
             });
         </script>

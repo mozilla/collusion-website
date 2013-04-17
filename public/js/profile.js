@@ -33,7 +33,7 @@ function setSiteProfile(sitename, callback){
     
     getSiteProfile(sitename,function(result){
         if ( result.error ){
-            console.log("[ Error ] " + result.error):
+            console.log("[ Error ] " + result.error);
             callback({});
         }else{
             generateList(sitename,result);
