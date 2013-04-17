@@ -25,14 +25,4 @@ $.getJSON(jsonURL, function(geoip) {
 /* ----------------------------------------------------------- */
 
 
-$(".connections ul li[cookie-connection=true]").addClass("cookie");
-$(".connections ul li[cookie-connection=false]").addClass("non-cookie");
-
-$("#filter-cookie").click(function(){
-      $("ul li[cookie-connection=true], ul li[cookie-connection=true] a").toggleClass("cookie").toggleClass("greyed-out");
-});
-
-$("#filter-noncookie").click(function(){
-      $("ul li[cookie-connection=false], ul li[cookie-connection=false] a").toggleClass("non-cookie").toggleClass("greyed-out");
-});
 

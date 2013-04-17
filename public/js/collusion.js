@@ -13,6 +13,7 @@ var requestAnimationFrame =
     window.webkitRequestAnimationFrame;
 
 function loadData(data){
+    console.log(data);
     console.log('data arriving');
     nodemap = data;
     var node, edgename, edge;

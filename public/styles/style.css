@@ -110,7 +110,7 @@ a.collusion-logo {
 .profile-thumb{
   /*box-shadow: 0 2px 2px 3px rgba(0, 0, 0, 0.1);*/
   width: 400px;
-  height: 45px;
+  height: 65px;
   margin: 0 0 20px 0;
   padding: 5px;
   border: 1px solid #ccc;
@@ -160,11 +160,6 @@ ul li.non-cookie{
 
 .float-right {
   float: right;
-}
-
-.filter-options {
-  font-size: 12px;
-  color: #555555;
 }
 
 .tracker-header, .website-header {

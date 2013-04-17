@@ -91,8 +91,7 @@ app.get("/browseData", function(req, res){
         response.on("end", function(){
             result = JSON.parse(result);
             var data = {
-                trackers: buildProfileThumb("thirdParty", result.trackers),
-                websites: buildProfileThumb("visited", result.websites)
+                websites: buildProfileThumb("visited", result)
             }
             res.render("browseData", data);
         });
@@ -114,17 +113,12 @@ app.get("/browseData", function(req, res){
 */
 function buildProfileThumb(type, objArr){
     var result = [];
-    var urlPath = "";
-    if ( type == "thirdParty" ){
-        urlPath = "/third-party-websites/";
-    }else{
-        urlPath = "/visited-websites/";
-    }
-
-    for (var i=0; i<objArr.length; i++ ){
-        var row = objArr[i];
-        var infoUrl = row[ Object.keys(row)[0] ];
-        var infoLine1 = row[ Object.keys(row)[1] ];
+    var urlPath = "/profile/";
+    for ( var key in objArr ){
+        var site = objArr[key];
+        var infoUrl = key;
+        var infoLine1 = site.howMany;
+        var infoLine2 = site.nodeType;
         var url = urlPath + infoUrl;
         result.push(
             {
@@ -132,7 +126,7 @@ function buildProfileThumb(type, objArr){
                 infoUrl: infoUrl,
                 faviconUrl: "http://" + infoUrl +  "/favicon.ico",
                 infoLine1: infoLine1,
-                infoLine2: row[ Object.keys(row)[2] ]
+                infoLine2: infoLine2
         });
     }
 
@@ -140,34 +134,19 @@ function buildProfileThumb(type, objArr){
 }
 
 
-/**************************************************
-*   Third Party Website details
-*   A third party website profile page should show a list of sites that it has sent connections to
-*/
-app.get("/third-party-websites/:site", function(req, res){
-    var query = {};
-    query.profileName = req.params.site;
-    query.query = {"target": req.params.site};
-    query.path = "/getThirdPartyWebsite";
-
-    getSiteProfile("thirdParty",query,function(data){
-        res.render("thirdPartyWebsiteInfo", data);
-    });
-});
-
 
 /**************************************************
 *   Visited Website details
 *   A visited website profile page should show a list of third party sites that it has received connections from
 */
-app.get("/visited-websites/:site", function(req, res){
+app.get("/profile/:site", function(req, res){
     var query = {};
     query.profileName = req.params.site;
-    query.query = {"source": req.params.site};
-    query.path = "/getVisitedWebsite";
+    query.query = {"name": req.params.site};
+    query.path = "/getWebsiteProfile";
 
-    getSiteProfile("visited",query,function(data){
-         res.render("visitedWebsiteInfo", data);
+    getSiteProfile(query,function(data){
+         res.render("websiteProfile", data);
     });
 });
 
@@ -179,7 +158,7 @@ app.get("/visited-websites/:site", function(req, res){
 *   A third party website profile page should show a list of sites that it has sent connections to
 *   A visited website profile page should show a list of third party sites that it has received connections from
 */
-function getSiteProfile(type,query,callback){
+function getSiteProfile(query,callback){
     var queryString = JSON.stringify(query.query);
     var options = {
         hostname: process.env.DATABASE_URL || "collusiondb-development.herokuapp.com",
@@ -211,18 +190,17 @@ function getSiteProfile(type,query,callback){
                 return;
             }
             var sites = [];
-            for (var i=0; i<result.rowCount; i++ ){
-                var row = result.rows[i];
-                var site = {};
-                site.ifCookie = (row["cookie"] == "1").toString();
-                if ( type == "thirdParty" ){
-                    site.siteUrl = row["source"];
-                    site.pageUrl = "/visited-websites/" + row["source"];
-                }else{
-                    site.siteUrl = row["target"];
-                    site.pageUrl = "/third-party-websites/" + row["target"];
+            for ( var key in result ){
+                if ( key != query.profileName ){
+                    var row = result[key];
+                    var site = {};
+                    //site.ifCookie = (row["cookie"] == "1").toString();
+                    site.ifCookie = "false";
+                    site.siteUrl = key;
+                    site.pageUrl = "/profile/" + key;
+                    sites.push(site);
                 }
-                sites.push(site);
+                
             }
 
             var data = {

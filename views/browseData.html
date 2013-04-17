@@ -14,27 +14,10 @@
                 <div class="container">
                 <!-- ========================= Left Column ========================= -->
                     <div class="left-column">
-                        <!-- === Third-Party Connections === -->
+                        <!-- === Top 50 Websites === -->
                         <section class="section-box">
-                            <h4>"Top 10" Third-Party Connections</h4>
-                            {{! only output this if a profileThumb exists }}
-                            {{#if trackers}}
-                            {{#profileThumb trackers}}
-                            <a href="{{{url}}}" class="profile-thumb">
-                                <div >
-                                    <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{faviconUrl}}}">
-                                        <b>{{infoUrl}}</b>
-                                        <br>
-                                        Websites connected: {{infoLine1}}
-                                </div>
-                            </a>
-                            {{/profileThumb}}
-                            {{/if}}
-                        </section>
-                        <!-- === Visited Websites === -->
-                        <section class="section-box">
-                            <h4>"Top 10 Most Connected" Websites</h4>
-                            {{! only output this if an avatarBox exists }}
+                            <h4>"Top 50" Websites</h4>
+                            {{! only output this if an profileThumb exists }}
                             {{#if websites}}
                             {{#profileThumb websites}}
                             <a href="{{{url}}}" class="profile-thumb">
@@ -42,8 +25,8 @@
                                     <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{faviconUrl}}}">
                                         <b>{{infoUrl}}</b>
                                         <br/>
-                                        Third-party connections: {{infoLine1}}<br/>
-                                        <!-- Last visited on {{infoLine2}} -->
+                                        # of connections: {{infoLine1}}<br/>
+                                        Site type: {{infoLine2}}
                                 </div>
                             </a>
                             {{/profileThumb}}
