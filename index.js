@@ -117,18 +117,23 @@ function buildProfileThumb(objArr){
     var urlPath = "/profile/";
     for ( var key in objArr ){
         var site = objArr[key];
-        var infoUrl = key;
-        var infoLine1 = site.howMany;
-        var infoLine2 = site.linkedFrom.length + site.linkedTo.length;
-        var url = urlPath + infoUrl;
-        result.push(
-            {
-                url: url,
-                infoUrl: infoUrl,
-                faviconUrl: "http://" + infoUrl +  "/favicon.ico",
-                infoLine1: infoLine1,
-                infoLine2: infoLine2
-        });
+        // the data we get back includes the top 50 sites as well all other sites they are linked with
+        // by checking if the site object own both linkedFrom and linkedTo properties we can distinguish between top sites and their linked sites
+        if ( site.linkedFrom && site.linkedTo ){ // one of the top sites
+            var infoUrl = key;
+            var infoLine1 = site.howMany;
+            var infoLine2 = site.linkedFrom.length + site.linkedTo.length;
+            var url = urlPath + infoUrl;
+            result.push(
+                {
+                    url: url,
+                    infoUrl: infoUrl,
+                    faviconUrl: "http://" + infoUrl +  "/favicon.ico",
+                    infoLine1: infoLine1,
+                    infoLine2: infoLine2
+            });
+        }
+        
     }
 
     return result;
