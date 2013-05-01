@@ -81,29 +81,6 @@
       
         <script src="/js/require.js"></script>
         <script src="/js/jquery-1.9.1.min.js"></script>
-        <script>
-            $(".donate-data").click(function(){
-                $.post("/donate");
-            });
-          
-            // GET TEST
-            $.ajax({
-              type: "GET",
-              url: "http://collusiondb-development.herokuapp.com/getData",
-              data: {
-                dateSince: "2013-02-27"
-              },
-              success: function(data, textStatus, jqXHR){
-                console.log(Object.keys(data));
-                console.log();
-                console.log(data);
-              },
-              dataType: "jsonp",
-              crossDomain: true
-            });
-             
-             
-        </script>
         <script src="/js/webmakerNav.js"></script>
       
       
