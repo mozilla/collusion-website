@@ -4,7 +4,7 @@
   "dependencies": {
     "express": "latest",
     "handlebars": "latest",
-    "consolidate": "latest"
+    "consolidate": "latest",
     "xml2js": "latest"
   },
   "engines": {
