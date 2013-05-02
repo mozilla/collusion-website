@@ -278,4 +278,29 @@ ul li.non-cookie{
 }
 
 
+/* Style for Blog Posts */
 
+.blog-post{
+    border-top: 1px dashed #ccc;
+    padding: 20px 0 0 0;
+}
+
+.blog-post:first-of-type{
+    border-top: 0px;
+}
+
+.blog-title{
+    background: rgba(41,131,200,0.2);
+    color: white;
+    display: inline;
+}
+
+.blog-pubDate{
+    margin: 5px 0;
+    font-size: 12px;
+    color: #888;
+}
+
+.blog-description{
+    margin-top: 10px;
+}

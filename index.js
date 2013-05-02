@@ -1,11 +1,14 @@
 var express = require("express");
-var app = express();
 var handlebars = require("handlebars");
 var cons = require("consolidate"); // template engine consolidation library
 var http = require("http");
 var fs = require('fs');
 var path = require('path');
 var test = require("./test.js");
+var xml2js = require("xml2js");
+
+var app = express();
+var xmlParser = new xml2js.Parser();
 
 app.configure(function(){
     app.set("view engine", "html");
@@ -17,16 +20,7 @@ app.configure(function(){
 });
 
 
-handlebars.registerHelper("profileThumb", function(items, options) {
-    var boxes = "";
-    for(var i=0, l=items.length; i<l; i++) {
-        boxes = boxes + options.fn(items[i]);
-    }
-    return boxes;
-});
-
-
-handlebars.registerHelper("siteList", function(items, options) {
+handlebars.registerHelper("renderList", function(items, options){
     var result = "";
     for(var i=0, l=items.length; i<l; i++) {
         result = result + options.fn(items[i]);
@@ -51,8 +45,55 @@ fs.readdirSync(viewdir).forEach(function(filename){
 *   Index page
 */
 app.get("/", function(req, res){
-    res.render("index");
+    getBlogPosts(function(blogPosts){
+        var data = {
+            blogPosts : blogPosts
+        }
+        res.render("index",data);
+    });
+    
 });
+
+/**************************************************
+*   Get Blog Posts
+*/
+function getBlogPosts(callback){
+    var query = {};
+    var queryString = JSON.stringify(query);
+    var options = {
+        hostname: "mozilla-collusion.tumblr.com",
+        path: "/rss",
+        method: "GET",
+        headers: {
+            "Content-Type": "application/rss+xml",
+            "Content-Length": queryString.length
+        }
+    };
+
+    var result = "";
+    var getReq = http.request(options, function(response) {
+        response.setEncoding("utf8");
+        response.on("data", function (chunk) {
+            result += chunk;
+        });
+        response.on("end", function(){
+            xmlParser.parseString(result, function(err,parsedResult){
+                var blogPosts = parsedResult.rss.channel[0].item;
+                callback(blogPosts);
+            });
+            
+        });
+    });
+
+    getReq.on("error", function(e) {
+        console.log("problem with request: " + e.message);
+    });
+
+    // write data to request body
+    getReq.write(queryString);
+    getReq.end();
+
+}
 
 
 /**************************************************

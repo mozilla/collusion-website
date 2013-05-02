@@ -23,7 +23,7 @@
                             </div>
                             {{! only output this if an profileThumb exists }}
                             {{#if websites}}
-                            {{#profileThumb websites}}
+                            {{#renderList websites}}
                             <a href="{{{url}}}" class="profile-thumb">
                                 <div>
                                     <img onerror="this.src='/images/transparent_favicon_placeholder.png'" src="{{{faviconUrl}}}">
@@ -33,7 +33,7 @@
                                         Connected To/From: {{infoLine2}} sites
                                 </div>
                             </a>
-                            {{/profileThumb}}
+                            {{/renderList}}
                             {{/if}}
                         </section>
                     </div>

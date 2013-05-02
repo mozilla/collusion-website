@@ -24,18 +24,16 @@
                         </section>
                         <section class="blog-section">
                             <h6>BLOG</h6>
-                            <header>
-                                Happy Privacy Day! An Update from the Collusion Visualization Design Team
-                            </header>
-                            <p>January 28, 2013</p>
-                            <p>For the past several months, I have been leading a design team at Emily Carr and Mozilla with Mozilla's Collusion lead developer Dethe Elza to develop an interactive visualization layer for the Firefox Collusion Add-on. We're taking this opportunity on Data Privacy Day to give a progress report on the new design for Collusion visualization interface, especially since Mozilla has been named the Most Trusted Internet Company for Privacy in 2012.</p>
-
-                            <p>Our goals are to make it easy for people to make sense of their own browsing data, expose relationships between websites and third parties - which normally remain hidden - and ultimately give people the tools to make their own decisions about their online privacy.</p>
-
-                            <p>Toward these goals, we are adopting three main design approaches that will engage users who have various levels of technical knowledge and interest in privacy issues. The first approach engages people with little technical knowledge by giving them a tool to view and explore their own personal internet browsing history. The second will enable those already knowledgeable about privacy issues to find relationships, patterns and trends among trackers and the web sites that enable them. The third will let  users act on what they find in the Collusion data in real time. Together these three interfaces will empower users to take control over their own online privacy and perhaps take a step towards changing our expectations and policies toward how and when people track us across the Web.</p>
-
-                            <p>We look forward to hearing your feedback. You can contact me @amberfj on Twitter or Dethe @dethe.</p>
-                        </section>
+                            {{#if blogPosts}}
+                                {{#renderList blogPosts}}
+                                <div class="blog-post">
+                                    <div class="blog-pubDate">{{{pubDate}}}</div>
+                                    <div class="blog-title"><a href="{{{link}}}">{{{title}}}</a></div>
+                                    <div class="blog-description">{{{description}}}</div>
+                                </div>
+                                {{/renderList}}
+                            {{/if}}
+                                            </section>
                     </div>
                 <!-- ========================= Right Column ========================= -->
                     <div class="right-column">

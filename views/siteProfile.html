@@ -36,11 +36,11 @@
                             <div class="connections sub-right">
                                 {{#if sites}}
                                 <ul>
-                                    {{#siteList sites}}
+                                    {{#renderList sites}}
                                     <li cookie-connection="{{ifCookie}}">
                                         <a href="{{pageUrl}}">{{siteUrl}}</a>
                                     </li>
-                                    {{/siteList}}
+                                    {{/renderList}}
                                 </ul>
                                 {{/if}}
 
