@@ -5,6 +5,7 @@
     "express": "latest",
     "handlebars": "latest",
     "consolidate": "latest"
+    "xml2js": "latest"
   },
   "engines": {
     "node": "0.10.x",
