@@ -304,3 +304,8 @@ ul li.non-cookie{
 .blog-description{
     margin-top: 10px;
 }
+
+.blog-description *{
+    max-width: 100%;
+    max-height: 100%;
+}
