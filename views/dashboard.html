@@ -21,7 +21,7 @@
                         <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince"></span></div>
                     </div>
                     <div class="d-l2-r">
-                        <div class="uniqueUsersUploadToday" style="font-size: 50px">793</div>
+                        <div class="uniqueUsersUploadToday" style="font-size: 50px"></div>
                         <div>PEOPLE</div>
                         <div class="d-transparent-text">have uploaded data today</div>
                         <div class="d-transparent-text d-italics">on <span class="today"></span></div>
@@ -67,7 +67,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "http://localhost:7000/uniqueUsersUpload",
+                url: "http://collusiondb-development.herokuapp.com/uniqueUsersUpload",
                 success: function(result, textStatus, jqXHR){
                     for ( var key in result ){
                         if ( key != "trackersArray" ){
