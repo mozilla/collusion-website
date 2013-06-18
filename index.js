@@ -51,8 +51,17 @@ app.get("/", function(req, res){
         }
         res.render("index",data);
     });
-    
+
 });
+
+
+/**************************************************
+*   Dashboard
+*/
+app.get("/dashboard", function(req, res){
+    res.render("dashboard");
+});
+
 
 /**************************************************
 *   Get Blog Posts

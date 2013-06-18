@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html style="background:#373737;">
+    {{> header }}
+
+    <body style="background:#373737;">
+    
+        <div class="dashboard">
+            <div class="d-left">
+                <div class="d-l1">
+                    <div class="d-l1-t"><header>COLLUSION</header></div>
+                    <div class="d-l1-b">
+                        <div style="float: left; width: 70%; border-top: 1px solid #fff; color: #0FB1C2; padding-top: 15px">Stay up to date with our statics and keep track of the trackers!</div>
+                        <div style="float: left; width: 30%; text-align: right;font-size: 50px; line-height: 30px"><i><b>counter</b></i></div>
+                    </div>
+                </div>
+                <div class="d-l2">
+                    <div class="d-l2-l">
+                        <div class="uniqueUsersUpload" style="font-size: 50px"></div>
+                        <div>PEOPLE</div>
+                        <div class="d-transparent-text">have uploaded data ever</div>
+                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince"></span></div>
+                    </div>
+                    <div class="d-l2-r">
+                        <div class="uniqueUsersUploadToday" style="font-size: 50px">793</div>
+                        <div>PEOPLE</div>
+                        <div class="d-transparent-text">have uploaded data today</div>
+                        <div class="d-transparent-text d-italics">on <span class="today"></span></div>
+                    </div>
+                </div>
+                <div class="d-l3">
+                    <div class="d-l3-l">
+                        <div class="totalConnectionsEver" style="font-size: 30px"></div>
+                        <div style="margin-bottom: 10px">CONNECTIONS</div>
+                        <div class="d-transparent-text">are stored in total database</div>
+                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince"></span></div>
+                    </div>
+                    <div class="d-l3-r">
+                        <div class="totalConnectionsToday" style="font-size: 30px">xxx</div>
+                        <div style="margin-bottom: 10px">CONNECTIONS</div>
+                        <div class="d-transparent-text">are uploaded today</div>
+                        <div class="d-transparent-text d-italics">on <span class="today"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-right">
+                <div class="d-r1">
+                    <div style="border-bottom: 1px solid white;">
+                        <div style="float: left;font-size: 42px; line-height: 40px; padding-bottom: 5px">TOP 10</div>
+                        <div style="float: left; padding-left: 10px;">
+                            POTENTIAL<br/>
+                            TRACKERS<br/>
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div>
+                        <ul class="d-trackers-list">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/js/require.js"></script>
+        <script src="/js/jquery-1.9.1.min.js"></script>
+        <script src="/js/collusion.js"></script>
+        <script>
+
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:7000/uniqueUsersUpload",
+                success: function(result, textStatus, jqXHR){
+                    for ( var key in result ){
+                        if ( key != "trackersArray" ){
+                            $("."+key).html(result[key]);
+                        }else{
+                            var trackers = result[key];
+                            trackers.forEach(function(tracker,i){
+                                
+                                $(".d-trackers-list").append(
+                                    "<li>" +
+                                        "<div class='d-tracker-site'>" + tracker.site + "</div>" +
+                                        "<div class='d-tracker-connections'>" + tracker.numConnections + " CONNECTIONS </div>" +
+                                    "</li>"
+                                );
+                            });
+                        }
+                    }
+                    $(".today").html(new Date().toString().slice(4,15));
+                },
+                dataType: "jsonp",
+                crossDomain: true
+            });
+
+        </script>
+
+    </body>
+
+</html>
+
+
+                                    
