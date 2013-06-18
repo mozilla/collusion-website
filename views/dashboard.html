@@ -67,24 +67,32 @@
 
             $.ajax({
                 type: "GET",
-                url: "http://collusiondb-development.herokuapp.com/uniqueUsersUpload",
+                url: "http://localhost:7000/dashboardData",
                 success: function(result, textStatus, jqXHR){
                     for ( var key in result ){
-                        if ( key != "trackersArray" ){
-                            $("."+key).html(result[key]);
-                        }else{
+                        if ( key == "trackersArray" ){
                             var trackers = result[key];
                             trackers.forEach(function(tracker,i){
                                 
                                 $(".d-trackers-list").append(
                                     "<li>" +
                                         "<div class='d-tracker-site'>" + tracker.site + "</div>" +
-                                        "<div class='d-tracker-connections'>" + tracker.numConnections + " CONNECTIONS </div>" +
+                                        "<div class='d-tracker-connections'>" + tracker.numConnections.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " CONNECTIONS </div>" +
                                     "</li>"
                                 );
                             });
+                        }else if ( key == "uniqueUsersUploadSince" ){
+                            $("."+key).html(result[key]);
+                        }else{
+                            $("."+key).html(result[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
                         }
                     }
+                    function commaSeparateNumber(val){
+    while (/(\d+)(\d{3})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+    }
+    return val;
+  }
                     $(".today").html(new Date().toString().slice(4,15));
                 },
                 dataType: "jsonp",
