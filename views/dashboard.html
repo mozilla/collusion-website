@@ -67,7 +67,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "http://localhost:7000/dashboardData",
+                url: "http://collusiondb-development.herokuapp.com/dashboardData",
                 success: function(result, textStatus, jqXHR){
                     for ( var key in result ){
                         if ( key == "trackersArray" ){
