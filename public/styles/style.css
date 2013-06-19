@@ -316,7 +316,7 @@ ul li.non-cookie{
 
 .dashboard{
     width: 960px;
-    height: 550px;
+    height: 540px;
     margin: 0 auto;
     background: #373737;
     color: #ffffff;
@@ -341,6 +341,7 @@ ul li.non-cookie{
 }
 
 .d-l1 {
+    height: 180px;
     height: calc(100% / 3);
 }
 
@@ -350,6 +351,7 @@ ul li.non-cookie{
 }
 
 .d-l2 {
+    height: 180px;
     height: calc(100% / 3);
 }
 
@@ -357,6 +359,7 @@ ul li.non-cookie{
     background: #0FB1C2;
     float: left;
     margin-top: 20px;
+    height: 140px;
     height: calc(100% - 40px);
     text-align: center;
 }
@@ -367,11 +370,13 @@ ul li.non-cookie{
 
 .d-l2 .d-l2-r{
     margin-left: 20px;
+    width: 248px; /* ( 960px * 0.7 * 0.4 ) - 20px */
     width: calc(40% - 20px);
 }
 
 .d-l3{
     width: 100%;
+    height: 180px;
     height: calc(100% / 3);
     background:#2BAEDE;
     clear: both;
@@ -388,6 +393,7 @@ ul li.non-cookie{
 
 .d-right{
     margin-left: 20px;
+    width: 268px; /* ( 960px * 0.3 ) - 20px */
     width: calc(30% - 20px);
     height: 100%;
     border:  0px solid yellow;
