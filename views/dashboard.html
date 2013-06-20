@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html style="background:#373737;">
-    {{> header }}
-
+    <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/sandstone.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/style.css" type="text/css" />
+    <title>Collusion counter - Development</title>
     <body style="background:#373737;">
     
         <div class="dashboard">
@@ -15,30 +17,30 @@
                 </div>
                 <div class="d-l2">
                     <div class="d-l2-l">
-                        <div class="uniqueUsersUpload" style="font-size: 50px"></div>
+                        <div class="uniqueUsersUpload" style="font-size: 50px">{{uniqueUsersUpload}}</div>
                         <div>PEOPLE</div>
                         <div class="d-transparent-text">have uploaded data ever</div>
-                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince"></span></div>
+                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}</span></div>
                     </div>
                     <div class="d-l2-r">
-                        <div class="uniqueUsersUploadToday" style="font-size: 50px"></div>
+                        <div class="uniqueUsersUploadToday" style="font-size: 50px">{{uniqueUsersUploadToday}}</div>
                         <div>PEOPLE</div>
                         <div class="d-transparent-text">have uploaded data today</div>
-                        <div class="d-transparent-text d-italics">on <span class="today"></span></div>
+                        <div class="d-transparent-text d-italics">on {{today}}</div>
                     </div>
                 </div>
                 <div class="d-l3">
                     <div class="d-l3-l">
-                        <div class="totalConnectionsEver" style="font-size: 30px"></div>
+                        <div class="totalConnectionsEver" style="font-size: 30px">{{totalConnectionsEver}}</div>
                         <div style="margin-bottom: 10px">CONNECTIONS</div>
                         <div class="d-transparent-text">are stored in total database</div>
-                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince"></span></div>
+                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}</span></div>
                     </div>
                     <div class="d-l3-r">
-                        <div class="totalConnectionsToday" style="font-size: 30px">xxx</div>
+                        <div class="totalConnectionsToday" style="font-size: 30px">{{totalConnectionsToday}}</div>
                         <div style="margin-bottom: 10px">CONNECTIONS</div>
                         <div class="d-transparent-text">are uploaded today</div>
-                        <div class="d-transparent-text d-italics">on <span class="today"></span></div>
+                        <div class="d-transparent-text d-italics">on {{today}}</div>
                     </div>
                 </div>
             </div>
@@ -53,52 +55,47 @@
                         <div style="clear: both"></div>
                     </div>
                     <div>
-                        <ul class="d-trackers-list">
-                        </ul>
+                        {{#if trackersArray}}
+                            <ul class="d-trackers-list">
+                                {{#renderList trackersArray}}
+                                <li>
+                                    <div class='d-tracker-site'>{{site}}</div>
+                                    <div class='d-tracker-sources'>{{numSources}}</div>
+                                    <div class='d-tracker-connections'><span>{{numConnections}}</span> CONNECTIONS</div>
+                                </li>
+                                {{/renderList}}
+                            </ul>
+                        {{/if}}
+                        
                     </div>
                 </div>
             </div>
         </div>
 
-        <script src="/js/require.js"></script>
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script src="/js/collusion.js"></script>
         <script>
-
-            $.ajax({
-                type: "GET",
-                url: "http://collusiondb-development.herokuapp.com/dashboardData",
-                success: function(result, textStatus, jqXHR){
-                    for ( var key in result ){
-                        if ( key == "trackersArray" ){
-                            var trackers = result[key];
-                            trackers.forEach(function(tracker,i){
-                                
-                                $(".d-trackers-list").append(
-                                    "<li>" +
-                                        "<div class='d-tracker-site'>" + tracker.site + "</div>" +
-                                        "<div class='d-tracker-connections'>" + tracker.numConnections.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " CONNECTIONS </div>" +
-                                    "</li>"
-                                );
-                            });
-                        }else if ( key == "uniqueUsersUploadSince" ){
-                            $("."+key).html(result[key]);
-                        }else{
-                            $("."+key).html(result[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-                        }
-                    }
-                    function commaSeparateNumber(val){
-    while (/(\d+)(\d{3})/.test(val.toString())){
-      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
-    }
-    return val;
-  }
-                    $(".today").html(new Date().toString().slice(4,15));
-                },
-                dataType: "jsonp",
-                crossDomain: true
+            $(".uniqueUsersUpload").each(function(i,item){
+                addCommasToNumber(item);
             });
-
+            
+            $(".uniqueUsersUploadToday").each(function(i,item){
+                addCommasToNumber(item);
+            });
+            
+            $(".totalConnectionsEver").each(function(i,item){
+                addCommasToNumber(item);
+            });
+            
+            $(".totalConnectionsToday").each(function(i,item){
+                addCommasToNumber(item);
+            });
+            
+            function addCommasToNumber(elm){
+                console.log(elm);
+                $(elm).html( $(elm).text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") );
+            }
+            
             setTimeout("location.reload(true);", 10 * 60 * 1000); // auto-refresh every 10 mins
         </script>
 

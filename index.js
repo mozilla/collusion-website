@@ -59,7 +59,48 @@ app.get("/", function(req, res){
 *   Dashboard
 */
 app.get("/dashboard", function(req, res){
-    res.render("dashboard");
+    var query = {};
+    var queryString = JSON.stringify(query);
+
+    var options = {
+        hostname: process.env.DATABASE_URL || "collusiondb-development.herokuapp.com",
+        port: process.env.DATABASE_PORT || 80,
+        path: "/dashboardData",
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Content-Length": queryString.length
+        }
+    };
+
+    var result = "";
+    var reqGet = http.request(options, function(response) {
+        response.setEncoding("utf8");
+        response.on("data", function (chunk) {
+          result += chunk;
+        });
+        response.on("end", function(){
+            result = JSON.parse(result);
+            var data = {
+                uniqueUsersUpload: result.uniqueUsersUpload,
+                uniqueUsersUploadSince: result.uniqueUsersUploadSince,
+                uniqueUsersUploadToday: result.uniqueUsersUploadToday,
+                totalConnectionsEver: result.totalConnectionsEver,
+                totalConnectionsToday: result.totalConnectionsToday,
+                trackersArray: result.trackersArray,
+                today: new Date().toString().slice(4,15)
+            }
+            res.render("dashboard", data);
+        });
+    });
+
+    reqGet.on("error", function(err) {
+        if (err) console.log("[ ERROR ] Problem with request: " + err.message);
+    });
+
+    // write data to request body
+    reqGet.write(queryString);
+    reqGet.end();
 });
 
 
@@ -141,7 +182,6 @@ app.get("/browseData", function(req, res){
         response.on("end", function(){
             result = JSON.parse(result);
             var data = {
-                timeRange: new Date(Date.now()-86400000) + " and " + new Date(Date.now()),
                 websites: buildProfileThumb(result)
             }
             res.render("browseData", data);
