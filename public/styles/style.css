@@ -414,14 +414,21 @@ ul li.non-cookie{
 }
 
 .d-r1 ul.d-trackers-list li{
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .d-tracker-site {
     font-size: 15px;
 }
 
+.d-tracker-sources{
+    color: rgba(85,144,151,1);
+    line-height: 10px;
+    font-size: 11px;
+}
+
 .d-tracker-connections {
+    color: rgba(255,255,255,0.5);
     margin-top: 3px;
     line-height: 10px;
     font-size: 11px;
