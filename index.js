@@ -59,7 +59,7 @@ app.get("/", function(req, res){
 *   Dashboard
 */
 app.get("/dashboard", function(req, res){
-    var query = {};
+    var query = {date: Date.now()};
     var queryString = JSON.stringify(query);
 
     var options = {

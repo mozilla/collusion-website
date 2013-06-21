@@ -60,7 +60,7 @@
                                 {{#renderList trackersArray}}
                                 <li>
                                     <div class='d-tracker-site'>{{site}}</div>
-                                    <div class='d-tracker-sources'>{{numSources}} UNIQUE SITES TRACKED</div>
+                                    <div class='d-tracker-sources'><span>{{numSources}}</span> UNIQUE SITES TRACKED</div>
                                     <div class='d-tracker-connections'><span>{{numConnections}}</span> CONNECTIONS</div>
                                 </li>
                                 {{/renderList}}
@@ -75,24 +75,15 @@
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script src="/js/collusion.js"></script>
         <script>
-            $(".uniqueUsersUpload").each(function(i,item){
+            $(".uniqueUsersUpload, .uniqueUsersUploadToday, .totalConnectionsEver, .totalConnectionsToday").each(function(i,item){
                 addCommasToNumber(item);
             });
             
-            $(".uniqueUsersUploadToday").each(function(i,item){
-                addCommasToNumber(item);
-            });
-            
-            $(".totalConnectionsEver").each(function(i,item){
-                addCommasToNumber(item);
-            });
-            
-            $(".totalConnectionsToday").each(function(i,item){
-                addCommasToNumber(item);
+            $(".d-tracker-connections, .d-tracker-sources").each(function(i,item){
+                addCommasToNumber(item.querySelector("span"));
             });
             
             function addCommasToNumber(elm){
-                console.log(elm);
                 $(elm).html( $(elm).text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") );
             }
             
