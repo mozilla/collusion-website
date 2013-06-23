@@ -327,10 +327,14 @@ ul li.non-cookie{
     line-height: normal;
 }
 
+.d-thin-font{
+    font-family: "Pathway Gothic One";
+}
+
 .dashboard header{
-    font-size: 110px;
+    font-size: 160px;
     line-height: 110px;
-    font-family: "Arial Narrow";
+    margin-bottom: 15px;
 }
 
 .d-left{
@@ -351,17 +355,17 @@ ul li.non-cookie{
 }
 
 .d-l2 {
-    height: 180px;
-    height: calc(100% / 3);
+    margin-bottom: 20px;
+    height: 170px;
+    height: calc(100% / 3 - 10px);
 }
 
 .d-l2 .d-l2-l, .d-l2 .d-l2-r{
     background: #0FB1C2;
     float: left;
-    margin-top: 20px;
-    height: 140px;
-    height: calc(100% - 40px);
+    height: 100%;
     text-align: center;
+    border-radius: 3px;
 }
 
 .d-l2 .d-l2-l{
@@ -376,19 +380,20 @@ ul li.non-cookie{
 
 .d-l3{
     width: 100%;
-    height: 180px;
-    height: calc(100% / 3);
+    height: 170px;
+    height: calc(100% / 3 - 10px);
     background:#2BAEDE;
     clear: both;
     text-align: center;
     overflow: hidden;
+    border-radius: 3px;
 }
 
 .d-l3 .d-l3-l,
 .d-l3 .d-l3-r{
     width: 50%;
     float: left;
-    margin: 30px 0;
+    margin: 20px 0;
 }
 
 .d-right{
@@ -398,7 +403,8 @@ ul li.non-cookie{
     height: 100%;
     border:  0px solid yellow;
     float: left;
-    overflow: hidden
+    overflow: hidden;
+    border-radius: 3px;
 }
 
 .d-r1{
@@ -410,7 +416,7 @@ ul li.non-cookie{
 
 .d-r1 ul.d-trackers-list{
     list-style: decimal;
-    margin: 10px 10px 10px 25px;
+    margin: 5px 10px 10px 25px;
 }
 
 .d-r1 ul.d-trackers-list li{
@@ -428,7 +434,7 @@ ul li.non-cookie{
 }
 
 .d-tracker-connections {
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.4);
     margin-top: 3px;
     line-height: 10px;
     font-size: 11px;
