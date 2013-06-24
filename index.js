@@ -1,3 +1,7 @@
+if ( process.env.NEW_RELIC_HOME ) {
+  require( 'newrelic' );
+}
+
 var express = require("express");
 var handlebars = require("handlebars");
 var cons = require("consolidate"); // template engine consolidation library
@@ -131,7 +135,7 @@ function getBlogPosts(callback){
                 var blogPosts = parsedResult.rss.channel[0].item;
                 callback(blogPosts);
             });
-            
+
         });
     });
 
@@ -223,7 +227,7 @@ function buildProfileThumb(objArr){
                     infoLine2: infoLine2
             });
         }
-        
+
     }
 
     return result;
