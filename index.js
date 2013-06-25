@@ -59,7 +59,7 @@ app.get("/", function(req, res){
 *   Dashboard
 */
 app.get("/dashboard", function(req, res){
-    var query = {date: Date.now()};
+    var query = {};
     var queryString = JSON.stringify(query);
 
     var options = {
@@ -84,9 +84,9 @@ app.get("/dashboard", function(req, res){
             var data = {
                 uniqueUsersUpload: result.uniqueUsersUpload,
                 uniqueUsersUploadSince: result.uniqueUsersUploadSince,
-                uniqueUsersUploadToday: result.uniqueUsersUploadToday,
+                uniqueUsersUploadLast24H: result.uniqueUsersUploadLast24H,
                 totalConnectionsEver: result.totalConnectionsEver,
-                totalConnectionsToday: result.totalConnectionsToday,
+                totalConnectionsLast24H: result.totalConnectionsLast24H,
                 trackersArray: result.trackersArray,
                 today: new Date().toString().slice(4,15)
             }

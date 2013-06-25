@@ -24,10 +24,10 @@
                         <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}</span></div>
                     </div>
                     <div class="d-l2-r">
-                        <div class="uniqueUsersUploadToday d-thin-font" style="font-size: 80px">{{uniqueUsersUploadToday}}</div>
+                        <div class="uniqueUsersUploadLast24H d-thin-font" style="font-size: 80px">{{uniqueUsersUploadLast24H}}</div>
                         <div>PEOPLE</div>
-                        <div class="d-transparent-text">have uploaded data today</div>
-                        <div class="d-transparent-text d-italics">on {{today}}</div>
+                        <div class="d-transparent-text">have uploaded data</div>
+                        <div class="d-transparent-text d-italics">in the past 24 hours</div>
                     </div>
                 </div>
                 <div class="d-l3">
@@ -38,10 +38,10 @@
                         <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}</span></div>
                     </div>
                     <div class="d-l3-r">
-                        <div class="totalConnectionsToday d-thin-font" style="font-size: 50px">{{totalConnectionsToday}}</div>
+                        <div class="totalConnectionsLast24H d-thin-font" style="font-size: 50px">{{totalConnectionsLast24H}}</div>
                         <div style="margin-bottom: 10px">CONNECTIONS</div>
-                        <div class="d-transparent-text">are uploaded today</div>
-                        <div class="d-transparent-text d-italics">on {{today}}</div>
+                        <div class="d-transparent-text">were uploaded</div>
+                        <div class="d-transparent-text d-italics">in the past 24 hours</div>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
         <script src="/js/jquery-1.9.1.min.js"></script>
         <script src="/js/collusion.js"></script>
         <script>
-            $(".uniqueUsersUpload, .uniqueUsersUploadToday, .totalConnectionsEver, .totalConnectionsToday").each(function(i,item){
+            $(".uniqueUsersUpload, .uniqueUsersUploadLast24H, .totalConnectionsEver, .totalConnectionsLast24H").each(function(i,item){
                 addCommasToNumber(item);
             });
             
