@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Collusion Website</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/PathwayGothicOne-Regular.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/collusion.css" type="text/css" />
+    </head>
+    <body>
+        {{> navBar }}
+        <!-- First Section ============================== -->
+        <div class="section-container first-section dark-grey-bg">
+            <div class="container">
+                <div class="row" style="margin-bottom: 30px">
+                    <div class="span12">
+                        <div class="row">
+                            <div class="span12">
+                                <div class="db-breadcrumb">
+                                    <a href="/new/database">Database</a> 
+                                    >> 
+                                    <a href="/new/profileNew/{{{site}}}">{{site}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span12">
+                                <h1>{{site}}</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span12">
+                                <div class="blue-divider" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span12">
+                                <div class="inline-label grey-text">COLLECTED SINCE</div><span class="collectedSince"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span4">
+                        <div class="row">
+                            <div class="span4">
+                                <div style="width: 100%; height: 370px">
+                                    <svg class="vizcanvas" width="100%" height="100%" viewBox="0 0 1000 1000"></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span4">
+                                <div class="inline-label blue-text" style="font-size: 20px; margin-top: 15px"><b>{{profileNumConnections}} CONNECTIONS</b></div>
+                                <div class="inline-label grey-text">
+                                    were made between this site and the following sites:
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span4">
+                                <div class="profile-connection-list">
+                                {{#if connectionList}}
+                                    <ul>
+                                        {{#renderList connectionList}}
+                                        <li><a href="/new/profileNew/{{{connectedSite}}}">{{connectedSite}}</a></li> 
+                                        {{/renderList}}
+                                    </ul>
+                                {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span8">
+                        <div class="profile-main">
+                            <div class="row">
+                                <div class="span4">
+                                    <header>Site Description</header>
+                                    <section>
+                                        Website: <a href="">{{site}}</a><br/><br/>
+                                        <p>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel lectus eu quam consectetur vestibulum. Vivamus elementum faucibus commodo. Nullam bibendum ac justo in convallis. Ut ac lacinia nibh. Suspendisse ac eleifend enim. Donec ornare, metus eu suscipit tempor, nisl leo bibendum quam, ac fermentum eros est a mi. Praesent a erat a erat viverra tincidunt ac eget massa. Mauris eros sapien, pulvinar vel orci nec, feugiat aliquam enim. Nunc hendrerit et felis sit amet accumsan. Proin vestibulum a orci ac tincidunt. In fermentum auctor interdum. Integer tristique facilisis aliquet. Aenean placerat, purus in rutrum consequat, elit ante semper est, vitae iaculis metus enim in orci... <a href="">View Source</a>
+                                        </p>
+                                    </section>
+                                </div>
+                                <div class="span4">
+                                    <div>{{> map }}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="span4">
+                                    <header>Data Details</header>
+                                    <section>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel lectus eu quam consectetur vestibulum. Vivamus elementum faucibus commodo. Nullam bibendum ac justo in convallis. Ut ac lacinia nibh. Suspendisse ac eleifend enim. Donec ornare, metus eu suscipit tempor, nisl leo bibendum quam, ac fermentum eros est a mi. Praesent a erat a erat viverra tincidunt ac eget massa. Mauris eros sapien, pulvinar vel orci nec, feugiat aliquam enim. Nunc hendrerit et felis sit amet accumsan. Proin vestibulum a orci ac tincidunt. In fermentum auctor interdum. Integer tristique facilisis aliquet. Aenean placerat, purus in rutrum consequat, elit ante semper est, vitae iaculis metus enim in orci. 
+                                    </section>
+                                </div>
+                                <div class="span4">
+                                    <header>Privacy Policy</header>
+                                    <section>
+                                        Privacy Policy: </br>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End First Section -->
+        <!-- Second Section ============================== -->
+        {{> websiteDirectory}}
+        <!-- End Second Section -->
+        {{> firstFooter}}
+        {{> footer}}
+        <script src="/js/jquery-1.9.1.min.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="/js/collusion.js"></script>
+        <script src="/js/ui.js"></script>
+        <script>
+            document.querySelector("ul.nav li#databasePage").classList.add("active");
+            $.ajax({
+                url: "http://localhost:7000/getData?aggregateData=true&name={{{site}}}",
+                dataType: 'jsonp',
+                success: function(data){
+                    loadData(data); 
+                }
+            });
+            var collectedSince = new Date( parseInt("{{collectedSince}}") );
+            document.querySelector(".collectedSince").innerHTML = collectedSince;
+        </script>
+    </body>
+</html>

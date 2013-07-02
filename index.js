@@ -26,8 +26,11 @@ app.configure(function(){
 
 handlebars.registerHelper("renderList", function(items, options){
     var result = "";
-    for(var i=0, l=items.length; i<l; i++) {
-        result = result + options.fn(items[i]);
+    if ( items ){ 
+        for(var i=0, l=items.length; i<l; i++) {
+            items[i].index = i+1; // for front-end displaying purpose, index starts at 1
+            result = result + options.fn(items[i]);
+        }
     }
     return result;
 });
@@ -45,56 +48,35 @@ fs.readdirSync(viewdir).forEach(function(filename){
 });
 
 
-/**************************************************
-*   Index page
-*/
-app.get("/", function(req, res){
-    getBlogPosts(function(blogPosts){
-        var data = {
-            blogPosts : blogPosts
-        }
-        res.render("index",data);
-    });
-
-});
-
 
 /**************************************************
-*   Dashboard
+*   Helper functions
 */
-app.get("/dashboard", function(req, res){
+function makeHttpGetRequest(options,callback){
     var query = {};
     var queryString = JSON.stringify(query);
+    var hostname = process.env.DATABASE_URL || "collusiondb-development.herokuapp.com";
+    var port = process.env.DATABASE_PORT || 80;
 
-    var options = {
-        hostname: process.env.DATABASE_URL || "collusiondb-development.herokuapp.com",
-        port: process.env.DATABASE_PORT || 80,
-        path: "/dashboardData",
+    var httpRequestOptions = {
+        hostname: options.hostname || hostname,
+        path: options.path || "",
         method: "GET",
         headers: {
-            "Content-Type": "application/json",
+            "Content-Type": options.contentType || "application/json",
             "Content-Length": queryString.length
         }
     };
+    httpRequestOptions.port = (options.port == "") ? "" : port;
 
-    var result = "";
-    var reqGet = http.request(options, function(response) {
+    var results = "";
+    var reqGet = http.request(httpRequestOptions, function(response) {
         response.setEncoding("utf8");
         response.on("data", function (chunk) {
-          result += chunk;
+          results += chunk;
         });
         response.on("end", function(){
-            result = JSON.parse(result);
-            var data = {
-                uniqueUsersUpload: result.uniqueUsersUpload,
-                uniqueUsersUploadSince: result.uniqueUsersUploadSince,
-                uniqueUsersUploadLast24H: result.uniqueUsersUploadLast24H,
-                totalConnectionsEver: result.totalConnectionsEver,
-                totalConnectionsLast24H: result.totalConnectionsLast24H,
-                trackersArray: result.trackersArray,
-                today: new Date().toString().slice(4,15)
-            }
-            res.render("dashboard", data);
+            callback(results);
         });
     });
 
@@ -102,9 +84,133 @@ app.get("/dashboard", function(req, res){
         if (err) console.log("[ ERROR ] Problem with request: " + err.message);
     });
 
-    // write data to request body
     reqGet.write(queryString);
     reqGet.end();
+}
+
+
+/**************************************************
+*   Index page
+*/
+app.get("/", function(req, res){
+    var options = { 
+        hostname: "mozilla-collusion.tumblr.com",
+        path: "/rss",
+        port: "",
+        contentType: "application/rss+xml"
+    };
+    makeHttpGetRequest(options, function(result){
+        xmlParser.parseString(result, function(err,parsedResult){
+            var blogPosts = parsedResult.rss.channel[0].item;
+            var data = {
+                blogPosts : blogPosts
+            }
+            res.render("index", data);
+        });
+    });
+});
+
+app.get("/new", function(req, res){
+    res.render("indexNew");
+});
+
+app.get("/new/about", function(req, res){
+    res.render("about");
+});
+
+app.get("/new/news", function(req, res){
+    var options = { 
+        hostname: "mozilla-collusion.tumblr.com",
+        path: "/rss",
+        port: "",
+        contentType: "application/rss+xml"
+    };
+    makeHttpGetRequest(options, function(result){
+        xmlParser.parseString(result, function(err,parsedResult){
+            var blogPosts = parsedResult.rss.channel[0].item;
+            var data = {
+                blogPosts : blogPosts
+            }
+            res.render("news", data);
+        });
+    });
+});
+
+app.get("/new/database", function(req, res){
+    var options = { path: "/databaseSiteList" };
+    makeHttpGetRequest(options, function(result){
+        result = JSON.parse(result);
+        var data = {
+            websites: result[0],
+            top10: result[1]
+        }
+        res.render("database", data);
+    });
+});
+
+app.get("/new/profileNew", function(req, res){
+    var options = { path: "/databaseSiteList" };
+    makeHttpGetRequest(options, function(result){
+        result = JSON.parse(result);
+        var data = {
+            websites: result[0],
+            top10: result[1]
+        }
+        res.render("siteProfileNew", data);
+    });
+});
+
+app.get("/new/profileNew/:site", function(req, res){
+    var site = req.params.site;
+    var options = { path: "/getData?aggregateData=true&name=" + site };
+    makeHttpGetRequest(options, function(result){
+        result = JSON.parse(result);
+        var data = {
+                site: site,
+                collectedSince: result[site] ? result[site].firstAccess : "",
+                profileNumConnections: result[site] ? result[site].howMany : "",
+                connectionList: generateConnectionSiteList(site,result),
+            };
+
+        makeHttpGetRequest({ path: "/databaseSiteList" }, function(resultSiteList){
+            resultSiteList = JSON.parse(resultSiteList);
+            data["websites"] = resultSiteList[0];
+            data["top10"] = resultSiteList[1];
+            res.render("siteProfileNew", data);
+        });
+    });
+});
+
+
+function generateConnectionSiteList(site,data){
+    var list = [];
+    for ( var key in data ){
+        if ( key != site ){
+            list.push({ "connectedSite": key });
+        }
+    }
+    return list;
+}
+
+
+/**************************************************
+*   Dashboard
+*/
+app.get("/dashboard", function(req, res){
+    var options = { path: "/dashboardData" };
+    makeHttpGetRequest(options, function(result){
+        result = JSON.parse(result);
+        var data = {
+            uniqueUsersUpload: result.uniqueUsersUpload,
+            uniqueUsersUploadSince: result.uniqueUsersUploadSince,
+            uniqueUsersUploadLast24H: result.uniqueUsersUploadLast24H,
+            totalConnectionsEver: result.totalConnectionsEver,
+            totalConnectionsLast24H: result.totalConnectionsLast24H,
+            trackersArray: result.trackersArray,
+            today: new Date().toString().slice(4,15)
+        }
+        res.render("dashboard", data);
+    });
 });
 
 

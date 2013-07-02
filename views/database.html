@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Collusion Website</title>
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/PathwayGothicOne-Regular.css" type="text/css" />
+        <link rel="stylesheet" href="/styles/collusion.css" type="text/css" />
+    </head>
+    <body>
+        {{> navBar }}
+        <!-- First Section ============================== -->
+        <div class="section-container first-section dark-grey-bg">
+            <div class="container">
+                <div class="row">
+                    <div class="span12 temp-placeholder" style="height: 400px">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span12 text-center">
+                        <div class="page-slogan">YOUR DONATED DATA</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span2 offset5">
+                        <div class="blue-divider" style="width: 180px" ></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="span6 offset3 text-center">
+                        The data that you contribute to Collusion helps us generate a larger understanding of how they interact as a collective in the online space.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End First Section -->
+        <!-- Second Section ============================== -->
+        {{> websiteDirectory}}
+        <!-- End Second Section -->
+        {{> firstFooter}}
+        {{> footer}}
+
+        <script src="/js/ui.js"></script>
+        <script>
+            document.querySelector("ul.nav li#databasePage").classList.add("active");
+        </script>
+    </body>
+</html>

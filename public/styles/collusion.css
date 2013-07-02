@@ -1,0 +1,303 @@
+body{
+	font-family: "Open Sans";
+	color: #3D454D;
+	background-color: #3D454D;
+}
+
+h1{
+	font-size: 30px;
+	line-height: 30px;
+}
+
+h2{
+	font-size: 25px;
+	line-height: 25px;
+	color: #269FD1;	
+}
+
+a{
+	color: #47C3E3;
+}
+
+a:hover{
+	color: #9DE7F9;
+	text-decoration: none;
+}
+
+#collusion-triangle{
+	padding: 0;	
+}
+
+.navbar .nav li a#collusion-triangle:hover, .active#collusion-triangle{
+	background-color: none;
+	border: none;
+}
+
+.collusion-text{
+	font-family: "Pathway Gothic One";
+}
+
+.btn{
+	background-image: none;
+	letter-spacing: 1px;
+	font-weight: bold;
+	padding: 5px 30px;
+	box-shadow: none;
+	text-shadow: none;
+	border: none;
+}
+
+.blue-btn{
+	background-color: #46C3E5;
+	color: #fff;
+}
+
+.yellow-btn{
+	background-color: #D7E160;
+}
+
+.dark-grey-bg{
+	color: #fff;
+	background-color: #3D4851;
+}
+
+.white-bg{
+	background-color: #fff;	
+}
+
+.blue-bg{
+	background-color: #ABDFF2;
+}
+
+.navbar .nav{
+	overflow: visible;
+	height: 75px;	
+}
+
+.navbar-inner{
+	background: #1E2428;
+}
+
+.navbar ul.nav li{
+	margin-left: 20px;	
+}
+
+.navbar ul.nav li > a{
+	color: white;
+	font-weight: bold;
+	text-shadow: none;
+	line-height: 50px;
+	font-size: 14px;
+}
+
+.navbar-fixed-top .navbar-inner{
+	border: 0;	
+}
+
+.navbar .nav > .active > a, 
+.navbar .nav > .active > a:hover{
+	background-color: #1E2428;
+}
+.navbar .nav > .active > a, 
+.navbar .nav > .active > a:hover,
+.navbar .nav li a:hover{
+	color: white;
+	box-shadow: none;
+	border-bottom: 5px solid #fff;
+}
+
+.temp-placeholder{
+	background-color: #E9EAEB;
+	border-radius: 5px;
+}
+
+.temp-placeholder-circle{
+	width: 140px;
+	height: 140px;
+	border-radius: 70px;
+	background-color: #ccc;	
+	margin: 40px auto 40px auto;
+}
+
+.first-section{
+	padding: 200px 0 50px 0;	
+}
+
+.section-container:not(:first-of-type), .footer {
+	padding: 50px 0;
+}
+
+.subsection:not(:last-of-type){
+	margin-bottom: 40px;
+}
+
+.page-slogan{
+	color: #fff;
+	font-size: 18px;
+	font-weight: bold;
+	letter-spacing:2px;
+}
+
+.first-section .page-slogan{
+	margin-top: 50px;	
+	margin-bottom: 30px;
+}
+
+.blue-divider{
+	border-top: solid 5px #47C3E3;	
+	height: 1px;
+	margin-bottom: 20px;
+}
+
+.inline-label{
+	letter-spacing: 1px;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.grey-text{
+	color: #ccc;
+}
+
+.blue-text{
+	color: #48C7E6;
+}
+
+.sortingOptions{
+	display: inline-block;
+}
+
+table tr{
+	border-bottom: 1px solid #999;	
+}
+
+.website-list-table, .top-trackers-table{
+	line-height: 35px;
+	width: 100%;
+	text-align: left;
+}
+
+.website-list-table th{
+	background-color: #ABDFF2;
+}
+
+.website-list-table tr:hover,
+.top-trackers-table tr:hover{
+	background-color: #BFBFBF;
+	cursor: pointer;
+}
+
+.top-trackers-table caption{
+	text-align: left;
+	font-size: 20px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	margin-bottom: 3px;
+}
+
+.top-trackers-table tr td:first-child{
+	color: #2FB4D2;
+}
+
+.profile-connection-list{
+	border-radius: 5px;
+	background: #E9EAEB;
+	height: 300px;
+	overflow-y: scroll;
+	margin-top: 20px;
+}
+
+.profile-connection-list ul{
+	color: #3D454D;
+	list-style-type: none;
+}
+
+.profile-connection-list ul li{
+	line-height: 30px;	
+}
+
+.profile-connection-list ul li a, .profile-connection-list ul li a:hover{
+	color: #3D454D;
+}
+
+.profile-main{
+	background: #E9EAEB;
+	color: #3D454D;
+	border-radius: 5px;
+}
+
+.profile-main header{
+	font-size: 30px;
+	margin-bottom: 20px;
+	font-weight: bold;
+}
+
+.profile-main div[class*="span"]{
+	padding: 30px 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Styles for Collusion Graph */
+
+.vizcanvas{
+    background-color: #E9EAEB;
+}
+
+.edge{
+    stroke: #000;
+}
+
+.node{
+    stroke-width: 4;
+    stroke: red;
+}
+
+.secureYes{
+    stroke: #1ABE15;
+}
+
+.secureNo{
+    stroke: #CE1105;
+}
+
+.secureBoth{
+    stroke: #EA5E15;
+}
+
+.cookieYes{
+    fill: #5AA3E1;
+}
+
+.cookieNo{
+    fill: #E7EA55;
+}
+
+.cookieBoth{
+    fill: #5AA3E1;
+}
+
+
+
+/* Collusion Blog */
+
+.blog-post{
+	border: 1px solid #ccc;
+	padding: 20px;
+	margin-bottom: 40px;
+}
+
+.blog-title{
+	margin: 10px 0;
+	font-size: 20px;
+}

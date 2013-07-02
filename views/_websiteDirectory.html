@@ -1,0 +1,65 @@
+        <div class="section-container second-section white-bg">
+            <div class="container">
+                <div class="row subsection">
+                    <div class="span12">
+                        <div class="row">
+                            <div class="span12">
+                                <h1>Collusion Website Database</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span8">
+                                <div class="inline-label grey-text">SORT BY:</div> 
+                                <div class="sortingOptions">
+                                    <a href="">recent</a> | 
+                                    <a href="">sites tracked</a> | 
+                                    <a href="">connections</a> |  
+                                    <a href="">alphabetically</a>
+                                    <br/>
+                                </div>
+                            </div>
+                            <div class="span4">
+                                <input type="text" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span8">
+                                <table class="website-list-table">
+                                    <tr>
+                                        <th style="width: 45%">WEBSITE</th>
+                                        <th style="width: 30%">UNIQUE SITES CONNECTED</th>
+                                        <th style="width: 25%">CONNECTIONS</th>
+                                    </tr>
+                                {{#if websites}}
+                                    {{#renderList websites}}
+                                     <tr data-url="/new/profileNew/{{{site}}}">
+                                        <td>{{site}}</td>
+                                        <td>{{numConnectedSites}}</td>
+                                        <td>{{numConnections}}</td>
+                                    </tr>
+                                    {{/renderList}}
+                                {{/if}}
+                                </table>
+                            </div>
+                            <div class="span4">
+                                <table class="top-trackers-table">
+                                    <caption>TOP 10 POTENTIAL TRACKERS</caption>
+                                    <colgroup>
+                                        <col style="font-color:red; width: 10%">
+                                        <col style="width: 90%">
+                                    </colgroup>
+                                    <tr>
+                                    </tr>
+                                {{#renderList top10}}
+                                     <tr data-url="/new/profileNew/{{{site}}}">
+                                        <td>{{index}}</td>
+                                        <td>{{site}}</td>
+                                    </tr>
+                                {{/renderList}}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
