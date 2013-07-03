@@ -21,6 +21,7 @@ app.configure(function(){
     app.engine("html", cons.handlebars);
     app.use(express.static(__dirname + "/public"));
     app.use(express.bodyParser());
+    app.use(express.cookieParser());
 });
 
 
@@ -197,6 +198,28 @@ function generateConnectionSiteList(site,data){
 *   Dashboard
 */
 app.get("/dashboard", function(req, res){
+    if ( req.cookies.dashboardAccess == "true" ){
+        getDashboardData(function(data){
+            res.render("dashboard", data);
+        });
+    }else{
+        res.render("passwordPrompt");
+    }
+});
+
+
+app.post("/dashboard", function(req, res){
+    if ( req.body.password == process.env.DASHBOARD_PASSWORD ){
+        res.cookie("dashboardAccess", "true", { expires: new Date(Date.now() + 24*60*1000) });
+        getDashboardData(function(data){
+            res.render("dashboard", data);
+        });
+    }else{
+        res.send(403, "Access Denied");
+    }
+});
+
+function getDashboardData(callback){
     var options = { path: "/dashboardData" };
     makeHttpGetRequest(options, function(result){
         result = JSON.parse(result);
@@ -209,9 +232,9 @@ app.get("/dashboard", function(req, res){
             trackersArray: result.trackersArray,
             today: new Date().toString().slice(4,15)
         }
-        res.render("dashboard", data);
+        callback(data);
     });
-});
+}
 
 
 /**************************************************
