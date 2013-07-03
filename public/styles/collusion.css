@@ -123,7 +123,13 @@ a:hover{
 	padding: 200px 0 50px 0;	
 }
 
-.section-container:not(:first-of-type), .footer {
+.second-section,
+.third-section,
+.fourth-section,
+.fifth-section,
+.sixth-section,
+.seventh-section,
+.footer {
 	padding: 50px 0;
 }
 
