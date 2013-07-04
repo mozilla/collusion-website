@@ -56,8 +56,8 @@ fs.readdirSync(viewdir).forEach(function(filename){
 function makeHttpGetRequest(options,callback){
     var query = {};
     var queryString = JSON.stringify(query);
-    var hostname = process.env.DATABASE_URL || "collusiondb-development.herokuapp.com";
-    var port = process.env.DATABASE_PORT || 80;
+    var hostname = process.env.DATABASE_URL;
+    var port = process.env.DATABASE_PORT;
 
     var httpRequestOptions = {
         hostname: options.hostname || hostname,
@@ -296,8 +296,8 @@ app.get("/browseData", function(req, res){
     var queryString = JSON.stringify(query);
 
     var options = {
-        hostname: process.env.DATABASE_URL || "collusiondb-development.herokuapp.com",
-        port: process.env.DATABASE_PORT || 80,
+        hostname: process.env.DATABASE_URL,
+        port: process.env.DATABASE_PORT,
         path: "/getBrowseData",
         method: "GET",
         headers: {
@@ -351,7 +351,7 @@ function buildProfileThumb(objArr){
                 {
                     url: url,
                     infoUrl: infoUrl,
-                    faviconUrl: "http://" + infoUrl +  "/favicon.ico",
+                    // faviconUrl: "http://" + infoUrl +  "/favicon.ico",
                     infoLine1: infoLine1,
                     infoLine2: infoLine2
             });
