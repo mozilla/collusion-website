@@ -36,7 +36,7 @@
                         </div>
                         <div class="row">
                             <div class="span12">
-                                <div class="inline-label grey-text">COLLECTED SINCE</div><span class="collectedSince"></span>
+                                <div class="inline-label grey-text">in the past 24 hours...(temporary, to be switched to show all time data)</div><span class="collectedSince"></span>
                             </div>
                         </div>
                     </div>
@@ -126,8 +126,8 @@
                     loadData(data); 
                 }
             });
-            var collectedSince = new Date( parseInt("{{collectedSince}}") );
-            document.querySelector(".collectedSince").innerHTML = collectedSince;
+            // var collectedSince = new Date( parseInt("{{collectedSince}}") );
+            // document.querySelector(".collectedSince").innerHTML = collectedSince;
         </script>
     </body>
 </html>
