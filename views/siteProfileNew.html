@@ -120,7 +120,7 @@
         <script>
             document.querySelector("ul.nav li#databasePage").classList.add("active");
             $.ajax({
-                url: "http://localhost:7000/getSiteProfileNew?name={{{site}}}",
+                url: "http://collusiondb-development.herokuapp.com/getSiteProfileNew?name={{{site}}}",
                 dataType: 'jsonp',
                 success: function(data){
                     loadData(data); 
