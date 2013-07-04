@@ -163,7 +163,7 @@ app.get("/new/profileNew", function(req, res){
 
 app.get("/new/profileNew/:site", function(req, res){
     var site = req.params.site;
-    var options = { path: "/getData?aggregateData=true&name=" + site };
+    var options = { path: "/getSiteProfileNew?name=" + site };
     makeHttpGetRequest(options, function(result){
         result = JSON.parse(result);
         var data = {
