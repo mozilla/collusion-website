@@ -52,9 +52,8 @@
                         </div>
                         <div class="row">
                             <div class="span4">
-                                <div class="inline-label blue-text" style="font-size: 20px; margin-top: 15px"><b>{{profileNumConnections}} CONNECTIONS</b></div>
-                                <div class="inline-label grey-text">
-                                    were made between this site and the following sites:
+                                <div class="inline-label grey-text" style="margin-top: 15px">
+                                    <span class="blue-text">{{profileNumConnections}} CONNECTIONS</span> were made between this site and the following <span class="blue-text">{{#if connectionList}} {{connectionList.length}} {{/if}} SITES</span>:
                                 </div>
                             </div>
                         </div>
