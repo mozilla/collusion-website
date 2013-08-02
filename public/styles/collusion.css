@@ -69,41 +69,35 @@ a:hover{
 	background-color: #ABDFF2;
 }
 
-.navbar .nav{
-	overflow: visible;
-	height: 75px;	
-}
 
-.navbar-inner{
+.collusion-nav-bar{
 	background: #1E2428;
+	height: 75px;
 }
 
-.navbar ul.nav li{
-	margin-left: 20px;	
+.collusion-nav-bar ul{
+	list-style-type: none;
+	white-space: nowrap;
 }
 
-.navbar ul.nav li > a{
+.collusion-nav-bar ul li a{
 	color: white;
 	font-weight: bold;
 	text-shadow: none;
-	line-height: 50px;
+	line-height: 70px;
 	font-size: 14px;
+	list-style-type: none;
 }
 
-.navbar-fixed-top .navbar-inner{
-	border: 0;	
+.collusion-nav-bar ul li a:hover{
+	text-decoration: none;
 }
 
-.navbar .nav > .active > a, 
-.navbar .nav > .active > a:hover{
-	background-color: #1E2428;
-}
-.navbar .nav > .active > a, 
-.navbar .nav > .active > a:hover,
-.navbar .nav li a:hover{
-	color: white;
-	box-shadow: none;
+.collusion-nav-bar li:not(:nth-child(3)):hover{
+	box-sizing: border-box;
+	moz-box-sizing: border-box;
 	border-bottom: 5px solid #fff;
+	cursor: pointer;
 }
 
 .temp-placeholder{
