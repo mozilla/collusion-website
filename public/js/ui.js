@@ -12,5 +12,10 @@ var siteTableClickHandler = function(event){
     window.location = profileURL;
 };
 
-document.querySelector(".website-list-table").addEventListener("click", siteTableClickHandler);
-document.querySelector(".top-trackers-table").addEventListener("click", siteTableClickHandler);
+if ( document.querySelector(".website-list-table") ){
+    document.querySelector(".website-list-table").addEventListener("click", siteTableClickHandler);
+}
+
+if ( document.querySelector(".top-trackers-table") ){
+    document.querySelector(".top-trackers-table").addEventListener("click", siteTableClickHandler);
+}
