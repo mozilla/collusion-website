@@ -22,7 +22,6 @@ app.configure(function(){
     app.use(express.static(__dirname + "/public"));
     app.use(express.bodyParser());
     app.use(express.cookieParser());
-    app.use(express.basicAuth(process.env.COLLUSION_USERNAME,process.env.COLLUSION_PASSWORD));
 });
 
 
