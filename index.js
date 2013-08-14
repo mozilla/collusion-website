@@ -49,6 +49,26 @@ fs.readdirSync(viewdir).forEach(function(filename){
 });
 
 
+/**************************************************
+*   Password protect this in-progress website
+*/
+function authAccess(req,res,getReqHandler){
+    if ( req.cookies.collusionAccess == "true" ){
+        getReqHandler(req,res);
+    }else{
+        res.render("passwordPrompt",{"path":req.url});
+    }
+}
+
+function authPassword(req,res,getReqHandler){
+    if ( req.body.password == process.env.COLLUSION_PASSWORD ){
+        res.cookie("collusionAccess", "true", { expires: new Date(Date.now() + 10*60*1000) }); // expires in 10 mins
+        getReqHandler(req,res);
+    }else{
+        res.send(403, "Access Denied");
+    }
+}
+
 
 /**************************************************
 *   Helper functions
@@ -93,7 +113,7 @@ function makeHttpGetRequest(options,callback){
 /**************************************************
 *   Index page
 */
-app.get("/", function(req, res){
+var indexGetHandler = function(req,res){
     var options = { 
         hostname: "mozilla-collusion.tumblr.com",
         path: "/rss",
@@ -109,17 +129,53 @@ app.get("/", function(req, res){
             res.render("index", data);
         });
     });
+};
+
+app.get("/", function(req, res){
+    authAccess( req,res,indexGetHandler );
 });
+
+app.post("/", function(req, res){
+    authPassword( req,res,indexGetHandler );
+});
+
+
+/**************************************************
+*   New Index Page
+*/
+var newIndexGetHandler = function(req,res){
+    res.render("indexNew");
+};
 
 app.get("/new", function(req, res){
-    res.render("indexNew");
+    authAccess( req,res,newIndexGetHandler );
 });
+
+app.post("/new", function(req, res){
+    authPassword( req,res,newIndexGetHandler );
+});
+
+
+/**************************************************
+*   New About Page
+*/
+var newAboutGetHandler = function(req,res){
+    res.render("about");
+};
 
 app.get("/new/about", function(req, res){
-    res.render("about");
+    authAccess( req,res,newAboutGetHandler );
 });
 
-app.get("/new/news", function(req, res){
+app.post("/new/about", function(req, res){
+    authPassword( req,res,newAboutGetHandler );
+});
+
+
+/**************************************************
+*   New News Page
+*/
+var newNewsGetHandler = function(req,res){
     var options = { 
         hostname: "mozilla-collusion.tumblr.com",
         path: "/rss",
@@ -135,9 +191,21 @@ app.get("/new/news", function(req, res){
             res.render("news", data);
         });
     });
+};
+
+app.get("/new/news", function(req, res){
+    authAccess( req,res,newNewsGetHandler );
 });
 
-app.get("/new/database", function(req, res){
+app.post("/new/news", function(req, res){
+    authPassword( req,res,newNewsGetHandler );
+});
+
+
+/**************************************************
+*   New Database Page
+*/
+var newDatabaseGetHandler = function(req,res){
     var options = { path: "/databaseSiteList" };
     makeHttpGetRequest(options, function(result){
         result = JSON.parse(result);
@@ -147,21 +215,21 @@ app.get("/new/database", function(req, res){
         }
         res.render("database", data);
     });
+};
+
+app.get("/new/database", function(req, res){
+    authAccess( req,res,newDatabaseGetHandler );
 });
 
-app.get("/new/profileNew", function(req, res){
-    var options = { path: "/databaseSiteList" };
-    makeHttpGetRequest(options, function(result){
-        result = JSON.parse(result);
-        var data = {
-            websites: result[0],
-            top10: result[1]
-        }
-        res.render("siteProfileNew", data);
-    });
+app.post("/new/database", function(req, res){
+    authPassword( req,res,newDatabaseGetHandler );
 });
 
-app.get("/new/profileNew/:site", function(req, res){
+
+/**************************************************
+*   New Profile Page
+*/
+var newProfileGetHandler = function(req,res){
     var site = req.params.site;
     var options = { path: "/getSiteProfileNew?name=" + site };
     makeHttpGetRequest(options, function(result){
@@ -180,8 +248,15 @@ app.get("/new/profileNew/:site", function(req, res){
             res.render("siteProfileNew", data);
         });
     });
+};
+
+app.get("/new/profileNew/:site", function(req, res){
+    authAccess( req,res,newProfileGetHandler );
 });
 
+app.post("/new/profileNew/:site", function(req, res){
+    authPassword( req,res,newProfileGetHandler );
+});
 
 function generateConnectionSiteList(site,data){
     var list = [];
@@ -197,26 +272,18 @@ function generateConnectionSiteList(site,data){
 /**************************************************
 *   Dashboard
 */
+var dashboardGetHandler = function(req,res){
+     getDashboardData(function(data){
+        res.render("dashboard", data);
+    });
+};
+
 app.get("/dashboard", function(req, res){
-    if ( req.cookies.dashboardAccess == "true" ){
-        getDashboardData(function(data){
-            res.render("dashboard", data);
-        });
-    }else{
-        res.render("passwordPrompt");
-    }
+    authAccess( req,res,dashboardGetHandler );
 });
 
-
 app.post("/dashboard", function(req, res){
-    if ( req.body.password == process.env.DASHBOARD_PASSWORD ){
-        res.cookie("dashboardAccess", "true", { expires: new Date(Date.now() + 24*60*1000) });
-        getDashboardData(function(data){
-            res.render("dashboard", data);
-        });
-    }else{
-        res.send(403, "Access Denied");
-    }
+    authPassword( req,res,dashboardGetHandler );
 });
 
 function getDashboardData(callback){
@@ -280,18 +347,9 @@ function getBlogPosts(callback){
 
 
 /**************************************************
-*   TESTING
-*/
-app.get("/test", function(req,res){
-    //test.postData(res);
-    test.getData(res);
-});
-
-
-/**************************************************
 *   Browse data page
 */
-app.get("/browseData", function(req, res){
+var browseDataGetHandler = function(req,res){
     var query = {};
     var queryString = JSON.stringify(query);
 
@@ -328,13 +386,16 @@ app.get("/browseData", function(req, res){
     // write data to request body
     reqGet.write(queryString);
     reqGet.end();
+};
 
+app.get("/browseData", function(req, res){
+    authAccess( req,res,browseDataGetHandler );
 });
 
+app.post("/browseData", function(req, res){
+    authPassword( req,res,browseDataGetHandler );
+});
 
-/**************************************************
-*   Helper method for the browse data page
-*/
 function buildProfileThumb(objArr){
     var result = [];
     var urlPath = "/profile/";
@@ -363,11 +424,10 @@ function buildProfileThumb(objArr){
 }
 
 
-
 /**************************************************
 *   Site Profile
 */
-app.get("/profile/:site", function(req, res){
+var siteProfileGetHandler = function(req,res){
     var query = {};
     query.profileName = req.params.site;
     query.query = {"name": req.params.site};
@@ -377,6 +437,15 @@ app.get("/profile/:site", function(req, res){
         profileName: query.profileName,
     };
     res.render("siteProfile", data);
+};
+
+app.get("/profile/:site", function(req, res){
+    authAccess( req,res,siteProfileGetHandler );
+});
+
+
+app.post("/profile/:site", function(req, res){
+    authPassword( req,res,siteProfileGetHandler );
 });
 
 
