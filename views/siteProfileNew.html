@@ -117,9 +117,8 @@
         <script src="/js/collusion.js"></script>
         <script src="/js/ui.js"></script>
         <script>
-            document.querySelector("ul.nav li#databasePage").classList.add("active");
+            document.querySelector("ul.collusion-nav-inner li#databasePage").classList.add("active");
             $.ajax({
-                url: "http://collusiondb-development.herokuapp.com/getSiteProfileNew?name={{{site}}}",
                 dataType: 'jsonp',
                 success: function(data){
                     loadData(data); 

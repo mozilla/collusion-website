@@ -50,7 +50,7 @@ function setSiteProfile(sitename, callback){
 function getSiteProfile(sitename, callback){
     $.ajax({
         type: "GET",
-        url: "http://collusiondb-development.herokuapp.com/getData?aggregateData=true&name=" + sitename,
+        url: "http://collusiondb-development.herokuapp.com/getData?name=" + sitename,
         dataType: "jsonp",
         crossDomain: true,
         success: function(result){

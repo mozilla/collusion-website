@@ -101,6 +101,8 @@ a:hover{
 	line-height: 70px;
 	font-size: 14px;
 	list-style-type: none;
+	padding: 28px 0;
+	height: 100%;
 }
 
 @media screen and (max-width:780px){
@@ -118,7 +120,8 @@ a:hover{
 	text-decoration: none;
 }
 
-.collusion-nav-bar li:not(:nth-child(3)):hover{
+.collusion-nav-bar li:not(:nth-child(3)):hover,
+.collusion-nav-bar li.active:not(:nth-child(3)){
 	box-sizing: border-box;
 	moz-box-sizing: border-box;
 	border-bottom: 5px solid #fff;
