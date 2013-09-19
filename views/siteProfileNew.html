@@ -45,7 +45,7 @@
                     <div class="span4">
                         <div class="row">
                             <div class="span4">
-                                <div style="width: 100%; height: 370px">
+                                <div class="vizcanvas-container" style="width: 100%; height: 370px">
                                     <svg class="vizcanvas" width="100%" height="100%" viewBox="0 0 1000 1000"></svg>
                                 </div>
                             </div>
@@ -54,19 +54,6 @@
                             <div class="span4">
                                 <div class="inline-label grey-text" style="margin-top: 15px">
                                     <span class="blue-text">{{profileNumConnections}} CONNECTIONS</span> were made between this site and the following <span class="blue-text">{{#if connectionList}} {{connectionList.length}} {{/if}} SITES</span>:
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="span4">
-                                <div class="profile-connection-list">
-                                {{#if connectionList}}
-                                    <ul>
-                                        {{#renderList connectionList}}
-                                        <li><a href="/new/profileNew/{{{connectedSite}}}">{{connectedSite}}</a></li> 
-                                        {{/renderList}}
-                                    </ul>
-                                {{/if}}
                                 </div>
                             </div>
                         </div>
@@ -79,19 +66,23 @@
                                     <section>
                                         Website: <a href="">{{site}}</a><br/><br/>
                                         <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel lectus eu quam consectetur vestibulum. Vivamus elementum faucibus commodo. Nullam bibendum ac justo in convallis. Ut ac lacinia nibh. Suspendisse ac eleifend enim. Donec ornare, metus eu suscipit tempor, nisl leo bibendum quam, ac fermentum eros est a mi. Praesent a erat a erat viverra tincidunt ac eget massa. Mauris eros sapien, pulvinar vel orci nec, feugiat aliquam enim. Nunc hendrerit et felis sit amet accumsan. Proin vestibulum a orci ac tincidunt. In fermentum auctor interdum. Integer tristique facilisis aliquet. Aenean placerat, purus in rutrum consequat, elit ante semper est, vitae iaculis metus enim in orci... <a href="">View Source</a>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel lectus eu quam consectetur vestibulum. Vivamus elementum faucibus commodo. Nullam bibendum ac justo in convallis. Ut ac lacinia nibh. Suspendisse ac eleifend enim. Donec ornare, metus eu suscipit tempor...
                                         </p>
                                     </section>
                                 </div>
                                 <div class="span4">
-                                    <div>{{> map }}</div>
+                                    <header>&nbsp;</header>
+                                    <section>
+                                        Server location: <span id="country"></span><br/><br/>
+                                        <div>{{> map }}</div>
+                                    </section>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="span4">
                                     <header>Data Details</header>
                                     <section>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel lectus eu quam consectetur vestibulum. Vivamus elementum faucibus commodo. Nullam bibendum ac justo in convallis. Ut ac lacinia nibh. Suspendisse ac eleifend enim. Donec ornare, metus eu suscipit tempor, nisl leo bibendum quam, ac fermentum eros est a mi. Praesent a erat a erat viverra tincidunt ac eget massa. Mauris eros sapien, pulvinar vel orci nec, feugiat aliquam enim. Nunc hendrerit et felis sit amet accumsan. Proin vestibulum a orci ac tincidunt. In fermentum auctor interdum. Integer tristique facilisis aliquet. Aenean placerat, purus in rutrum consequat, elit ante semper est, vitae iaculis metus enim in orci. 
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel lectus eu quam consectetur vestibulum. Vivamus elementum faucibus commodo. Nullam bibendum ac justo in convallis.
                                     </section>
                                 </div>
                                 <div class="span4">
@@ -108,7 +99,7 @@
         </div>
         <!-- End First Section -->
         <!-- Second Section ============================== -->
-        {{> websiteDirectory}}
+        {{> tableSiteProfile }}
         <!-- End Second Section -->
         {{> firstFooter}}
         {{> footer}}
@@ -123,6 +114,23 @@
                 dataType: 'jsonp',
                 success: function(data){
                     loadData(data); 
+                }
+            });
+            $.ajax({
+                url: "http://freegeoip.net/json/{{{site}}}",
+                dataType: 'jsonp',
+                success: function(data){
+                    var countryName = data.country_name;
+                    var countryCode = data.country_code.toLowerCase();
+                    if ( data == false || countryName === "Reserved" ){
+                        document.querySelector("#country").innerHTML = "(Unable to find server location)";
+                    }else{
+                        document.querySelector("#country").innerHTML = data.country_name;
+                        var countryOnMap = document.querySelector(".mapcanvas").getElementById(countryCode);
+                        if (countryOnMap){
+                            countryOnMap.classList.add('highlight-country');
+                        }
+                    }
                 }
             });
             // var collectedSince = new Date( parseInt("{{collectedSince}}") );

@@ -4,12 +4,7 @@
                     <div class="span12">
                         <div class="row">
                             <div class="span12">
-                                <h1>Collusion Website Database</h1>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="span12">
-                                <h6>in the past 24 hours...(temporary, to be switched to show all time data)</h6>
+                                <h4 class="blue-text">{{#if connectionList}} {{connectionList.length}}{{else}}0{{/if}} Websites</h4>
                             </div>
                         </div>
                         <div class="row">
@@ -31,37 +26,25 @@
                             <div class="span8">
                                 <table class="website-list-table">
                                     <tr>
+                                        <th style="width: 15%">Type</th>
                                         <th style="width: 45%">WEBSITE</th>
-                                        <th style="width: 30%">UNIQUE SITES CONNECTED</th>
-                                        <th style="width: 25%">CONNECTIONS</th>
+                                        <th style="width: 20%">UNIQUE SITES CONNECTED</th>
+                                        <th style="width: 20%">CONNECTIONS</th>
                                     </tr>
-                                {{#if websites}}
-                                    {{#renderList websites}}
+                                {{#if connectionList}}
+                                    {{#renderList connectionList}}
                                      <tr data-url="/new/profileNew/{{{site}}}">
-                                        <td>{{site}}</td>
-                                        <td>{{numConnectedSites}}</td>
-                                        <td>{{numConnections}}</td>
+                                        <td></td>
+                                        <td>{{connectedSite}}</td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                     {{/renderList}}
                                 {{/if}}
                                 </table>
                             </div>
                             <div class="span4">
-                                <table class="top-trackers-table">
-                                    <caption>TOP 10 POTENTIAL TRACKERS</caption>
-                                    <colgroup>
-                                        <col style="font-color:red; width: 10%">
-                                        <col style="width: 90%">
-                                    </colgroup>
-                                    <tr>
-                                    </tr>
-                                {{#renderList top10}}
-                                     <tr data-url="/new/profileNew/{{{site}}}">
-                                        <td>{{index}}</td>
-                                        <td>{{site}}</td>
-                                    </tr>
-                                {{/renderList}}
-                                </table>
+                                blah 
                             </div>
                         </div>
                     </div>
