@@ -112,13 +112,14 @@
         <!-- End Second Section -->
         {{> firstFooter}}
         {{> footer}}
-        <script src="/js/jquery-1.9.1.min.js"></script>
+        <script src="/js/jquery-1.10.2.min.js"></script>
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="/js/collusion.js"></script>
         <script src="/js/ui.js"></script>
         <script>
             document.querySelector("ul.collusion-nav-inner li#databasePage").classList.add("active");
             $.ajax({
+                url: "http://collusiondb-development.herokuapp.com/getSiteProfileNew?name={{{site}}}",
                 dataType: 'jsonp',
                 success: function(data){
                     loadData(data); 

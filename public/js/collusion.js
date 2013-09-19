@@ -161,7 +161,6 @@ function addCircle(selection){
 function addShape(selection){
     selection.filter('.visitedYes').call(addCircle);
     selection.filter('.visitedNo').call(addTriangle);
-    selection.filter('.visitedBoth').call(addSquare);
 }
 
 function addTriangle(selection){

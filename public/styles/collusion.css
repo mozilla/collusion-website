@@ -280,40 +280,15 @@ table tr{
 /* Styles for Collusion Graph */
 
 .vizcanvas{
-    background-color: #E9EAEB;
+    background-color: #000;
 }
 
 .edge{
-    stroke: #000;
+    stroke: #FFF;
 }
 
 .node{
-    stroke-width: 4;
-    stroke: red;
-}
-
-.secureYes{
-    stroke: #1ABE15;
-}
-
-.secureNo{
-    stroke: #CE1105;
-}
-
-.secureBoth{
-    stroke: #EA5E15;
-}
-
-.cookieYes{
-    fill: #5AA3E1;
-}
-
-.cookieNo{
-    fill: #E7EA55;
-}
-
-.cookieBoth{
-    fill: #5AA3E1;
+    fill: #FFF;
 }
 
 
