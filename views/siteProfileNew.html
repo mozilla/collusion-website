@@ -50,6 +50,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="span4">
+                                <h4 class="all-cap blue-text"><b>{{numTotalConn}} connections</b></h4>
+                                <div>
+                                    <svg class="percent-bar" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                        <rect class="first-bar" height="20" />
+                                        <text x="5" y="15" fill="#FFF">%</text>
+                                        <rect class="third-bar" height="20" />
+                                        <text y="15" fill="#000">nooo</text>
+                                    </svg>
+                                </div>
+                                <div class="all-cap"><b>{{numFirstConn}}</b> first party connections</div>
+                                <div class="all-cap"><b>{{numThirdConn}}</b> third party connections</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="span8">
                         <div class="profile-main">
@@ -128,6 +143,20 @@
             });
             // var collectedSince = new Date( parseInt("{{collectedSince}}") );
             // document.querySelector(".collectedSince").innerHTML = collectedSince;
+
+            // calculate connections percentage bar
+            var totalWidth = document.querySelector(".percent-bar").parentElement.getBoundingClientRect().width;
+            var firstPartyRatio = {{{numFirstConn}}} / {{{numTotalConn}}};
+            var firstBar = document.querySelector(".first-bar");
+            var thirdBar = document.querySelector(".third-bar");
+            var firstBarLabel = document.querySelector(".first-bar + text");
+            var thirdBarLabel = document.querySelector(".third-bar + text");
+            firstBar.setAttribute("width", totalWidth*firstPartyRatio);
+            firstBarLabel.innerHTML = Math.round(firstPartyRatio*100) + "%";
+            thirdBar.setAttribute("x", totalWidth*firstPartyRatio);
+            thirdBar.setAttribute("width", totalWidth*(1-firstPartyRatio));
+            thirdBarLabel.setAttribute("x", totalWidth*firstPartyRatio + 5);
+            thirdBarLabel.innerHTML = Math.round((1-firstPartyRatio)*100) + "%";
         </script>
     </body>
 </html>

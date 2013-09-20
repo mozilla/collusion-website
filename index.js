@@ -237,7 +237,9 @@ var newProfileGetHandler = function(req,res){
         var data = {
                 site: site,
                 collectedSince: result[site] ? result[site].firstAccess : "",
-                profileNumConnections: result[site] ? result[site].howMany : "",
+                numTotalConn: result[site] ? result[site].howMany : "",
+                numFirstConn: result[site] ? result[site].howManyFirstParty : "",
+                numThirdConn: result[site] ? (result[site].howMany-result[site].howManyFirstParty) : "",
                 connectionList: generateConnectionSiteList(site,result),
             };
 

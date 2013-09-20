@@ -193,6 +193,10 @@ a:hover{
 	color: #48C7E6;
 }
 
+.all-cap{
+	text-transform: uppercase;
+}
+
 .sortingOptions{
 	display: inline-block;
 }
@@ -269,10 +273,23 @@ table tr{
 	padding: 10px 0;
 }
 
+svg.percent-bar{
+	height: 20px;
+	border-radius: 5px;
+	width: 100%;
+}
 
+svg.percent-bar .first-bar{
+	fill: #2D9BCC;
+}
 
+svg.percent-bar .third-bar{
+	fill: #D6E285;
+}
 
-
+svg.percent-bar rect + text{
+	font-weight: bold;
+}
 
 
 
