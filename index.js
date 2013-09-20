@@ -262,7 +262,7 @@ function generateConnectionSiteList(site,data){
     var list = [];
     for ( var key in data ){
         if ( key != site ){
-            list.push({ "connectedSite": key });
+            list.push({ "connectedSite": key, "numConnections": data[key].howMany });
         }
     }
     return list;

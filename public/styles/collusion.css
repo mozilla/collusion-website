@@ -201,7 +201,8 @@ table tr{
 	border-bottom: 1px solid #999;	
 }
 
-.website-list-table, .top-trackers-table{
+.website-list-table, 
+.top-trackers-table{
 	line-height: 35px;
 	width: 100%;
 	text-align: left;
@@ -209,6 +210,7 @@ table tr{
 
 .website-list-table th{
 	background-color: #ABDFF2;
+	text-transform: uppercase;
 }
 
 .website-list-table tr:hover,

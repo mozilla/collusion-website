@@ -4,15 +4,13 @@
                     <div class="span12">
                         <div class="row">
                             <div class="span12">
-                                <h4 class="blue-text">{{#if connectionList}} {{connectionList.length}}{{else}}0{{/if}} Websites</h4>
+                                <h4><span class="blue-text"><!-- {{profileNumConnections}} CONNECTIONS</span> were made between this site and the following --> <span class="blue-text">{{#if connectionList}} {{connectionList.length}} {{/if}} WEBSITES</span></h4>
                             </div>
                         </div>
                         <div class="row">
                             <div class="span8">
                                 <div class="inline-label grey-text">SORT BY:</div> 
-                                <div class="sortingOptions">
-                                    <a href="">recent</a> | 
-                                    <a href="">sites tracked</a> | 
+                                <div class="sortingOptions"> 
                                     <a href="">connections</a> |  
                                     <a href="">alphabetically</a>
                                     <br/>
@@ -26,25 +24,20 @@
                             <div class="span8">
                                 <table class="website-list-table">
                                     <tr>
-                                        <th style="width: 15%">Type</th>
-                                        <th style="width: 45%">WEBSITE</th>
-                                        <th style="width: 20%">UNIQUE SITES CONNECTED</th>
-                                        <th style="width: 20%">CONNECTIONS</th>
+                                        <th style="width: 50%">WEBSITE</th>
+                                        <th style="width: 50%">CONNECTIONS BETWEEN {{site}}</th>
                                     </tr>
                                 {{#if connectionList}}
                                     {{#renderList connectionList}}
-                                     <tr data-url="/new/profileNew/{{{site}}}">
-                                        <td></td>
+                                     <tr data-url="/new/profileNew/{{{connectedSite}}}">
                                         <td>{{connectedSite}}</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{{numConnections}}</td>
                                     </tr>
                                     {{/renderList}}
                                 {{/if}}
                                 </table>
                             </div>
                             <div class="span4">
-                                blah 
                             </div>
                         </div>
                     </div>
