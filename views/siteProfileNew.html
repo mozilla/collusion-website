@@ -56,9 +56,9 @@
                                 <div>
                                     <svg class="percent-bar" version="1.1" xmlns="http://www.w3.org/2000/svg">
                                         <rect class="first-bar" height="20" />
-                                        <text x="5" y="15" fill="#FFF">%</text>
+                                        <text x="5" y="15" fill="#FFF"></text>
                                         <rect class="third-bar" height="20" />
-                                        <text y="15" fill="#000">nooo</text>
+                                        <text y="15" fill="#000"></text>
                                     </svg>
                                 </div>
                                 <div class="all-cap"><b>{{numFirstConn}}</b> first party connections</div>
@@ -118,7 +118,8 @@
         <script>
             document.querySelector("ul.collusion-nav-inner li#databasePage").classList.add("active");
             $.ajax({
-                url: "http://collusiondb-development.herokuapp.com/getSiteProfileNew?name={{{site}}}",
+                // url: "http://collusiondb-development.herokuapp.com/getSiteProfileNew?name={{{site}}}",
+                url: "http://localhost:7000/getSiteProfileNew?name={{{site}}}",
                 dataType: 'jsonp',
                 success: function(data){
                     loadData(data); 
