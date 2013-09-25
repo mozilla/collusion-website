@@ -53,12 +53,11 @@ fs.readdirSync(viewdir).forEach(function(filename){
 *   Password protect this in-progress website
 */
 function authAccess(req,res,getReqHandler){
-    getReqHandler(req,res);
-    // if ( req.cookies.collusionAccess == "true" ){
-    //     getReqHandler(req,res);
-    // }else{
-    //     res.render("passwordPrompt",{"path":req.url});
-    // }
+    if ( req.cookies.collusionAccess == "true" ){
+        getReqHandler(req,res);
+    }else{
+        res.render("passwordPrompt",{"path":req.url});
+    }
 }
 
 function authPassword(req,res,getReqHandler){
