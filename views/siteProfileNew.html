@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="/styles/PathwayGothicOne-Regular.css" type="text/css" />
         <link rel="stylesheet" href="/styles/collusion.css" type="text/css" />
     </head>
-    <body>
+    <body class="profile">
         {{> navBar }}
         <!-- First Section ============================== -->
         <div class="section-container first-section dark-grey-bg">
@@ -20,13 +20,13 @@
                                 <div class="db-breadcrumb">
                                     <a href="/new/database">Database</a> 
                                     >> 
-                                    <a href="/new/profileNew/{{{site}}}">{{site}}</a>
+                                    <span class="site"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="span12">
-                                <h1>{{site}}</h1>
+                                <h1 class="site"></h1>
                             </div>
                         </div>
                         <div class="row">
@@ -52,7 +52,7 @@
                         </div>
                         <div class="row">
                             <div class="span4">
-                                <h4 class="all-cap blue-text"><b>{{numTotalConn}} connections</b></h4>
+                                <h4 class="all-cap blue-text num-total-connection"><b></b> CONNECTIONS</h4>
                                 <div>
                                     <svg class="percent-bar" version="1.1" xmlns="http://www.w3.org/2000/svg">
                                         <rect class="first-bar" height="20" />
@@ -61,8 +61,8 @@
                                         <text y="15" fill="#000"></text>
                                     </svg>
                                 </div>
-                                <div class="all-cap"><b>{{numFirstConn}}</b> first party connections</div>
-                                <div class="all-cap"><b>{{numThirdConn}}</b> third party connections</div>
+                                <div class="all-cap num-first"><b></b> first party connections</div>
+                                <div class="all-cap num-third"><b></b> third party connections</div>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                                     <header>&nbsp;</header>
                                     <section>
                                         Server location: <span id="country"></span><br/><br/>
-                                        <div>{{> map }}</div>
+                                        <div style="max-width: 100%;max-height: 250px">{{> map }}</div>
                                     </section>
                                 </div>
                             </div>
@@ -117,46 +117,32 @@
         <script src="/js/ui.js"></script>
         <script>
             document.querySelector("ul.collusion-nav-inner li#databasePage").classList.add("active");
-            $.ajax({
-                url: "http://collusiondb-development.herokuapp.com/getSiteProfileNew?name={{{site}}}",
-                dataType: 'jsonp',
-                success: function(data){
-                    loadData(data); 
-                }
-            });
-            $.ajax({
-                url: "http://freegeoip.net/json/{{{site}}}",
-                dataType: 'jsonp',
-                success: function(data){
-                    var countryName = data.country_name;
-                    var countryCode = data.country_code.toLowerCase();
-                    if ( data == false || countryName === "Reserved" ){
-                        document.querySelector("#country").innerHTML = "(Unable to find server location)";
-                    }else{
-                        document.querySelector("#country").innerHTML = data.country_name;
-                        var countryOnMap = document.querySelector(".mapcanvas").getElementById(countryCode);
-                        if (countryOnMap){
-                            countryOnMap.classList.add('highlight-country');
-                        }
-                    }
-                }
-            });
-            // var collectedSince = new Date( parseInt("{{collectedSince}}") );
-            // document.querySelector(".collectedSince").innerHTML = collectedSince;
+            // $.ajax({
+            //     // url: "http://collusiondb-development.herokuapp.com/getSiteProfileNew?name={{{site}}}",
+            //     url: "http://localhost:7000/getSiteProfileNew?name={{{site}}}",
+            //     dataType: 'jsonp',
+            //     success: function(data){
+            //         loadData(data); 
+            //     }
+            // });
 
-            // calculate connections percentage bar
-            var totalWidth = document.querySelector(".percent-bar").parentElement.getBoundingClientRect().width;
-            var firstPartyRatio = {{{numFirstConn}}} / {{{numTotalConn}}};
-            var firstBar = document.querySelector(".first-bar");
-            var thirdBar = document.querySelector(".third-bar");
-            var firstBarLabel = document.querySelector(".first-bar + text");
-            var thirdBarLabel = document.querySelector(".third-bar + text");
-            firstBar.setAttribute("width", totalWidth*firstPartyRatio);
-            firstBarLabel.innerHTML = Math.round(firstPartyRatio*100) + "%";
-            thirdBar.setAttribute("x", totalWidth*firstPartyRatio);
-            thirdBar.setAttribute("width", totalWidth*(1-firstPartyRatio));
-            thirdBarLabel.setAttribute("x", totalWidth*firstPartyRatio + 5);
-            thirdBarLabel.innerHTML = Math.round((1-firstPartyRatio)*100) + "%";
+            // $.ajax({
+            //     url: "http://freegeoip.net/json/{{{site}}}",
+            //     dataType: 'jsonp',
+            //     success: function(data){
+            //         var countryName = data.country_name;
+            //         var countryCode = data.country_code.toLowerCase();
+            //         if ( data == false || countryName === "Reserved" ){
+            //             document.querySelector("#country").innerHTML = "(Unable to find server location)";
+            //         }else{
+            //             document.querySelector("#country").innerHTML = data.country_name;
+            //             var countryOnMap = document.querySelector(".mapcanvas").getElementById(countryCode);
+            //             if (countryOnMap){
+            //                 countryOnMap.classList.add('highlight-country');
+            //             }
+            //         }
+            //     }
+            // });
         </script>
     </body>
 </html>

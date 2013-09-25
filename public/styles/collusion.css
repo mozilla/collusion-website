@@ -22,6 +22,7 @@ a{
 a:hover{
 	color: #9DE7F9;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 #tabzilla, #tabzilla-panel{
@@ -75,6 +76,13 @@ a:hover{
 	background-color: #ABDFF2;
 }
 
+.left{
+	float: left;
+}
+
+.right{
+	float: right;
+}
 
 .collusion-nav-bar{
 	width: 100%;
@@ -198,8 +206,27 @@ a:hover{
 }
 
 .sortingOptions{
-	display: inline-block;
+	display: inline-block;;
 }
+
+.sortingOptions a{
+	padding: 0 5px;
+}
+
+.sortingOptions a[data-selected]{
+	font-weight: bold;
+	border: 1px solid #48C7E6;
+}
+
+.pagination a{
+	display: inline-block;
+	margin: 0 5px;
+}
+
+.pagination a[data-selected]{
+	font-weight: bold;
+}
+
 
 table tr{
 	border-bottom: 1px solid #999;	

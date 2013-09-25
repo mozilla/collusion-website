@@ -4,15 +4,15 @@
                     <div class="span12">
                         <div class="row">
                             <div class="span12">
-                                <h4><span class="blue-text all-cap">Connected to {{#if connectionList}} {{connectionList.length}} {{/if}} WEBSITES</span></h4>
+                                <h4 class="blue-text all-cap">Connected to <span class="num-connected"></span> websites</h4>
                             </div>
                         </div>
                         <div class="row">
                             <div class="span8">
                                 <div class="inline-label grey-text">SORT BY:</div> 
                                 <div class="sortingOptions"> 
-                                    <a href="">connections</a> |  
-                                    <a href="">alphabetically</a>
+                                    <a data-sort="alphabetically">alphabetically</a> | 
+                                    <a data-sort="siteConnected" data-selected>connections</a>
                                     <br/>
                                 </div>
                             </div>
@@ -25,16 +25,16 @@
                                 <table class="website-list-table">
                                     <tr>
                                         <th style="width: 50%">WEBSITE</th>
-                                        <th style="width: 50%">CONNECTIONS BETWEEN {{site}}</th>
+                                        <th style="width: 50%">CONNECTIONS BETWEEN <br/><span class="site"></span></th>
                                     </tr>
-                                {{#if connectionList}}
+                               <!--  {{#if connectionList}}
                                     {{#renderList connectionList}}
                                      <tr data-url="/new/profileNew/{{{connectedSite}}}">
                                         <td>{{connectedSite}}</td>
                                         <td>{{numConnections}}</td>
                                     </tr>
                                     {{/renderList}}
-                                {{/if}}
+                                {{/if}} -->
                                 </table>
                             </div>
                             <div class="span4">

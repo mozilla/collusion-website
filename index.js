@@ -53,11 +53,12 @@ fs.readdirSync(viewdir).forEach(function(filename){
 *   Password protect this in-progress website
 */
 function authAccess(req,res,getReqHandler){
-    if ( req.cookies.collusionAccess == "true" ){
-        getReqHandler(req,res);
-    }else{
-        res.render("passwordPrompt",{"path":req.url});
-    }
+    getReqHandler(req,res);
+    // if ( req.cookies.collusionAccess == "true" ){
+    //     getReqHandler(req,res);
+    // }else{
+    //     res.render("passwordPrompt",{"path":req.url});
+    // }
 }
 
 function authPassword(req,res,getReqHandler){
@@ -206,15 +207,17 @@ app.post("/new/news", function(req, res){
 *   New Database Page
 */
 var newDatabaseGetHandler = function(req,res){
-    var options = { path: "/databaseSiteList" };
-    makeHttpGetRequest(options, function(result){
-        result = JSON.parse(result);
-        var data = {
-            websites: result[0],
-            top10: result[1]
-        }
-        res.render("database", data);
-    });
+    res.render("database");
+    // var options = { path: "/databaseSiteList" };
+    // makeHttpGetRequest(options, function(result){
+    //     result = JSON.parse(result);
+    //     console.log(result[0].length);
+    //     var data = {
+    //         websites: result[0],
+    //         top10: result[1]
+    //     }
+    //     res.render("database", data);
+    // });
 };
 
 app.get("/new/database", function(req, res){
@@ -230,26 +233,23 @@ app.post("/new/database", function(req, res){
 *   New Profile Page
 */
 var newProfileGetHandler = function(req,res){
-    var site = req.params.site;
-    var options = { path: "/getSiteProfileNew?name=" + site };
-    makeHttpGetRequest(options, function(result){
-        result = JSON.parse(result);
-        var data = {
-                site: site,
-                collectedSince: result[site] ? result[site].firstAccess : "",
-                numTotalConn: result[site] ? result[site].howMany : "",
-                numFirstConn: result[site] ? result[site].howManyFirstParty : "",
-                numThirdConn: result[site] ? (result[site].howMany-result[site].howManyFirstParty) : "",
-                connectionList: generateConnectionSiteList(site,result),
-            };
+    res.render("siteProfileNew");
+    // var site = req.params.site;
+    // var options = { path: "/getSiteProfileNew?name=" + site };
+    // makeHttpGetRequest(options, function(result){
+    //     result = JSON.parse(result);
+    //     console.log(result);
+    //     var data = {
+    //             site: site,
+    //             collectedSince: result[site] ? result[site].firstAccess : "",
+    //             numTotalConn: result[site] ? result[site].howMany : "",
+    //             numFirstConn: result[site] ? result[site].howManyFirstParty : "",
+    //             numThirdConn: result[site] ? (result[site].howMany-result[site].howManyFirstParty) : "",
+    //             connectionList: generateConnectionSiteList(site,result),
+    //         };
 
-        makeHttpGetRequest({ path: "/databaseSiteList" }, function(resultSiteList){
-            resultSiteList = JSON.parse(resultSiteList);
-            data["websites"] = resultSiteList[0];
-            data["top10"] = resultSiteList[1];
-            res.render("siteProfileNew", data);
-        });
-    });
+    //     res.render("siteProfileNew", data);
+    // });
 };
 
 app.get("/new/profileNew/:site", function(req, res){
