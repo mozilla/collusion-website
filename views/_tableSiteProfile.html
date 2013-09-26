@@ -10,31 +10,28 @@
                         <div class="row">
                             <div class="span8">
                                 <div class="inline-label grey-text">SORT BY:</div> 
-                                <div class="sortingOptions"> 
+                                <div class="sorting-options"> 
                                     <a data-sort="alphabetically">alphabetically</a> | 
-                                    <a data-sort="siteConnected" data-selected>connections</a>
+                                    <a data-sort="connections" data-selected>connections</a>
                                     <br/>
+                                </div>
+                                <div class="pagination">
                                 </div>
                             </div>
                             <div class="span4">
-                                <input type="text" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="span8">
                                 <table class="website-list-table">
-                                    <tr>
-                                        <th style="width: 50%">WEBSITE</th>
-                                        <th style="width: 50%">CONNECTIONS BETWEEN <br/><span class="site"></span></th>
-                                    </tr>
-                               <!--  {{#if connectionList}}
-                                    {{#renderList connectionList}}
-                                     <tr data-url="/new/profileNew/{{{connectedSite}}}">
-                                        <td>{{connectedSite}}</td>
-                                        <td>{{numConnections}}</td>
-                                    </tr>
-                                    {{/renderList}}
-                                {{/if}} -->
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50%">WEBSITE</th>
+                                            <th style="width: 50%">CONNECTIONS BETWEEN <br/><span class="site"></span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
                                 </table>
                             </div>
                             <div class="span4">

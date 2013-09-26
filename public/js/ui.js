@@ -1,4 +1,5 @@
 const DATABASE_URL = "http://collusiondb-development.herokuapp.com";
+// const DATABASE_URL = "http://localhost:7000";
 const ROWS_PER_TABLE_PAGE = 20;
 var currentPage;
 var allSites;
@@ -52,10 +53,11 @@ function loadContentDatabase(){
         url: DATABASE_URL + "/databaseSiteList",
         dataType: 'jsonp',
         success: function(data){
-            console.log(data);
+            console.log(data[0][1]);
             allSites = data[0];
             var top10Trackers = data[1];
             showAllSitesTable();
+            showPotentialTracker(top10Trackers);
         }
     });
 }
@@ -65,11 +67,26 @@ function loadContentDatabase(){
 *   Table Sorting
 */
 
+function showPotentialTracker(top10Trackers){
+    var html = currentPage.querySelector(".top-trackers-table").innerHTML;
+    console.log(top10Trackers);
+    var siteArray = Object.keys(top10Trackers);
+    for ( var i=0; i<siteArray.length; i++ ){
+        site = top10Trackers[siteArray[i]];
+        row = "<tr data-url='/new/profileNew/"+ site.site + "'>" +
+                "<td>" + (i+1) + "</td>" +
+                "<td>" + site.site + "</td>" +
+            "</tr>";
+        html += row;
+    }
+    currentPage.querySelector(".top-trackers-table").innerHTML = html;
+}
+
 function showAllSitesTable(pageIndex){
     if (!pageIndex) pageIndex = 1;
     var numTotalPages = Math.ceil(allSites.length/ROWS_PER_TABLE_PAGE);
     var start = (pageIndex-1) * ROWS_PER_TABLE_PAGE;
-    var end = (pageIndex * ROWS_PER_TABLE_PAGE) - 1;
+    var end = (pageIndex * ROWS_PER_TABLE_PAGE);
     var tbody = "";
     allSites.slice(start,end).forEach(function(site){
         tbody += addTableRow(site);
@@ -98,55 +115,68 @@ function sortSiteList(sortByFunction){
 }
 
 function addTableRow(site){
-    return "<tr data-url='/new/profileNew/"+ site.site + "'>" +
-                "<td>" + site.site + "</td>" +
-                "<td>" + site.numConnectedSites + "</td>" +
-                "<td>" + site.numConnections + "</td>" +
-            "</tr>";
+    var html = "<tr data-url='/new/profileNew/"+ site.site + "'>" +
+                    "<td>" + site.site + "</td>";
+    if ( site.numConnectedSites ){ html += "<td>" + site.numConnectedSites + "</td>"; }
+    if ( site.numConnections ){    html += "<td>" + site.numConnections + "</td>"; }
+    return html + "</tr>";
 }
 
-if ( document.querySelector(".database .sortingOptions") ){
-    document.querySelector(".database .sortingOptions").addEventListener("click",function(event){
-        var sortBy = event.target.getAttribute("data-sort");
-        console.log(sortBy);
+var paginationForSiteTables = function(event){
+    if ( event.target.parentNode == this ){
+        showAllSitesTable(event.target.getAttribute("data-page"));
+    }
+}
 
-        if ( sortBy ){
-            var sortByFunction;
-            var sortByConnectedSites = function(a,b){ return b.numConnectedSites - a.numConnectedSites; };
-            var sortByConnections = function(a,b){ return b.numConnections - a.numConnections; };
-            var sortByAlpha = function(a,b){
-                                if(a.site.toLowerCase() < b.site.toLowerCase()) return -1;
-                                if(a.site.toLowerCase() > b.site.toLowerCase()) return 1;
-                                return 0; 
-                            };
-            if (sortBy == "siteConnected"){
-                sortByFunction = sortByConnectedSites;
-            }else if(sortBy == "connections"){
-                sortByFunction = sortByConnections;
-            }else{
-                sortByFunction = sortByAlpha;
-            }
+var sortingForSiteTables = function(event){
+    var sortBy = event.target.getAttribute("data-sort");
+    console.log(sortBy);
 
-            document.querySelector(".sortingOptions a[data-selected]").removeAttribute("data-selected");
-            event.target.setAttribute("data-selected","true");
-
-            sortSiteList(sortByFunction);
+    if ( sortBy ){
+        var sortByFunction;
+        var sortByConnectedSites = function(a,b){ return b.numConnectedSites - a.numConnectedSites; };
+        var sortByConnections = function(a,b){ return b.numConnections - a.numConnections; };
+        var sortByAlpha = function(a,b){
+                            if(a.site.toLowerCase() < b.site.toLowerCase()) return -1;
+                            if(a.site.toLowerCase() > b.site.toLowerCase()) return 1;
+                            return 0; 
+                        };
+        if (sortBy == "siteConnected"){
+            sortByFunction = sortByConnectedSites;
+        }else if(sortBy == "connections"){
+            sortByFunction = sortByConnections;
+        }else{
+            sortByFunction = sortByAlpha;
         }
-    });
+
+        document.querySelector(".sorting-options a[data-selected]").removeAttribute("data-selected");
+        event.target.setAttribute("data-selected","true");
+
+        sortSiteList(sortByFunction);
+    }
+}
+
+if ( document.querySelector(".database .sorting-options") ){
+    document.querySelector(".database .sorting-options").addEventListener("click",sortingForSiteTables);
 }
 
 if ( document.querySelector(".database .pagination") ){
-    document.querySelector(".database .pagination").addEventListener("click",function(event){
-        if ( event.target.parentNode == this ){
-            showAllSitesTable(event.target.getAttribute("data-page"));
-        }
-    });
+    document.querySelector(".database .pagination").addEventListener("click",paginationForSiteTables);
 }
 
 
 /********************************************************************************
 *   Profile Page
 */
+
+function turnMapIntoArray(nodemap){
+    var node;
+    var arr = Object.keys(nodemap).map(function(nodeName){
+        node = nodemap[nodeName];
+        return { site: node.name, numConnections: node.howMany };
+    });
+    return arr;
+}
 
 function loadContentProfile(siteName){
     $.ajax({
@@ -161,12 +191,15 @@ function loadContentProfile(siteName){
             currentPage.querySelector(".num-total-connection b").innerHTML = siteData.howMany;
             currentPage.querySelector(".num-first b").innerHTML = siteData.howManyFirstParty;
             currentPage.querySelector(".num-third b").innerHTML = siteData.howMany - siteData.howManyFirstParty;
+            // connected sites table
             var sites = currentPage.querySelectorAll(".site");
             for (var i=0; i<sites.length; i++){
                 sites[i].innerHTML = siteData.name;
             }
             delete data[siteName];
-            showConnectedSitesTable(data);
+            allSites = turnMapIntoArray(data);
+            document.querySelector(".profile .sorting-options a[data-selected]").click();
+            currentPage.querySelector(".num-connected").innerHTML = Object.keys(data).length;
         }
     });
 
@@ -206,19 +239,11 @@ function addConnnectionBar(numFirstParty,numTotal){
     thirdBarLabel.innerHTML = Math.round((1-firstPartyRatio)*100) + "%";
 }
 
-function showConnectedSitesTable(siteMap){
-    var html = currentPage.querySelector(".website-list-table").innerHTML;
-    var row = "";
-    var site;
-    var siteArray = Object.keys(siteMap);
-    for ( var i=0; i<siteArray.length; i++ ){
-        site = siteMap[siteArray[i]];
-        row = "<tr data-url='/new/profileNew/"+ site.name + "'>" +
-                "<td>" + site.name + "</td>" +
-                "<td>" + site.howMany + "</td>" +
-            "</tr>";
-        html += row;
-    }
-    currentPage.querySelector(".website-list-table").innerHTML = html;
-    currentPage.querySelector(".num-connected").innerHTML = siteArray.length;
+
+if ( document.querySelector(".profile .pagination") ){
+    document.querySelector(".profile .pagination").addEventListener("click",paginationForSiteTables);
+}
+
+if ( document.querySelector(".profile .sorting-options") ){
+    document.querySelector(".profile .sorting-options").addEventListener("click",sortingForSiteTables);
 }

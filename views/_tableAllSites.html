@@ -15,7 +15,7 @@
                         <div class="row">
                             <div class="span8">
                                 <div class="inline-label grey-text">SORT BY:</div> 
-                                <div class="sortingOptions">
+                                <div class="sorting-options">
                                     <a data-sort="alphabetically">alphabetically</a>  | 
                                     <a data-sort="siteConnected" data-selected>sites connected</a> | 
                                     <a data-sort="connections">connections</a>
@@ -25,7 +25,6 @@
                                 </div>
                             </div>
                             <div class="span4">
-                                <input type="text" />
                             </div>
                         </div>
                         <div class="row">
@@ -40,33 +39,17 @@
                                     </thead>
                                     <tbody>
                                     </tbody>
-                                <!-- {{#if websites}}
-                                    {{#renderList websites}}
-                                     <tr data-url="/new/profileNew/{{{site}}}">
-                                        <td></td>
-                                        <td>{{site}}</td>
-                                        <td>{{numConnectedSites}}</td>
-                                        <td>{{numConnections}}</td>
-                                    </tr>
-                                    {{/renderList}}
-                                {{/if}} -->
                                 </table>
                             </div>
                             <div class="span4">
                                 <table class="top-trackers-table">
                                     <caption>TOP 10 POTENTIAL TRACKERS</caption>
-                                    <colgroup>
-                                        <col style="font-color:red; width: 10%">
-                                        <col style="width: 90%">
-                                    </colgroup>
-                                    <tr>
-                                    </tr>
-                                {{#renderList top10}}
-                                     <tr data-url="/new/profileNew/{{{site}}}">
-                                        <td>{{index}}</td>
-                                        <td>{{site}}</td>
-                                    </tr>
-                                {{/renderList}}
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10%"></th>
+                                            <th style="width: 90%"></th>
+                                        </tr>
+                                    </thead>
                                 </table>
                             </div>
                         </div>

@@ -207,16 +207,6 @@ app.post("/new/news", function(req, res){
 */
 var newDatabaseGetHandler = function(req,res){
     res.render("database");
-    // var options = { path: "/databaseSiteList" };
-    // makeHttpGetRequest(options, function(result){
-    //     result = JSON.parse(result);
-    //     console.log(result[0].length);
-    //     var data = {
-    //         websites: result[0],
-    //         top10: result[1]
-    //     }
-    //     res.render("database", data);
-    // });
 };
 
 app.get("/new/database", function(req, res){
@@ -233,22 +223,6 @@ app.post("/new/database", function(req, res){
 */
 var newProfileGetHandler = function(req,res){
     res.render("siteProfileNew");
-    // var site = req.params.site;
-    // var options = { path: "/getSiteProfileNew?name=" + site };
-    // makeHttpGetRequest(options, function(result){
-    //     result = JSON.parse(result);
-    //     console.log(result);
-    //     var data = {
-    //             site: site,
-    //             collectedSince: result[site] ? result[site].firstAccess : "",
-    //             numTotalConn: result[site] ? result[site].howMany : "",
-    //             numFirstConn: result[site] ? result[site].howManyFirstParty : "",
-    //             numThirdConn: result[site] ? (result[site].howMany-result[site].howManyFirstParty) : "",
-    //             connectionList: generateConnectionSiteList(site,result),
-    //         };
-
-    //     res.render("siteProfileNew", data);
-    // });
 };
 
 app.get("/new/profileNew/:site", function(req, res){

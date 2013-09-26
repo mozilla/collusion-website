@@ -205,15 +205,16 @@ a:hover{
 	text-transform: uppercase;
 }
 
-.sortingOptions{
-	display: inline-block;;
+.sorting-options{
+	display: inline-block;
+	margin-bottom: 5px;
 }
 
-.sortingOptions a{
+.sorting-options a{
 	padding: 0 5px;
 }
 
-.sortingOptions a[data-selected]{
+.sorting-options a[data-selected]{
 	font-weight: bold;
 	border: 1px solid #48C7E6;
 }
@@ -252,10 +253,10 @@ table tr{
 
 .top-trackers-table caption{
 	text-align: left;
-	font-size: 20px;
+	font-size: 15px;
 	font-weight: bold;
 	letter-spacing: 2px;
-	margin-bottom: 3px;
+	padding: 18px 0;
 }
 
 .top-trackers-table tr td:first-child{
