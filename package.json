@@ -1,5 +1,5 @@
 {
-  "name": "tempServer",
+  "name": "collusionweb-development",
   "version": "0.2.0",
   "dependencies": {
     "express": "latest",
@@ -9,7 +9,7 @@
     "xml2js": "latest"
   },
   "engines": {
-    "node": "0.10.x",
-    "npm": "1.2.x"
+    "node": "latest",
+    "npm": "latest"
   }
 }
