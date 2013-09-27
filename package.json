@@ -9,7 +9,7 @@
     "xml2js": "latest"
   },
   "engines": {
-    "node": "latest",
+    "node": "0.10.x",
     "npm": "latest"
   }
 }
