@@ -1,5 +1,4 @@
 const DATABASE_URL = "http://collusiondb-development.herokuapp.com";
-// const DATABASE_URL = "http://localhost:7000";
 const ROWS_PER_TABLE_PAGE = 20;
 var currentPage;
 var allSites;
@@ -19,7 +18,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 });
 
+function showLoading(){
+    document.querySelector("#loading").classList.remove("hidden");
+}
 
+function hideLoading(){
+    document.querySelector("#loading").classList.add("hidden");
+}
+
+function addCommasToNumber(num){
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 var siteTableClickHandler = function(event){
     var row = event.target;
@@ -49,6 +58,7 @@ if ( document.querySelector(".top-trackers-table") ){
 */
 
 function loadContentDatabase(){
+    showLoading();
     $.ajax({
         url: DATABASE_URL + "/databaseSiteList",
         dataType: 'jsonp',
@@ -58,6 +68,7 @@ function loadContentDatabase(){
             var top10Trackers = data[1];
             showAllSitesTable();
             showPotentialTracker(top10Trackers);
+            hideLoading();
         }
     });
 }
@@ -117,8 +128,8 @@ function sortSiteList(sortByFunction){
 function addTableRow(site){
     var html = "<tr data-url='/new/profileNew/"+ site.site + "'>" +
                     "<td>" + site.site + "</td>";
-    if ( site.numConnectedSites ){ html += "<td>" + site.numConnectedSites + "</td>"; }
-    if ( site.numConnections ){    html += "<td>" + site.numConnections + "</td>"; }
+    if ( site.numConnectedSites ){ html += "<td>" + addCommasToNumber(site.numConnectedSites) + "</td>"; }
+    if ( site.numConnections ){    html += "<td>" + addCommasToNumber(site.numConnections) + "</td>"; }
     return html + "</tr>";
 }
 
@@ -179,6 +190,11 @@ function turnMapIntoArray(nodemap){
 }
 
 function loadContentProfile(siteName){
+    showLoading();
+    var sites = currentPage.querySelectorAll(".site");
+    for (var i=0; i<sites.length; i++){
+        sites[i].innerHTML = siteName;
+    }
     $.ajax({
         url: DATABASE_URL+"/getSiteProfileNew?name=" + siteName,
         dataType: 'jsonp',
@@ -192,14 +208,11 @@ function loadContentProfile(siteName){
             currentPage.querySelector(".num-first b").innerHTML = siteData.howManyFirstParty;
             currentPage.querySelector(".num-third b").innerHTML = siteData.howMany - siteData.howManyFirstParty;
             // connected sites table
-            var sites = currentPage.querySelectorAll(".site");
-            for (var i=0; i<sites.length; i++){
-                sites[i].innerHTML = siteData.name;
-            }
             delete data[siteName];
             allSites = turnMapIntoArray(data);
             document.querySelector(".profile .sorting-options a[data-selected]").click();
-            currentPage.querySelector(".num-connected").innerHTML = Object.keys(data).length;
+            currentPage.querySelector(".num-connected").innerHTML = addCommasToNumber(Object.keys(data).length);
+            hideLoading();
         }
     });
 

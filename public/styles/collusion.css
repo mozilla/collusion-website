@@ -84,13 +84,41 @@ a:hover{
 	float: right;
 }
 
+.hidden{
+	display: none;
+}
+
+#loading{
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	z-index: 10000000;
+}
+
+#loading div{
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.6);
+	pointer-events: none;
+	text-align: center;
+	color: white;
+}
+
+#loading img, #loading span{
+	position: relative;
+	top: 50%;
+}
+
 .collusion-nav-bar{
 	width: 100%;
 	background: #1E2428;
 	height: 75px;
 	z-index: 100;
-	position: fixed;
-	top: 0;
+/*	position: fixed;
+	top: 0;*/
 }
 
 .collusion-nav-bar .collusion-nav-inner{
