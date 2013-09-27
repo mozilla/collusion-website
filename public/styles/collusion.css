@@ -368,18 +368,3 @@ svg.percent-bar rect + text{
 .node{
     fill: #FFF;
 }
-
-
-
-/* Collusion Blog */
-
-.blog-post{
-	border: 1px solid #ccc;
-	padding: 20px;
-	margin-bottom: 40px;
-}
-
-.blog-title{
-	margin: 10px 0;
-	font-size: 20px;
-}

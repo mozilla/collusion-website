@@ -157,37 +157,6 @@ app.post("/new/about", function(req, res){
     authPassword( req,res,newAboutGetHandler );
 });
 
-
-/**************************************************
-*   New News Page
-*/
-var newNewsGetHandler = function(req,res){
-    var options = { 
-        hostname: "mozilla-collusion.tumblr.com",
-        path: "/rss",
-        port: "",
-        contentType: "application/rss+xml"
-    };
-    makeHttpGetRequest(options, function(result){
-        xmlParser.parseString(result, function(err,parsedResult){
-            var blogPosts = parsedResult.rss.channel[0].item;
-            var data = {
-                blogPosts : blogPosts
-            }
-            res.render("news", data);
-        });
-    });
-};
-
-app.get("/new/news", function(req, res){
-    authAccess( req,res,newNewsGetHandler );
-});
-
-app.post("/new/news", function(req, res){
-    authPassword( req,res,newNewsGetHandler );
-});
-
-
 /**************************************************
 *   New Database Page
 */
