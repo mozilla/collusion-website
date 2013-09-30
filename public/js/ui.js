@@ -68,6 +68,10 @@ function loadContentDatabase(){
             var top10Trackers = data[1];
             showAllSitesTable();
             showPotentialTracker(top10Trackers);
+            var total = currentPage.querySelectorAll(".num-sites");
+            for (var i=0; i<total.length; i++){
+                total[i].textContent = addCommasToNumber(Object.keys(data[0]).length);
+            }
             hideLoading();
         }
     });
@@ -107,7 +111,7 @@ function showAllSitesTable(pageIndex){
 }
 
 function addPageSelection(current,total){
-    var html = "";
+    var html = "page: ";
     for (var i=1; i<=total; i++){
         if (i == current){
             html = html + "<a class='blue-text' data-page='"+ i +"' data-selected>" + i + "</a>";
@@ -115,6 +119,8 @@ function addPageSelection(current,total){
             html = html + "<a class='grey-text' data-page='" + i + "'>" + i + "</a>"; 
         }
     }
+    currentPage.querySelector(".row-start").textContent = (current-1) * ROWS_PER_TABLE_PAGE + 1;
+    currentPage.querySelector(".row-end").textContent = (current-1) * ROWS_PER_TABLE_PAGE + currentPage.querySelectorAll(".website-list-table tbody tr[data-url]").length;
     currentPage.querySelector(".pagination").innerHTML = html;
 }
 
@@ -193,7 +199,7 @@ function loadContentProfile(siteName){
     showLoading();
     var sites = currentPage.querySelectorAll(".site");
     for (var i=0; i<sites.length; i++){
-        sites[i].innerHTML = siteName;
+        sites[i].textContent = siteName;
     }
     $.ajax({
         url: DATABASE_URL+"/getSiteProfileNew?name=" + siteName,
@@ -211,7 +217,10 @@ function loadContentProfile(siteName){
             delete data[siteName];
             allSites = turnMapIntoArray(data);
             document.querySelector(".profile .sorting-options a[data-selected]").click();
-            currentPage.querySelector(".num-connected").innerHTML = addCommasToNumber(Object.keys(data).length);
+            var total = currentPage.querySelectorAll(".num-sites");
+            for (var i=0; i<total.length; i++){
+                total[i].textContent = addCommasToNumber(Object.keys(data).length);
+            }
             hideLoading();
         }
     });

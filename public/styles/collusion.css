@@ -247,6 +247,10 @@ a:hover{
 	border: 1px solid #48C7E6;
 }
 
+.pagination{
+	margin: 0 0 10px 0;
+}
+
 .pagination a{
 	display: inline-block;
 	margin: 0 5px;
@@ -349,11 +353,6 @@ svg.percent-bar rect + text{
 
 
 
-
-
-
-
-
 /* Styles for Collusion Graph */
 
 .vizcanvas-container{
@@ -368,3 +367,142 @@ svg.percent-bar rect + text{
 .node{
     fill: #FFF;
 }
+
+
+
+/* Dashboard */
+
+.dashboard{
+    width: 960px;
+    height: 540px;
+    margin: 0 auto;
+    background: #373737;
+    color: #ffffff;
+    padding: 50px 50px;
+    font-family: "Open Sans";
+    border: 0px solid white;
+    overflow: hidden;
+    line-height: normal;
+}
+
+.d-thin-font{
+    font-family: "Pathway Gothic One";
+}
+
+.dashboard header{
+    font-size: 160px;
+    line-height: 110px;
+    margin-bottom: 15px;
+}
+
+.d-left{
+    width: 70%;
+    height: 100%;
+    border: 0px solid red;
+    float: left;
+}
+
+.d-l1 {
+    height: 180px;
+    height: calc(100% / 3);
+}
+
+.d-l1 .d-l1-t,
+.d-l1 .d-l1-b{
+    width: 100%;
+}
+
+.d-l2 {
+    margin-bottom: 20px;
+    height: 170px;
+    height: calc(100% / 3 - 10px);
+}
+
+.d-l2 .d-l2-l, .d-l2 .d-l2-r{
+    background: #0FB1C2;
+    float: left;
+    height: 100%;
+    text-align: center;
+    border-radius: 3px;
+}
+
+.d-l2 .d-l2-l{
+    width: 60%;
+}
+
+.d-l2 .d-l2-r{
+    margin-left: 20px;
+    width: 248px; /* ( 960px * 0.7 * 0.4 ) - 20px */
+    width: calc(40% - 20px);
+}
+
+.d-l3{
+    width: 100%;
+    height: 170px;
+    height: calc(100% / 3 - 10px);
+    background:#2BAEDE;
+    clear: both;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.d-l3 .d-l3-l,
+.d-l3 .d-l3-r{
+    width: 50%;
+    float: left;
+    margin: 20px 0;
+}
+
+.d-right{
+    margin-left: 20px;
+    width: 268px; /* ( 960px * 0.3 ) - 20px */
+    width: calc(30% - 20px);
+    height: 100%;
+    border: 0px solid yellow;
+    float: left;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.d-r1{
+    padding: 10px;
+    background: #46BAB3;
+    margin-bottom: 25px;
+    height: 100%;
+}
+
+.d-r1 ul.d-trackers-list{
+    list-style: decimal;
+    margin: 5px 10px 10px 25px;
+}
+
+.d-r1 ul.d-trackers-list li{
+    margin-bottom: 5px;
+}
+
+.d-tracker-site {
+    font-size: 15px;
+}
+
+.d-tracker-sources{
+    color: rgba(85,144,151,1);
+    line-height: 10px;
+    font-size: 11px;
+}
+
+.d-tracker-connections {
+    color: rgba(255,255,255,0.4);
+    margin-top: 3px;
+    line-height: 10px;
+    font-size: 11px;
+}
+
+.d-transparent-text {
+    color: rgba(255,255,255,0.7);
+}
+
+.d-italics{
+    font-style: italic;
+}
+
