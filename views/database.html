@@ -7,11 +7,12 @@
         <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
         <link rel="stylesheet" href="/styles/PathwayGothicOne-Regular.css" type="text/css" />
         <link rel="stylesheet" href="/styles/collusion.css" type="text/css" />
+        <link href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css" rel="stylesheet" />
     </head>
     <body class="database">
         {{> navBar }}
         <!-- First Section ============================== -->
-        <div class="section-container first-section dark-grey-bg">
+        <div class="section-container first-section light-blue-bg">
             <div class="container">
                 <div class="row">
                     <div class="span12 temp-placeholder" style="height: 400px">
@@ -19,7 +20,7 @@
                 </div>
                 <div class="row">
                     <div class="span12 text-center">
-                        <div class="page-slogan">YOUR DONATED DATA</div>
+                        <h3 class="page-slogan">YOUR DONATED DATA</h3>
                     </div>
                 </div>
                 <div class="row">
@@ -47,6 +48,7 @@
             </div>
         </div>
         <script src="/js/jquery-1.10.2.min.js"></script>
+        <script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
         <script src="/js/ui.js"></script>
         <script>
             document.querySelector("ul.collusion-nav-inner li#databasePage").classList.add("active");

@@ -4,9 +4,10 @@
     <link rel="stylesheet" href="/styles/PathwayGothicOne-Regular.css" type="text/css" />
     <link rel="stylesheet" href="/styles/sandstone.css" type="text/css" />
     <link rel="stylesheet" href="/styles/collusion.css" type="text/css" />
+    <link href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css" rel="stylesheet" />
     <title>Collusion counter - Development</title>
     <body style="background:#373737;">
-    
+        <a href="https://www.mozilla.org/" id="tabzilla">mozilla</a>
         <div class="dashboard">
             <div class="d-left">
                 <div class="d-l1">
@@ -75,6 +76,7 @@
 
         <script src="/js/jquery-1.10.2.min.js"></script>
         <script src="/js/collusion.js"></script>
+        <script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
         <script>
             $(".uniqueUsersUpload, .uniqueUsersUploadLast24H, .totalConnectionsEver, .totalConnectionsLast24H").each(function(i,item){
                 addCommasToNumber(item);

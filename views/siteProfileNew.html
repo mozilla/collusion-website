@@ -7,11 +7,12 @@
         <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
         <link rel="stylesheet" href="/styles/PathwayGothicOne-Regular.css" type="text/css" />
         <link rel="stylesheet" href="/styles/collusion.css" type="text/css" />
+        <link href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css" rel="stylesheet" />
     </head>
     <body class="profile">
         {{> navBar }}
         <!-- First Section ============================== -->
-        <div class="section-container first-section dark-grey-bg">
+        <div class="section-container first-section light-blue-bg">
             <div class="container">
                 <div class="row" style="margin-bottom: 30px">
                     <div class="span12">
@@ -119,36 +120,11 @@
         </div>
         <script src="/js/jquery-1.10.2.min.js"></script>
         <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
         <script src="/js/collusion.js"></script>
         <script src="/js/ui.js"></script>
         <script>
             document.querySelector("ul.collusion-nav-inner li#databasePage").classList.add("active");
-            // $.ajax({
-            //     // url: "http://collusiondb-development.herokuapp.com/getSiteProfileNew?name={{{site}}}",
-            //     url: "http://localhost:7000/getSiteProfileNew?name={{{site}}}",
-            //     dataType: 'jsonp',
-            //     success: function(data){
-            //         loadData(data); 
-            //     }
-            // });
-
-            // $.ajax({
-            //     url: "http://freegeoip.net/json/{{{site}}}",
-            //     dataType: 'jsonp',
-            //     success: function(data){
-            //         var countryName = data.country_name;
-            //         var countryCode = data.country_code.toLowerCase();
-            //         if ( data == false || countryName === "Reserved" ){
-            //             document.querySelector("#country").innerHTML = "(Unable to find server location)";
-            //         }else{
-            //             document.querySelector("#country").innerHTML = data.country_name;
-            //             var countryOnMap = document.querySelector(".mapcanvas").getElementById(countryCode);
-            //             if (countryOnMap){
-            //                 countryOnMap.classList.add('highlight-country');
-            //             }
-            //         }
-            //     }
-            // });
         </script>
     </body>
 </html>

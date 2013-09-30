@@ -7,12 +7,19 @@
 		<link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
 		<link rel="stylesheet" href="/styles/PathwayGothicOne-Regular.css" type="text/css" />
 		<link rel="stylesheet" href="/styles/collusion.css" type="text/css" />
+		<link href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css" rel="stylesheet" />
 	</head>
 	<body>
 		{{> navBar }}
 		<!-- First Section ============================== -->
-		<div class="section-container first-section dark-grey-bg">
+		<div class="section-container first-section light-blue-bg">
 			<div class="container">
+				<div class="row">
+					<div class="span12 middle collusion-header">
+						<header class="large">Collusion</header>
+						<h4>Discover who is tracking you online</h4>
+					</div>
+				</div>
 				<div class="row">
 					<div class="span12">
 						<div class="row">
@@ -20,20 +27,10 @@
 								<h1>Discover who is tracking you online</h1>
 								<p>Collusion is an add-on for Firefox and allows you to see all the third parties that are tracking your movements across the Web.  It will show, in real time, the interaction between companies and other trackers with various visualizaitons.</p>
 								<br/>
-							    <a href="https://addons.mozilla.org/en-us/firefox/addon/collusion/" target="_blank"><button class="btn yellow-btn">DOWNLOAD</button></a>
+							    <a href="https://addons.mozilla.org/en-us/firefox/addon/collusion/" target="_blank"><button class="btn light-blue-btn download-btn">Download</button></a>
 							</div>
 							<div class="span8 temp-placeholder" style="height: 300px"></div>
 						</div>
-						<div class="row">
-		                    <div class="span12 text-center">
-		                        <div class="page-slogan">MAKING THE INVISIBLE VISIBLE</div>
-		                    </div>
-		                </div>
-		                <div class="row">
-		                    <div class="span2 offset5">
-		                        <div class="blue-divider" style="width: 180px" ></div>
-		                    </div>
-		                </div>
 					</div>
 				</div>
 			</div>
@@ -56,11 +53,11 @@
 		</div>
 		<!-- End Second Section -->
 		<!-- Third Section ============================== -->
-		<div class="section-container third-section blue-bg">
+		<div class="section-container third-section light-blue-bg">
 			<div class="container">
 				<div class="row">
 					<div class="span12 text-center">
-						<div class="page-slogan">------------------------- HOW COLLUSION WORKS -------------------------</div>
+						<h3 class="page-slogan">How Collusion Works</h3>
 					</div>
 				</div>
 				<div class="row">
@@ -121,6 +118,7 @@
 		<!-- End Fourth Section -->
 		{{> firstFooter}}
 		{{> footer}}
+		<script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
 		<script src="/js/ui.js"></script>
 	</body>
 </html>
