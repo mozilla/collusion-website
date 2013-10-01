@@ -26,7 +26,6 @@ h2{
 	font-size: 32px;
     letter-spacing: -1px;
     line-height: 100%;
-	color: #269FD1;	
 }
 
 h3 {
@@ -71,7 +70,8 @@ a:hover{
 	text-align: center;
 }
 
-.navbar .nav li a#collusion-logo:hover, .active#collusion-logo{
+.navbar .nav li a#collusion-logo:hover, 
+.active#collusion-logo{
 	background-color: none;
 	border: none;
 }
@@ -192,6 +192,12 @@ a:hover{
 	border-radius: 5px;
 }
 
+.square{
+	width: 120px;
+	height: 120px;
+	margin: 10px auto;
+}
+
 .temp-placeholder-circle{
 	width: 140px;
 	height: 140px;
@@ -223,6 +229,10 @@ a:hover{
 	margin-bottom: 30px;
 }
 
+.round-corner{
+	border-radius: 5px;
+}
+
 .blue-divider{
 	border-top: solid 5px #47C3E3;	
 	height: 1px;
@@ -236,7 +246,7 @@ a:hover{
 }
 
 .grey-text{
-	color: #ccc;
+	color: #888;
 }
 
 .blue-text{
@@ -289,6 +299,7 @@ table tr{
 .website-list-table th{
 	background-color: #ABDFF2;
 	text-transform: uppercase;
+	line-height: 150%;
 }
 
 .website-list-table tr:hover,
@@ -302,7 +313,7 @@ table tr{
 	font-size: 15px;
 	font-weight: bold;
 	letter-spacing: 2px;
-	padding: 18px 0;
+	padding: 3px 0;
 }
 
 .top-trackers-table tr td:first-child{
@@ -326,12 +337,12 @@ table tr{
 	line-height: 30px;	
 }
 
-.profile-connection-list ul li a, .profile-connection-list ul li a:hover{
+.profile-connection-list ul li a, 
+.profile-connection-list ul li a:hover{
 	color: #3D454D;
 }
 
 .profile-main{
-	background: #E9EAEB;
 	color: #3D454D;
 	border-radius: 5px;
 	padding: 10px 0;
@@ -354,15 +365,24 @@ svg.percent-bar{
 }
 
 svg.percent-bar .first-bar{
-	fill: #2D9BCC;
+	fill: #05199E;
+}
+
+.num-first{
+	color: #05199E;
 }
 
 svg.percent-bar .third-bar{
-	fill: #D6E285;
+	fill: #D97F02;
+}
+
+.num-third{
+	color: #D97F02;
 }
 
 svg.percent-bar rect + text{
 	font-weight: bold;
+	fill: #fff;
 }
 
 
