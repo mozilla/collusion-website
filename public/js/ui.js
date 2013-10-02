@@ -1,4 +1,5 @@
-const DATABASE_URL = "http://collusiondb-development.herokuapp.com";
+// const DATABASE_URL = "http://collusiondb-development.herokuapp.com";
+const DATABASE_URL = "http://localhost:7000";
 const ROWS_PER_TABLE_PAGE = 20;
 var currentPage;
 var allSites;
