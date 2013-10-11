@@ -225,6 +225,12 @@ function loadContentProfile(siteName){
         }
     });
 
+    /***************************************************
+    *   Find out where the server of the site locates
+    *
+    *   Based on https://github.com/toolness/url-demystifier
+    *   and uses Steven Levithan's parseUri 1.2.2
+    */
     $.ajax({
         url: "http://freegeoip.net/json/" + siteName,
         dataType: 'jsonp',
@@ -235,10 +241,6 @@ function loadContentProfile(siteName){
                 document.querySelector("#country").innerHTML = "(Unable to find server location)";
             }else{
                 document.querySelector("#country").innerHTML = data.country_name;
-                var countryOnMap = document.querySelector(".mapcanvas").getElementById(countryCode);
-                if (countryOnMap){
-                    countryOnMap.classList.add('highlight-country');
-                }
             }
         }
     });

@@ -36,7 +36,8 @@
                         </div>
                         <div class="row">
                             <div class="span12">
-                                <div class="inline-label">in the past 7 days...(temporary, to be switched to show all time data)</div><span class="collectedSince"></span>
+                                Server location: <span id="country"></span>
+                                <span class="collectedSince"></span>
                             </div>
                         </div>
                     </div>
@@ -68,47 +69,13 @@
                     </div>
                     <div class="span8">
                         <div class="profile-main">
-                            <div class="row">
-                                <div class="span4">
-                                    <header>Site Description</header>
-                                    <section>
-                                        Website: <a href="">{{site}}</a><br/><br/>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel lectus eu quam consectetur vestibulum. Vivamus elementum faucibus commodo. Nullam bibendum ac justo in convallis. Ut ac lacinia nibh. Suspendisse ac eleifend enim. Donec ornare, metus eu suscipit tempor...
-                                        </p>
-                                    </section>
-                                </div>
-                                <div class="span4">
-                                    <header>&nbsp;</header>
-                                    <section>
-                                        Server location: <span id="country"></span><br/><br/>
-                                        <div style="max-width: 100%;max-height: 250px">{{> map }}</div>
-                                    </section>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="span4">
-                                    <header>Data Details</header>
-                                    <section>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel lectus eu quam consectetur vestibulum. Vivamus elementum faucibus commodo. Nullam bibendum ac justo in convallis.
-                                    </section>
-                                </div>
-                                <div class="span4">
-                                    <header>Privacy Policy</header>
-                                    <section>
-                                        Privacy Policy: </br>
-                                    </section>
-                                </div>
-                            </div>
+                            {{> tableSiteProfile }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- End First Section -->
-        <!-- Second Section ============================== -->
-        {{> tableSiteProfile }}
-        <!-- End Second Section -->
         {{> firstFooter}}
         {{> footer}}
         <div id="loading">
