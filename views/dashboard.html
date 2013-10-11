@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html style="background:#373737;">
     <link rel="stylesheet" href="/styles/OpenSans.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/PathwayGothicOne-Regular.css" type="text/css" />
     <link rel="stylesheet" href="/styles/sandstone.css" type="text/css" />
     <link rel="stylesheet" href="/styles/collusion.css" type="text/css" />
     <link href="//mozorg.cdn.mozilla.net/media/css/tabzilla-min.css" rel="stylesheet" />
@@ -19,13 +18,13 @@
                 </div>
                 <div class="d-l2">
                     <div class="d-l2-l">
-                        <div class="uniqueUsersUpload d-thin-font" style="font-size: 80px">{{uniqueUsersUpload}}</div>
+                        <div class="uniqueUsersUpload d-thin-font" style="font-size: 70px">{{uniqueUsersUpload}}</div>
                         <div>PEOPLE</div>
                         <div class="d-transparent-text">have uploaded data ever</div>
                         <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}</span></div>
                     </div>
                     <div class="d-l2-r">
-                        <div class="uniqueUsersUploadLast24H d-thin-font" style="font-size: 80px">{{uniqueUsersUploadLast24H}}</div>
+                        <div class="uniqueUsersUploadLast24H d-thin-font" style="font-size: 70px">{{uniqueUsersUploadLast24H}}</div>
                         <div>PEOPLE</div>
                         <div class="d-transparent-text">have uploaded data</div>
                         <div class="d-transparent-text d-italics">in the past 24 hours</div>
@@ -33,7 +32,7 @@
                 </div>
                 <div class="d-l3">
                     <div class="d-l3-l">
-                        <div class="totalConnectionsEver d-thin-font" style="font-size: 50px">{{totalConnectionsEver}}</div>
+                        <div class="totalConnectionsEver d-thin-font" style="font-size: 50px"></div>
                         <div style="margin-bottom: 10px">CONNECTIONS</div>
                         <div class="d-transparent-text">are stored in total database</div>
                         <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}</span></div>
@@ -49,41 +48,63 @@
             <div class="d-right">
                 <div class="d-r1">
                     <div style="border-bottom: 1px solid white;">
-                        <div class="d-thin-font" style="float: left;font-size: 55px; line-height: 50px; padding-bottom: 5px">TOP 10</div>
-                        <div style="float: left; padding: 4px 0 0 15px; font-size: 19px">
+                        <div class="d-thin-font" style="float: left;font-size: 25px; line-height: 30px; padding: 0 10px 5px 0">TOP 10</div>
+                        <div style="float: left; padding: 0; font-size: 12px">
                             <b>POTENTIAL</b><br/>
                             <b>TRACKERS</b><br/>
                         </div>
                         <div style="clear: both"></div>
                     </div>
                     <div>
-                        {{#if trackersArray}}
                             <ul class="d-trackers-list">
-                                {{#renderList trackersArray}}
-                                <li>
-                                    <div class='d-tracker-site'>{{site}}</div>
-                                    <div class='d-tracker-sources'><span>{{numSources}}</span> UNIQUE SITES TRACKED</div>
-                                    <div class='d-tracker-connections'><span>{{numConnections}}</span> CONNECTIONS</div>
-                                </li>
-                                {{/renderList}}
+                                
                             </ul>
-                        {{/if}}
-                        
                     </div>
                 </div>
             </div>
         </div>
-
+        <div id="loading">
+            <div>
+                <img src="/images/loader.gif" alt="Loading..." /><br/>
+                <span>LOADING...</span>
+            </div>
+        </div>
         <script src="/js/jquery-1.10.2.min.js"></script>
-        <script src="/js/collusion.js"></script>
+        <script src="/js/ui.js"></script>
         <script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
         <script>
-            $(".uniqueUsersUpload, .uniqueUsersUploadLast24H, .totalConnectionsEver, .totalConnectionsLast24H").each(function(i,item){
-                addCommasToNumber(item);
-            });
-            
-            $(".d-tracker-connections, .d-tracker-sources").each(function(i,item){
-                addCommasToNumber(item.querySelector("span"));
+            // showLoading();
+            $.ajax({
+                url: DATABASE_URL + "/dashboardData",
+                dataType: 'jsonp',
+                success: function(data){
+                    $(".uniqueUsersUpload").text(data.uniqueUsersUpload);
+                    $(".uniqueUsersUploadSince").text(data.uniqueUsersUploadSince);
+                    $(".uniqueUsersUploadLast24H").text(data.uniqueUsersUploadLast24H);
+                    $(".totalConnectionsEver").text(data.totalConnectionsEver);
+                    $(".totalConnectionsLast24H").text(data.totalConnectionsLast24H);
+                    var trackersHTML = "";
+                    var trackers = data.trackersArray;
+                    for (var i=0; i<trackers.length; i++){
+                        trackersHTML = trackersHTML +
+                            "<li>" +
+                                    "<div class='d-tracker-site'>" + trackers[i].site + "</div>" + 
+                                    "<div class='d-tracker-sources'><span>"+ trackers[i].numSources +"</span> UNIQUE SITES TRACKED</div>" +
+                                    "<div class='d-tracker-connections'><span>"+ trackers[i].numConnections +"</span> CONNECTIONS</div>" + 
+                                "</li>";
+                    }
+                    $(".d-trackers-list").html(trackersHTML);
+
+                    $(".uniqueUsersUpload, .uniqueUsersUploadLast24H, .totalConnectionsEver, .totalConnectionsLast24H").each(function(i,item){
+                        addCommasToNumber(item);
+                    });
+                    
+                    $(".d-tracker-connections, .d-tracker-sources").each(function(i,item){
+                        addCommasToNumber(item.querySelector("span"));
+                    });
+
+                    hideLoading();
+                }
             });
             
             function addCommasToNumber(elm){

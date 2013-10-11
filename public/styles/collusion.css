@@ -137,7 +137,7 @@ a:hover{
 }
 
 .hidden{
-	display: none;
+	display: none !important;
 }
 
 #loading{
@@ -421,12 +421,8 @@ svg.percent-bar rect + text{
     line-height: normal;
 }
 
-.d-thin-font{
-    font-family: "Pathway Gothic One";
-}
-
 .dashboard header{
-    font-size: 160px;
+    font-size: 120px;
     line-height: 110px;
     margin-bottom: 15px;
 }

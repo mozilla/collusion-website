@@ -71,46 +71,6 @@ function authPassword(req,res,getReqHandler){
 
 
 /**************************************************
-*   Helper functions
-*/
-function makeHttpGetRequest(options,callback){
-    var query = {};
-    var queryString = JSON.stringify(query);
-    var hostname = process.env.DATABASE_URL;
-    var port = process.env.DATABASE_PORT;
-
-    var httpRequestOptions = {
-        hostname: options.hostname || hostname,
-        path: options.path || "",
-        method: "GET",
-        headers: {
-            "Content-Type": options.contentType || "application/json",
-            "Content-Length": queryString.length
-        }
-    };
-    httpRequestOptions.port = (options.port == "") ? "" : port;
-
-    var results = "";
-    var reqGet = http.request(httpRequestOptions, function(response) {
-        response.setEncoding("utf8");
-        response.on("data", function (chunk) {
-          results += chunk;
-        });
-        response.on("end", function(){
-            callback(results);
-        });
-    });
-
-    reqGet.on("error", function(err) {
-        if (err) console.log("[ ERROR ] Problem with request: " + err.message);
-    });
-
-    reqGet.write(queryString);
-    reqGet.end();
-}
-
-
-/**************************************************
 *   Index page
 */
 var indexGetHandler = function(req,res){
@@ -203,9 +163,7 @@ function generateConnectionSiteList(site,data){
 *   Dashboard
 */
 var dashboardGetHandler = function(req,res){
-     getDashboardData(function(data){
-        res.render("dashboard", data);
-    });
+    res.render("dashboard");
 };
 
 app.get("/dashboard", function(req, res){
@@ -215,24 +173,6 @@ app.get("/dashboard", function(req, res){
 app.post("/dashboard", function(req, res){
     authPassword( req,res,dashboardGetHandler );
 });
-
-function getDashboardData(callback){
-    var options = { path: "/dashboardData" };
-    makeHttpGetRequest(options, function(result){
-        result = JSON.parse(result);
-        var data = {
-            uniqueUsersUpload: result.uniqueUsersUpload,
-            uniqueUsersUploadSince: result.uniqueUsersUploadSince,
-            uniqueUsersUploadLast24H: result.uniqueUsersUploadLast24H,
-            totalConnectionsEver: result.totalConnectionsEver,
-            totalConnectionsLast24H: result.totalConnectionsLast24H,
-            trackersArray: result.trackersArray,
-            today: new Date().toString().slice(4,15)
-        }
-        callback(data);
-    });
-}
-
 
 app.listen(process.env.PORT, function() {
     console.log("Listening on " + process.env.PORT);
