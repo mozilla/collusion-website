@@ -123,65 +123,7 @@
 					<div class="span12">
 						<h2>Details of data that is uploaded if you opt in to contribute data</h2>
 						<p>
-							The format has the following structure: A root object whose keys are <b>format</b>, <b>version</b>, <b>connections</b>. 
-						</p>
-						<p>
-							The <b>format</b> value is the string "Collusion Save File" and is for documentation and identification of JSON files which are Collusion-specific.
-						</p>
-						<p>
-							The <b>version</b> value is the string "1.1" and identifies the specific format documented here. A missing version key is the same as a version value of "0" and should be parsed and interpreted as specified for Format 0 above. 
-						</p>
-						<p>
-							The <b>connections</b> value makes up the bulk of the file. It is an array of connection array objects, where each connection is represented as an array of values in the following order: <br/>
-							<b>[source, target, timestamp, contentType, cookie, sourceVisited, secure, sourcePathDepth, sourceQueryDepth, sourceSub, targetSub, method, status, cacheable]</b>. Because we will be storing a lot more information over time than the older format, we do not store keys repetitively with each connection, but effectively a 14-tuple corresponding closely to a database row.
-							<ul>
-								<li>
-									The <b>source</b> value is a URL containing domain and subdomain information for the requested site, but stripped of protocol, path, query, and fragment. See notes for "target" for changes from 0.0 and 1.1 formats.
-								</li>
-								<li>
-									The <b>target</b> value is a URL containing domain and subdomain information for a resource loaded from a third-party site, and like the source the target is stripped of protocol, path, query, and fragment. Connections which differ only by subdomain are not considered third-party content, which means that if you visit example.com and it loads content from ads.example.com, those connections will not be tracked by Collusion. This is changed from both 0.0 and 1.1. In 0.0 we did not track subdomain information at all, and in 1.1 we kept subdomains in the "source" and "target" attributes. Now we have reverted to the 0.0 form of stripping subdomains from "source" and "target", but we store the subdomain information in the "sourceSub" and "targetSub" attributes (which will be empty if there is no subdomain).
-								</li>
-								<li>
-									The <b>timestamp</b> is an integer number of milliseconds since the Unix epoch (January 1, 1970) as normally used for Javascript Date objects. The granularity of the timestamp is intentionally reduced when this data is shared, by rounding timestamps down to the last 10 minutes to prevent trackers from comparing our data with theirs to re-associate our data with individual users. Note, this is a change from the earlier data format which only stored timestamps relative to the time Collusion was started, and couldn't be used to restore actual session dates or times.
-								</li>
-								<li>
-									The <b>contentType</b> value is the string reported by the target in the Content-Type header, although we MAY also compare with the actual type returned to improve the accuracy of this value. If there is no Content-Type header we WILL attempt to determine the type of the content. If all attempts fail, a default content type of "text/plain" (the standard default content type) will be used, but the value WILL NOT be null.
-								</li>
-								<li>
-									The <b>cookie</b> value is either true or false representing the existence of one or more Set-Cookie headers returned by the target.
-								</li>
-								<li>
-									The <b>sourceVisited</b> value is either true or false, indicating whether or not the source was loaded by the user in a page or tab. While it is expected that this value will generally be true, it may be false for sources in iframes.
-								</li>
-								<li>
-									The <b>secure</b> value will be true for content loaded via the HTTPS protocol, false for content loaded via HTTP protocol. No other protocols are currently tracked by Collusion as connections.
-								</li>
-								<li>
-									The <b>sourcePathDepth</b> is a metric of how many path elements there were in the source URL before it was sanitized. The URL http://example.com/ has a depth of 0, while the URL http://example.com/blog/post/2012/12/21 has a depth of 5.
-								</li>
-								<li>
-									The <b>sourceQueryDepth</b> is a metric of how many items there were in the query string. This is not a test of unique keys, just simple breaking after the "?" and splitting on "&" and ";". Again, http://example.com/ has a depth of 0, as does http://example.com/?, while http://example.com/?captain=kirk&ship=enterprise, http://example.com/?captain=kirk&captain=picard, and http://example.com/?captain=kirk;ship=enterprise all have a depth of 2.
-								</li>
-								<li>
-									The <b>sourceSub</b> is the remainder of the domain after stripping off the top-level domain (so for "ec2.amazon.com", the source would be "amazon.com" and the source-sub would be "ec2"). This attribute is new in the 1.1 format.
-								</li>
-								<li>
-									The <b>targetSub</b> is the same as "sourceSub", but for targets. This attribute is new in the 1.1 format.
-								</li>
-								<li>
-									The <b>method</b> attribute is whether this connection was loaded via GET, POST, PUT, etc. This attribute is new in the 1.1 format.
-								</li>
-								<li>
-									The <b>status</b> attribute is the numeric status of the response (200, 404, 500, etc.) as an integer. This attribute is new in the 1.1 format.
-								</li>
-								<li>
-									The <b>cacheable</b> attribute will be false if the server responded with any of a variety of mechanisms (as headers) for preventing cacheing such as "Cache-control: no-cache", "Pragma: no-cache", "Expires: 0", or "Expires" with a date value in the past relative to the value of the "Date" header.
-								</li>
-							</ul>
-						</p>
-						<p>
-						</p>
-						<p>
+							Please visit <a href="https://github.com/mozilla/lightbeam/blob/master/doc/data_format.v1.1.md" target="_blank">here</a> to see details of the data format.
 						</p>
 					</div>
 				</div>
@@ -210,7 +152,7 @@
 						</p>
 					</div>
 					<div class="span4 text-center">
-						<div><img src="/images/collusion_partners_simcentre.png" alt="SIM Centre" /></div>
+						<div><img src="/images/collusion_partners_ecuad.png" alt="SIM Centre" /></div>
 						<p class="text-left"> 
 							The <a href="http://www.simcentre.ca/" target="_blank">Social + Interactive Media Centre</a> supports a wide range of applied social, interactive and design projects. The Centre's research program engages BC companies to collaborate with Emily Carr University of Art + Design to uncover new ways to use social technologies and tackle interactive design challenges.
 						</p>
@@ -223,8 +165,5 @@
 		{{> footer}}
 		<script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
 		<script src="/js/ui.js"></script>
-		<script>
-			 document.querySelector("ul.collusion-nav-inner li#aboutPage").classList.add("active");
-		</script>
 	</body>
 </html>
