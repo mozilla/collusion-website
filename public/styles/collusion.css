@@ -275,15 +275,11 @@ a:hover{
 
 .pagination{
 	margin: 0 0 10px 0;
+	float: right;
 }
 
-.pagination a{
-	display: inline-block;
-	margin: 0 5px;
-}
-
-.pagination a[data-selected]{
-	font-weight: bold;
+.pagination select{
+	width: 100px;
 }
 
 

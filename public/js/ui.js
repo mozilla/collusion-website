@@ -111,14 +111,14 @@ function showAllSitesTable(pageIndex){
 }
 
 function addPageSelection(current,total){
-    var html = "page: ";
+    if ( document.querySelector(".pagination select") ) return;
+
+    var html = "Page: <select>";
     for (var i=1; i<=total; i++){
-        if (i == current){
-            html = html + "<a class='blue-text' data-page='"+ i +"' data-selected>" + i + "</a>";
-        }else{
-            html = html + "<a class='grey-text' data-page='" + i + "'>" + i + "</a>"; 
-        }
+        html = html + "<option>" + i + "</option>";
     }
+    html += "</select>";
+
     currentPage.querySelector(".row-start").textContent = (current-1) * ROWS_PER_TABLE_PAGE + 1;
     currentPage.querySelector(".row-end").textContent = (current-1) * ROWS_PER_TABLE_PAGE + currentPage.querySelectorAll(".website-list-table tbody tr[data-url]").length;
     currentPage.querySelector(".pagination").innerHTML = html;
@@ -129,6 +129,7 @@ function sortSiteList(sortByFunction){
         allSites.sort(sortByFunction);
     }
     showAllSitesTable();
+    document.querySelector(".pagination select").selectedIndex = 0;
 }
 
 function addTableRow(site){
@@ -140,9 +141,8 @@ function addTableRow(site){
 }
 
 var paginationForSiteTables = function(event){
-    if ( event.target.parentNode == this ){
-        showAllSitesTable(event.target.getAttribute("data-page"));
-    }
+    var selectedIdx = document.querySelector(".pagination select").selectedIndex; // starts from 0
+    showAllSitesTable( (selectedIdx+1));
 }
 
 var sortingForSiteTables = function(event){
