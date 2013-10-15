@@ -111,17 +111,17 @@ function showAllSitesTable(pageIndex){
 }
 
 function addPageSelection(current,total){
-    if ( document.querySelector(".pagination select") ) return;
-
-    var html = "Page: <select>";
-    for (var i=1; i<=total; i++){
-        html = html + "<option>" + i + "</option>";
-    }
-    html += "</select>";
-
     currentPage.querySelector(".row-start").textContent = (current-1) * ROWS_PER_TABLE_PAGE + 1;
     currentPage.querySelector(".row-end").textContent = (current-1) * ROWS_PER_TABLE_PAGE + currentPage.querySelectorAll(".website-list-table tbody tr[data-url]").length;
-    currentPage.querySelector(".pagination").innerHTML = html;
+    
+    if ( !document.querySelector(".pagination select") ){
+        var html = "Page: <select>";
+        for (var i=1; i<=total; i++){
+            html = html + "<option>" + i + "</option>";
+        }
+        html += "</select>";
+        currentPage.querySelector(".pagination").innerHTML = html;
+    }
 }
 
 function sortSiteList(sortByFunction){

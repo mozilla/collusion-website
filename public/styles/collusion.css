@@ -235,12 +235,6 @@ a:hover{
 	border-radius: 5px;
 }
 
-.blue-divider{
-	border-top: solid 5px #47C3E3;	
-	height: 1px;
-	margin-bottom: 20px;
-}
-
 .inline-label{
 	letter-spacing: 1px;
 	display: inline-block;
