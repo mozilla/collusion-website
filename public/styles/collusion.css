@@ -62,7 +62,7 @@ a:hover{
 }
 
 
-#collusion-logo{
+#lightbeam-logo{
 	display: block;
 	padding: 10px 0;
 	border: 1px solid #444;
@@ -70,8 +70,8 @@ a:hover{
 	text-align: center;
 }
 
-.navbar .nav li a#collusion-logo:hover, 
-.active#collusion-logo{
+.navbar .nav li a#lightbeam-logo:hover, 
+.active#lightbeam-logo{
 	background-color: none;
 	border: none;
 }
@@ -120,7 +120,7 @@ a:hover{
 	color: #fff;
 }
 
-.collusion-header{
+.lightbeam-header{
 	margin-bottom: 50px;
 }
 
@@ -164,17 +164,17 @@ a:hover{
 	top: 50%;
 }
 
-.collusion-nav-bar a, .collusion-nav-bar a:link, .collusion-nav-bar a:visited{
+.lightbeam-nav-bar a, .lightbeam-nav-bar a:link, .lightbeam-nav-bar a:visited{
 	color: rgb(72, 72, 72);
 }
 
-.collusion-nav-bar ul{
+.lightbeam-nav-bar ul{
 	list-style-type: none;
 	white-space: nowrap;
 	color: #444;
 }
 
-.collusion-nav-bar ul li{
+.lightbeam-nav-bar ul li{
 	margin-top: 10px;
 	padding: 0 20px;
 }
@@ -375,7 +375,7 @@ svg.percent-bar rect + text{
 
 
 
-/* Styles for Collusion Graph */
+/* Styles for lightbeam Graph */
 
 .vizcanvas-container{
     background-color: #000;
