@@ -65,7 +65,8 @@ function authPassword(req,res,getReqHandler){
         res.cookie("collusionAccess", "true", { expires: new Date(Date.now() + 10*60*1000) }); // expires in 10 mins
         getReqHandler(req,res);
     }else{
-        res.send(403, "Access Denied");
+
+        res.send(403, "Access Denied! [ printing out process.env ] " + JSON.stringify(process.env));
     }
 }
 
