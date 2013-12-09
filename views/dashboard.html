@@ -18,13 +18,13 @@
                 </div>
                 <div class="d-l2">
                     <div class="d-l2-l">
-                        <div class="uniqueUsersUpload d-thin-font" style="font-size: 70px">{{uniqueUsersUpload}}</div>
+                        <div class="uniqueUsersUpload d-thin-font" style="font-size: 70px">{{uniqueUsersUpload}}&nbsp;</div>
                         <div>PEOPLE</div>
                         <div class="d-transparent-text">have uploaded data ever</div>
-                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}</span></div>
+                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}&nbsp;</span></div>
                     </div>
                     <div class="d-l2-r">
-                        <div class="uniqueUsersUploadLast24H d-thin-font" style="font-size: 70px">{{uniqueUsersUploadLast24H}}</div>
+                        <div class="uniqueUsersUploadLast24H d-thin-font" style="font-size: 70px">{{uniqueUsersUploadLast24H}}&nbsp;</div>
                         <div>PEOPLE</div>
                         <div class="d-transparent-text">have uploaded data</div>
                         <div class="d-transparent-text d-italics">in the past 24 hours</div>
@@ -32,13 +32,13 @@
                 </div>
                 <div class="d-l3">
                     <div class="d-l3-l">
-                        <div class="totalConnectionsEver d-thin-font" style="font-size: 50px"></div>
+                        <div class="totalConnectionsEver d-thin-font" style="font-size: 50px">&nbsp;</div>
                         <div style="margin-bottom: 10px">CONNECTIONS</div>
                         <div class="d-transparent-text">are stored in total database</div>
-                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}</span></div>
+                        <div class="d-transparent-text d-italics">since <span class="uniqueUsersUploadSince">{{uniqueUsersUploadSince}}&nbsp;</span></div>
                     </div>
                     <div class="d-l3-r">
-                        <div class="totalConnectionsLast24H d-thin-font" style="font-size: 50px">{{totalConnectionsLast24H}}</div>
+                        <div class="totalConnectionsLast24H d-thin-font" style="font-size: 50px">{{totalConnectionsLast24H}}&nbsp;</div>
                         <div style="margin-bottom: 10px">CONNECTIONS</div>
                         <div class="d-transparent-text">were uploaded</div>
                         <div class="d-transparent-text d-italics">in the past 24 hours</div>
@@ -63,28 +63,40 @@
                 </div>
             </div>
         </div>
-        <div id="loading">
-            <div>
-                <img src="/images/loader.gif" alt="Loading..." /><br/>
-                <span>LOADING...</span>
-            </div>
-        </div>
         <script src="/js/jquery-1.10.2.min.js"></script>
         <script src="/js/ui.js"></script>
         <script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
         <script>
-            // showLoading();
+            // users
             $.ajax({
-                url: DATABASE_URL + "/dashboardData",
+                url: DATABASE_URL + "/dashboardData_users",
                 dataType: 'jsonp',
                 success: function(data){
                     $(".uniqueUsersUpload").text(data.uniqueUsersUpload);
                     $(".uniqueUsersUploadSince").text(data.uniqueUsersUploadSince);
                     $(".uniqueUsersUploadLast24H").text(data.uniqueUsersUploadLast24H);
+                }
+            });
+
+            // connections
+            $.ajax({
+                url: DATABASE_URL + "/dashboardData_conns",
+                dataType: 'jsonp',
+                success: function(data){
                     $(".totalConnectionsEver").text(data.totalConnectionsEver);
                     $(".totalConnectionsLast24H").text(data.totalConnectionsLast24H);
+                }
+            });
+
+
+            // top 10
+            $.ajax({
+                url: DATABASE_URL + "/dashboardData_top10",
+                dataType: 'jsonp',
+                success: function(data){
                     var trackersHTML = "";
                     var trackers = data.trackersArray;
+                    console.log("trackers %o", trackers );
                     for (var i=0; i<trackers.length; i++){
                         trackersHTML = trackersHTML +
                             "<li>" +
@@ -94,7 +106,7 @@
                                 "</li>";
                     }
                     $(".d-trackers-list").html(trackersHTML);
-
+                    console.log(trackersHTML);
                     $(".uniqueUsersUpload, .uniqueUsersUploadLast24H, .totalConnectionsEver, .totalConnectionsLast24H").each(function(i,item){
                         addCommasToNumber(item);
                     });
@@ -102,11 +114,10 @@
                     $(".d-tracker-connections, .d-tracker-sources").each(function(i,item){
                         addCommasToNumber(item.querySelector("span"));
                     });
-
-                    hideLoading();
                 }
             });
-            
+
+
             function addCommasToNumber(elm){
                 $(elm).html( $(elm).text().toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") );
             }
