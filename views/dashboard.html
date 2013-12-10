@@ -62,7 +62,7 @@
 
             // connections
             $.ajax({
-                url: DATABASE_URL + "/dashboardData_last24conns",
+                url: databaseURL + "/dashboardData_last24conns",
                 dataType: 'jsonp',
                 success: function(data){
                     $(".totalConnectionsLast24H").text(data.totalConnectionsLast24H);
@@ -71,7 +71,7 @@
 
             // top 10
             $.ajax({
-                url: DATABASE_URL + "/dashboardData_top10",
+                url: databaseURL + "/dashboardData_top10",
                 dataType: 'jsonp',
                 success: function(data){
                     var trackersHTML = "";

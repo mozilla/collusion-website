@@ -77,7 +77,7 @@ function authPassword(req,res,getReqHandler){
 *   Index page
 */
 var indexGetHandler = function(req,res){
-    res.redirect("/new",envVars);
+    res.redirect("/new");
 };
 
 app.get("/", function(req, res){
