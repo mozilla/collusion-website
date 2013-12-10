@@ -456,8 +456,8 @@ svg.percent-bar rect + text{
 
 .d-l3{
     width: 100%;
-    height: 170px;
-    height: calc(100% / 3 - 10px);
+    height: calc( 100% / 3 * 2 );
+    height: 360px;
     background:#2BAEDE;
     clear: both;
     text-align: center;
@@ -469,7 +469,7 @@ svg.percent-bar rect + text{
 .d-l3 .d-l3-r{
     width: 50%;
     float: left;
-    margin: 20px 0;
+    margin: 100px 0;
 }
 
 .d-right{
