@@ -14,6 +14,9 @@ var xml2js = require("xml2js");
 var app = express();
 var xmlParser = new xml2js.Parser();
 
+// env vars to be passed to client side
+var envVars = { databaseURL: process.env.DATABASE_URL };
+
 app.configure(function(){
     app.set("view engine", "html");
     app.set("view options", { layout: false });
@@ -65,7 +68,6 @@ function authPassword(req,res,getReqHandler){
         res.cookie("collusionAccess", "true", { expires: new Date(Date.now() + 10*60*1000) }); // expires in 10 mins
         getReqHandler(req,res);
     }else{
-
         res.send(403, "Access Denied! [ printing out process.env ] " + JSON.stringify(process.env));
     }
 }
@@ -75,7 +77,7 @@ function authPassword(req,res,getReqHandler){
 *   Index page
 */
 var indexGetHandler = function(req,res){
-    res.redirect("/new");
+    res.redirect("/new",envVars);
 };
 
 app.get("/", function(req, res){
@@ -91,7 +93,7 @@ app.post("/", function(req, res){
 *   New Index Page
 */
 var newIndexGetHandler = function(req,res){
-    res.render("indexNew");
+    res.render("indexNew",envVars);
 };
 
 app.get("/new", function(req, res){
@@ -107,7 +109,7 @@ app.post("/new", function(req, res){
 *   New About Page
 */
 var newAboutGetHandler = function(req,res){
-    res.render("about");
+    res.render("about",envVars);
 };
 
 app.get("/new/about", function(req, res){
@@ -122,7 +124,7 @@ app.post("/new/about", function(req, res){
 *   New Database Page
 */
 var newDatabaseGetHandler = function(req,res){
-    res.render("database");
+    res.render("database",envVars);
 };
 
 app.get("/new/database", function(req, res){
@@ -138,7 +140,7 @@ app.post("/new/database", function(req, res){
 *   New Profile Page
 */
 var newProfileGetHandler = function(req,res){
-    res.render("siteProfileNew");
+    res.render("siteProfileNew",envVars);
 };
 
 app.get("/new/profileNew/:site", function(req, res){
@@ -164,7 +166,7 @@ function generateConnectionSiteList(site,data){
 *   Dashboard
 */
 var dashboardGetHandler = function(req,res){
-    res.render("dashboard");
+    res.render("dashboard",envVars);
 };
 
 app.get("/dashboard", function(req, res){

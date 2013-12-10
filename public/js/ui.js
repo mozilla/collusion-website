@@ -1,4 +1,3 @@
-const DATABASE_URL = "http://collusiondb-development.herokuapp.com";
 const ROWS_PER_TABLE_PAGE = 20;
 var currentPage;
 var allSites;
@@ -60,7 +59,7 @@ if ( document.querySelector(".top-trackers-table") ){
 function loadContentDatabase(){
     showLoading();
     $.ajax({
-        url: DATABASE_URL + "/databaseSiteList",
+        url: databaseURL + "/databaseSiteList",
         dataType: 'jsonp',
         success: function(data){
             console.log(data[0][1]);
@@ -202,7 +201,7 @@ function loadContentProfile(siteName){
         sites[i].textContent = siteName;
     }
     $.ajax({
-        url: DATABASE_URL+"/getSiteProfileNew?name=" + siteName,
+        url: databaseURL+"/getSiteProfileNew?name=" + siteName,
         dataType: 'jsonp',
         success: function(data){
             // generate d3 graph

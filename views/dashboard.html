@@ -34,11 +34,7 @@
             <div class="d-right">
                 <div class="d-r1">
                     <div style="border-bottom: 1px solid white;">
-                        <div class="d-thin-font" style="float: left;font-size: 25px; line-height: 30px; padding: 0 10px 5px 0">TOP 10</div>
-                        <div style="float: left; padding: 0; font-size: 12px">
-                            <b>POTENTIAL</b><br/>
-                            <b>TRACKERS</b><br/>
-                        </div>
+                        <div class="d-thin-font" style="text-align: center;font-size: 25px; line-height: 30px; padding: 0 10px 5px 0">TOP 10</div>
                         <div style="clear: both"></div>
                     </div>
                     <div>
@@ -50,12 +46,13 @@
             </div>
         </div>
         <script src="/js/jquery-1.10.2.min.js"></script>
+        <script>var databaseURL = "{{{databaseURL}}}";</script>
         <script src="/js/ui.js"></script>
         <script src="//mozorg.cdn.mozilla.net/tabzilla/tabzilla.js"></script>
         <script>
             // total connections
             $.ajax({
-                url: DATABASE_URL + "/dashboardData_totalConns",
+                url: databaseURL + "/dashboardData_totalConns",
                 dataType: 'jsonp',
                 success: function(data){
                     $(".totalConnectionsEver").text(data.totalConnectionsEver);
