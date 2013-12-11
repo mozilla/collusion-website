@@ -62,11 +62,9 @@ function loadContentDatabase(){
         url: databaseURL + "/databaseSiteList",
         dataType: 'jsonp',
         success: function(data){
-            console.log(data[0][1]);
-            allSites = data[0];
-            var top10Trackers = data[1];
+            console.log(data);
+            allSites = data;
             showAllSitesTable();
-            showPotentialTracker(top10Trackers);
             var total = currentPage.querySelectorAll(".num-sites");
             for (var i=0; i<total.length; i++){
                 total[i].textContent = addCommasToNumber(Object.keys(data[0]).length);
@@ -74,6 +72,17 @@ function loadContentDatabase(){
             hideLoading();
         }
     });
+
+    // top 10
+    $.ajax({
+        url: databaseURL + "/dashboardData_top10",
+        dataType: 'jsonp',
+        success: function(data){
+            showPotentialTracker(data.trackersArray);
+            hideLoading();
+        }
+    });
+
 }
 
 
