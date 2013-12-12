@@ -74,7 +74,7 @@ function loadContentDatabase(){
 
     // top 10
     $.ajax({
-        url: databaseURL + "/dashboardData_top10",
+        url: databaseURL + "/dashboardDataTop10",
         dataType: 'jsonp',
         success: function(data){
             showPotentialTracker(data.trackersArray);
@@ -142,7 +142,7 @@ function sortSiteList(sortByFunction){
 function addTableRow(site){
     var html = "<tr data-url='/new/profileNew/"+ site.site + "'>" +
                     "<td>" + site.site + "</td>";
-    if ( site.numConnectedSites ){ html += "<td>" + addCommasToNumber(site.numConnectedSites) + "</td>"; }
+    if ( site.numSources ){ html += "<td>" + addCommasToNumber(site.numSources) + "</td>"; }
     if ( site.numConnections ){    html += "<td>" + addCommasToNumber(site.numConnections) + "</td>"; }
     return html + "</tr>";
 }

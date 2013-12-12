@@ -54,7 +54,7 @@
         <script>
             // total connections
             $.ajax({
-                url: databaseURL + "/dashboardData_totalConns",
+                url: databaseURL + "/dashboardDataTotalConns",
                 dataType: 'jsonp',
                 success: function(data){
                     $(".totalConnectionsEver").text(data.totalConnectionsEver);
@@ -64,7 +64,7 @@
 
             // connections
             $.ajax({
-                url: databaseURL + "/dashboardData_last24conns",
+                url: databaseURL + "/dashboardDataLast24Conns",
                 dataType: 'jsonp',
                 success: function(data){
                     $(".totalConnectionsLast24H").text(data.totalConnectionsLast24H);
@@ -73,7 +73,7 @@
 
             // top 10
             $.ajax({
-                url: databaseURL + "/dashboardData_top10",
+                url: databaseURL + "/dashboardDataTop10",
                 dataType: 'jsonp',
                 success: function(data){
                     var trackersHTML = "";
