@@ -62,12 +62,11 @@ function loadContentDatabase(){
         url: databaseURL + "/databaseSiteList",
         dataType: 'jsonp',
         success: function(data){
-            console.log(data);
             allSites = data;
             showAllSitesTable();
             var total = currentPage.querySelectorAll(".num-sites");
             for (var i=0; i<total.length; i++){
-                total[i].textContent = addCommasToNumber(Object.keys(data[0]).length);
+                total[i].textContent = addCommasToNumber(Object.keys(data).length);
             }
             hideLoading();
         }
