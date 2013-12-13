@@ -1,4 +1,4 @@
-const ROWS_PER_TABLE_PAGE = 20;
+const ROWS_PER_TABLE_PAGE = 10;
 var currentPage;
 var allSites;
 
@@ -90,7 +90,7 @@ function loadContentDatabase(){
 */
 
 function showPotentialTracker(top10Trackers){
-    var html = currentPage.querySelector(".top-trackers-table").innerHTML;
+    var html = "";
     console.log(top10Trackers);
     var siteArray = Object.keys(top10Trackers);
     for ( var i=0; i<siteArray.length; i++ ){
@@ -101,7 +101,7 @@ function showPotentialTracker(top10Trackers){
             "</tr>";
         html += row;
     }
-    currentPage.querySelector(".top-trackers-table").innerHTML = html;
+    currentPage.querySelector(".top-trackers-table tbody").innerHTML = html;
 }
 
 function showAllSitesTable(pageIndex){
@@ -158,7 +158,7 @@ var sortingForSiteTables = function(event){
 
     if ( sortBy ){
         var sortByFunction;
-        var sortByConnectedSites = function(a,b){ return b.numConnectedSites - a.numConnectedSites; };
+        var sortByConnectedSites = function(a,b){ return b.numSources - a.numSources; };
         var sortByConnections = function(a,b){ return b.numConnections - a.numConnections; };
         var sortByAlpha = function(a,b){
                             if(a.site.toLowerCase() < b.site.toLowerCase()) return -1;
@@ -212,6 +212,13 @@ function loadContentProfile(siteName){
         url: databaseURL+"/getSiteProfileNew?name=" + siteName,
         dataType: 'jsonp',
         success: function(data){
+            if ( Object.keys(data).length < 1 ){
+                hideLoading();
+                // clearTimeout(timeoutTimer);
+                document.querySelectorAll(".website-list-table tbody tr")[Math.floor((ROWS_PER_TABLE_PAGE-1)/2)].innerHTML 
+                                    = "<td colspan='2' style='text-align:center; color:#0FA868'>Cannot find any matching data in the database.</td>";
+                return;
+            }
             // generate d3 graph
             loadData(data); 
             // other UI content
