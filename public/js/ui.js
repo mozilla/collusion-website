@@ -47,8 +47,8 @@ if ( document.querySelector(".website-list-table") ){
     document.querySelector(".website-list-table").addEventListener("click", siteTableClickHandler);
 }
 
-if ( document.querySelector(".top-trackers-table") ){
-    document.querySelector(".top-trackers-table").addEventListener("click", siteTableClickHandler);
+if ( document.querySelector(".top-sites-table") ){
+    document.querySelector(".top-sites-table").addEventListener("click", siteTableClickHandler);
 }
 
 
@@ -62,12 +62,13 @@ function loadContentDatabase(){
         url: databaseURL + "/databaseSiteList",
         dataType: 'jsonp',
         success: function(data){
-            allSites = data;
+            allSites = data.siteData;
             showAllSitesTable();
             var total = currentPage.querySelectorAll(".num-sites");
             for (var i=0; i<total.length; i++){
                 total[i].textContent = addCommasToNumber(Object.keys(data).length);
             }
+            document.querySelector("#webiste-list-time-range").innerHTML = data.timeRange;
             hideLoading();
         }
     });
@@ -77,7 +78,8 @@ function loadContentDatabase(){
         url: databaseURL + "/dashboardDataTop10",
         dataType: 'jsonp',
         success: function(data){
-            showPotentialTracker(data.trackersArray);
+            showPotentialTracker(data.topTenSites);
+            document.querySelector("#top-list-time-range").innerHTML = data.timeRange;
             hideLoading();
         }
     });
@@ -91,7 +93,6 @@ function loadContentDatabase(){
 
 function showPotentialTracker(top10Trackers){
     var html = "";
-    console.log(top10Trackers);
     var siteArray = Object.keys(top10Trackers);
     for ( var i=0; i<siteArray.length; i++ ){
         site = top10Trackers[siteArray[i]];
@@ -101,7 +102,7 @@ function showPotentialTracker(top10Trackers){
             "</tr>";
         html += row;
     }
-    currentPage.querySelector(".top-trackers-table tbody").innerHTML = html;
+    currentPage.querySelector(".top-sites-table tbody").innerHTML = html;
 }
 
 function showAllSitesTable(pageIndex){
@@ -212,6 +213,7 @@ function loadContentProfile(siteName){
         url: databaseURL+"/getSiteProfileNew?name=" + siteName,
         dataType: 'jsonp',
         success: function(data){
+            var siteData = data.siteData;
             if ( Object.keys(data).length < 1 ){
                 hideLoading();
                 // clearTimeout(timeoutTimer);
@@ -220,20 +222,21 @@ function loadContentProfile(siteName){
                 return;
             }
             // generate d3 graph
-            loadData(data); 
+            loadData(siteData); 
             // other UI content
-            var siteData = data[siteName];
-            addConnnectionBar(siteData.howManyFirstParty, siteData.howMany);
-            currentPage.querySelector(".num-total-connection b").innerHTML = siteData.howMany;
-            currentPage.querySelector(".num-first b").innerHTML = siteData.howManyFirstParty;
-            currentPage.querySelector(".num-third b").innerHTML = siteData.howMany - siteData.howManyFirstParty;
+            console.log(siteData[siteName]);
+            var siteProfile = siteData[siteName];
+            addConnnectionBar(siteProfile.howManyFirstParty, siteProfile.howMany);
+            currentPage.querySelector(".num-total-connection b").innerHTML = siteProfile.howMany;
+            currentPage.querySelector(".num-first b").innerHTML = siteProfile.howManyFirstParty;
+            currentPage.querySelector(".num-third b").innerHTML = siteProfile.howMany - siteProfile.howManyFirstParty;
             // connected sites table
-            delete data[siteName];
-            allSites = turnMapIntoArray(data);
+            delete siteData[siteName];
+            allSites = turnMapIntoArray(siteData);
             document.querySelector(".profile .sorting-options a[data-selected]").click();
             var total = currentPage.querySelectorAll(".num-sites");
             for (var i=0; i<total.length; i++){
-                total[i].textContent = addCommasToNumber(Object.keys(data).length);
+                total[i].textContent = addCommasToNumber(Object.keys(siteData).length);
             }
             hideLoading();
         }

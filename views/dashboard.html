@@ -77,7 +77,7 @@
                 dataType: 'jsonp',
                 success: function(data){
                     var trackersHTML = "";
-                    var trackers = data.trackersArray;
+                    var trackers = data.topTenSites;
                     for (var i=0; i<trackers.length; i++){
                         trackersHTML = trackersHTML +
                             "<li>" +
