@@ -238,6 +238,7 @@ function loadContentProfile(siteName){
             for (var i=0; i<total.length; i++){
                 total[i].textContent = addCommasToNumber(Object.keys(siteData).length);
             }
+            document.querySelector("#webiste-list-time-range").innerHTML = data.timeRange;
             hideLoading();
         }
     });
